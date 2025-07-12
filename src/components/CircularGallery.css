@@ -3,8 +3,21 @@
   height: 100%;
   overflow: hidden;
   cursor: grab;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .circular-gallery:active {
   cursor: grabbing;
+}
+
+.circular-gallery img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* Smooth image scaling */
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 } 

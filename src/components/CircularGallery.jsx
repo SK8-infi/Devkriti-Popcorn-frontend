@@ -129,7 +129,13 @@ class Media {
     this.onResize();
   }
   createShader() {
-    const texture = new Texture(this.gl, { generateMipmaps: false });
+    const texture = new Texture(this.gl, { 
+      generateMipmaps: true,
+      minFilter: this.gl.LINEAR_MIPMAP_LINEAR,
+      magFilter: this.gl.LINEAR,
+      wrapS: this.gl.CLAMP_TO_EDGE,
+      wrapT: this.gl.CLAMP_TO_EDGE
+    });
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -175,14 +181,20 @@ class Media {
           vec4 color = texture2D(tMap, uv);
           
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
-          if(d > 0.0) {
+          
+          // Smooth anti-aliased edges
+          float smoothWidth = 0.01;
+          float alpha = 1.0 - smoothstep(-smoothWidth, smoothWidth, d);
+          
+          if(alpha < 0.01) {
             discard;
           }
+          
           // Vignette effect
           float dist = distance(vUv, vec2(0.5));
           float vignette = smoothstep(0.5, 0.9, dist);
           color.rgb *= mix(1.0, 0.7, vignette); // softer vignette
-          gl_FragColor = vec4(color.rgb, uAlpha);
+          gl_FragColor = vec4(color.rgb, uAlpha * alpha);
         }
       `,
       uniforms: {
@@ -201,7 +213,11 @@ class Media {
     img.src = this.image;
     img.onload = () => {
       texture.image = img;
+      texture.needsUpdate = true; // Ensure OGL updates the texture
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+    };
+    img.onerror = (e) => {
+      console.error('Failed to load gallery image:', this.image, e);
     };
   }
   createMesh() {
@@ -377,7 +393,7 @@ class App {
       { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: "Palm Trees" },
     ];
     const galleryItems = items && items.length ? items : defaultItems;
-    this.mediasImages = galleryItems.concat(galleryItems);
+    this.mediasImages = galleryItems;
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
         geometry: this.planeGeometry,
@@ -524,7 +540,7 @@ export default function CircularGallery({
   items,
   bend = 0,
   textColor = "#ffffff",
-  borderRadius = 0.05,
+  borderRadius = 0.12,
   font = "bold 30px Figtree",
   scrollSpeed = 2,
   scrollEase = 0.05,
@@ -586,8 +602,25 @@ export default function CircularGallery({
           let nextIndex = currentIndex + 1;
           if (nextIndex < 0) nextIndex += app.realLength;
           if (nextIndex >= app.realLength) nextIndex -= app.realLength;
-          app.scroll.target = nextIndex * width;
-          app.onCheck();
+
+          // Animate scroll.target smoothly to nextIndex * width
+          const start = app.scroll.target;
+          const end = nextIndex * width;
+          const duration = 800; // ms (longer than 700ms CSS transition)
+          const startTime = performance.now();
+
+          function animateScroll(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            app.scroll.target = start + (end - start) * t;
+            if (t < 1) {
+              window.requestAnimationFrame(animateScroll);
+            } else {
+              app.scroll.target = end;
+              app.onCheck();
+            }
+          }
+          window.requestAnimationFrame(animateScroll);
         }
       }, 5000);
     }

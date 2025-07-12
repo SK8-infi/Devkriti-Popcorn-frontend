@@ -1,0 +1,20 @@
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.loading-spinner {
+  border-radius: 50%;
+  height: 3.5rem;
+  width: 3.5rem;
+  border: 2px solid #333;
+  border-top: 2px solid #f3ce13;
+  animation: loading-spin 1s linear infinite;
+}
+
+@keyframes loading-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

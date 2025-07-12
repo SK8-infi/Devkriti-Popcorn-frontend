@@ -1,0 +1,119 @@
+.mybookings-container {
+  position: relative;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 7.5rem;
+  min-height: 80vh;
+}
+@media (min-width: 768px) {
+  .mybookings-container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-top: 10rem;
+  }
+}
+@media (min-width: 1024px) {
+  .mybookings-container {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.mybookings-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.mybookings-card {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(243, 206, 19, 0.08);
+  border: 1px solid rgba(243, 206, 19, 0.2);
+  border-radius: 0.75rem;
+  max-width: 48rem;
+  padding: 0.5rem;
+}
+@media (min-width: 768px) {
+  .mybookings-card {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.mybookings-poster {
+  border-radius: 0.5rem;
+  object-fit: cover;
+  object-position: bottom;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-width: 11rem;
+}
+@media (min-width: 768px) {
+  .mybookings-poster {
+    max-width: 11rem;
+  }
+}
+
+.mybookings-details {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.mybookings-movie-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.mybookings-meta {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.mybookings-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+@media (min-width: 768px) {
+  .mybookings-side {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.mybookings-amount {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.mybookings-pay-btn {
+  background: #f3ce13;
+  color: #fff;
+  padding: 0.375rem 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mybookings-pay-btn:hover {
+  background: #bfa20f;
+}
+
+.mybookings-tickets {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.mybookings-tickets span {
+  color: #9ca3af;
+} 

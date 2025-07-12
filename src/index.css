@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
+
+@font-face {
+  font-family: 'ALTA';
+  src: local('ALTA'), local('Alta'), url('/fonts/ALTA.woff2') format('woff2'), url('/fonts/ALTA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.alta-font {
+  font-family: 'ALTA', Arial, sans-serif !important;
+}
+
+@font-face {
+  font-family: 'Glacial Indifference';
+  src: local('Glacial Indifference'), url('/fonts/GlacialIndifference-Regular.woff2') format('woff2'), url('/fonts/GlacialIndifference-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Glacial Indifference', Arial, sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #787777 #1e1e1e;
+}
+
+body{
+  color: white;
+  background-color: #000000;
+}
+
+.no-scrollbar{
+  scrollbar-width: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.landing-bg {
+  /* background-image: url('/backgroundImage.jpg'); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.navbar, .navbar-menu, .navbar-link, .navbar-login-btn {
+  font-family: 'Gotham', Arial, sans-serif !important;
+  text-transform: uppercase;
+}
+
+/* HeroSection font */
+.landing-bg, .hero-vignette-bg, .hero-info-block {
+  font-family: 'Belleza', Arial, sans-serif !important;
+}
+
+/* Main movie title override (MovieDetails) */
+.text-4xl.font-semibold.max-w-96.text-balance[style] {
+  font-family: 'Times New Roman', Times, serif !important;
+}
+
+:root {
+  --color-primary: #F84565;
+  --color-primary-dull: #D63854;
+}

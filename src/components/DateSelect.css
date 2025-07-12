@@ -1,0 +1,84 @@
+.date-select-container {
+  padding-top: 7.5rem;
+}
+
+.date-select-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  position: relative;
+  padding: 2rem;
+  background: rgba(243, 206, 19, 0.1);
+  border: 1px solid rgba(243, 206, 19, 0.2);
+  border-radius: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+@media (min-width: 768px) {
+  .date-select-box {
+    flex-direction: row;
+  }
+}
+
+.date-select-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.date-select-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+  margin-top: 1.25rem;
+}
+
+.date-select-days {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .date-select-days {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 32rem;
+    gap: 1rem;
+  }
+}
+
+.date-select-day-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 3.5rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  border: 1px solid rgba(243, 206, 19, 0.7);
+  background: transparent;
+  color: #fff;
+  transition: background 0.2s, color 0.2s;
+}
+.date-select-day-btn.selected {
+  background: #f3ce13;
+  color: #fff;
+  border: none;
+}
+
+.date-select-book-btn {
+  background: #f3ce13;
+  color: #fff;
+  padding: 0.5rem 2rem;
+  margin-top: 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.date-select-book-btn:hover {
+  background: #bfa20f;
+} 

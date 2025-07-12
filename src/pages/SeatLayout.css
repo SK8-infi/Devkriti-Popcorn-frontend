@@ -1,0 +1,11 @@
+.selected-yellow {
+  color: #FFD600 !important;
+  background: none !important;
+  border-color: transparent !important;
+}
+
+.seat-selected-yellow {
+  border-color: #FFD600 !important;
+  color: #FFD600 !important;
+  background: none !important;
+} 

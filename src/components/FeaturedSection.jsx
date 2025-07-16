@@ -24,7 +24,7 @@ const FeaturedSection = () => {
         </div>
         <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%' }}>
           {shows.map((show)=>(
-              <MovieCard key={show._id} movie={show}/>
+              <MovieCard key={show._id} movie={show.movie}/>
           ))}
         </div>
       </div>

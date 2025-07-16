@@ -18,6 +18,8 @@ import UpdateLayout from './pages/admin/UpdateLayout'
 import { useAppContext } from './context/AppContext'
 import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading'
+import Theatres from './pages/Theatres';
+import Theatre from './pages/Theatre';
 
 const App = () => {
 
@@ -38,9 +40,10 @@ const App = () => {
         <Route path='/movies/:id/:date' element={<SeatLayout/>} />
         <Route path='/my-bookings' element={<MyBookings/>} />
         <Route path='/loading/:nextUrl' element={<Loading/>} />
-
         <Route path='/favorite' element={<Favorite/>} />
         <Route path='/notifications' element={<Notifications/>} />
+        <Route path='/theatres' element={<Theatres/>} />
+        <Route path='/theatres/:theatreId' element={<Theatre/>} />
         <Route path='/admin/*' element={user ? <Layout/> : (
           <div className='min-h-screen flex justify-center items-center'>
             <SignIn fallbackRedirectUrl={'/admin'} />

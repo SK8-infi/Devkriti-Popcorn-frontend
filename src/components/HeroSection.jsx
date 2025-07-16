@@ -3,7 +3,7 @@ import { ClockIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import CircularGallery from './CircularGallery';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/movies/latest';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
 
 function getImageUrl(path) {
@@ -23,7 +23,7 @@ const HeroSection = () => {
 
   useEffect(() => {
     // Fetch data from backend
-    fetch(API_URL)
+    fetch(`${API_URL}/api/movies/latest`)
       .then(res => res.json())
       .then(data => {
         if (data.movies) {
@@ -34,6 +34,8 @@ const HeroSection = () => {
               text: movie.title,
               release_date: movie.release_date,
               overview: movie.overview,
+              runtime: movie.runtime, // new
+              genres: movie.genres,   // new
             }))
           );
         }
@@ -131,11 +133,16 @@ const HeroSection = () => {
             {galleryItems[activeIndex].release_date ? new Date(galleryItems[activeIndex].release_date).getFullYear() : ''}
           </span>
           <span style={{ color: '#aaa' }}>|</span>
-          <span>Movie</span>
+          {/* Genres */}
+          <span>
+            {galleryItems[activeIndex].genres && galleryItems[activeIndex].genres.length > 0
+              ? galleryItems[activeIndex].genres.map(g => g.name === 'Science Fiction' ? 'Sci-Fi' : g.name).join(', ')
+              : 'Movie'}
+          </span>
           <span style={{ color: '#aaa' }}>|</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <ClockIcon size={16} style={{ marginRight: 4, position: 'relative', top: 1 }} />
-            ~2h
+            {galleryItems[activeIndex].runtime ? `${Math.floor(galleryItems[activeIndex].runtime / 60)}h ${galleryItems[activeIndex].runtime % 60}m` : '~2h'}
           </span>
         </div>
         <div style={{ fontSize: '1.08rem', opacity: 0.92, lineHeight: 1.5 }}>

@@ -12,8 +12,8 @@ const Movies = () => {
 
       <h1 className='movies-title'>Now Showing</h1>
       <div className='movies-list'>
-        {shows.map((movie)=> (
-          <MovieCard movie={movie} key={movie._id}/>
+        {shows.map((show)=> (
+          <MovieCard movie={show.movie} key={show._id}/>
         ))}
       </div>
     </div>

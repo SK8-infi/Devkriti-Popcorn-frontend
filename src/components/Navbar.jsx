@@ -42,7 +42,7 @@ const Navbar = () => {
             <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/movies' className='navbar-link'>Movies</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Theaters</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
             <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Contact Us</Link>
@@ -59,7 +59,7 @@ const Navbar = () => {
               <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/movies' className='navbar-link'>Movies</Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Theaters</Link>
+              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
               <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Contact Us</Link>

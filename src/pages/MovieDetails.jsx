@@ -120,7 +120,7 @@ const MovieDetails = () => {
       {shows && shows.length > 0 ? (
         <div className='flex flex-wrap max-sm:justify-center gap-8'>
             {shows.filter(movie => movie._id !== id).slice(0,4).map((movie, index)=> (
-              <MovieCard key={index} movie={movie}/>
+              <MovieCard key={index} movie={movie.movie}/>
             ))}
         </div>
       ) : (

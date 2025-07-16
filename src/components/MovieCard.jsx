@@ -19,7 +19,7 @@ const MovieCard = ({movie}) => {
        <p className='movie-card-title' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</p>
 
        <p className='movie-card-details'>
-        {new Date(movie.release_date).getFullYear()} • {movie.genres.slice(0,2).map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(" | ")} • {timeFormat(movie.runtime)}
+        {new Date(movie.release_date).getFullYear()} • {(movie.genres && Array.isArray(movie.genres) ? movie.genres.slice(0,2).map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(" | ") : 'No Genre')} • {timeFormat(movie.runtime)}
        </p>
 
        <div className='movie-card-footer'>
@@ -27,7 +27,7 @@ const MovieCard = ({movie}) => {
 
         <p className='movie-card-rating'>
             <StarIcon className="star-icon"/>
-            {movie.vote_average.toFixed(1)}
+            {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : 'N/A'}
         </p>
        </div>
 

@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const AddShows = () => {
 
-    const {axios, getToken, user, image_base_url, theatre} = useAppContext()
+    const {axios, getToken, user, image_base_url, theatre, theatreId} = useAppContext()
 
     const currency = import.meta.env.VITE_CURRENCY
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -79,7 +79,8 @@ const AddShows = () => {
             const payload = {
                 movieId: selectedMovie,
                 showsInput,
-                showPrice: Number(showPrice)
+                showPrice: Number(showPrice),
+                theatreId: theatreId || theatre // fallback if theatreId is not in context
             }
 
             const { data } = await axios.post('/api/show/add', payload, {headers: { Authorization: `Bearer ${await getToken()}` }})

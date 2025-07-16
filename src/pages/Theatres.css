@@ -1,0 +1,219 @@
+.theatres-container {
+  max-width: 900px;
+  margin: 48px auto 0 auto;
+  padding: 32px 16px 40px 16px;
+  background: linear-gradient(135deg, #181818 80%, #232323 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.theatres-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: #ffd700;
+  letter-spacing: -1.5px;
+  text-align: center;
+  text-shadow: 0 2px 12px #000a;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ffd70033;
+}
+
+.theatres-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+}
+
+.theatre-card {
+  background: linear-gradient(90deg, #232323 80%, #232323cc 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  padding: 22px 36px;
+  min-width: 260px;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  border: 1.5px solid #ffd70022;
+  position: relative;
+}
+
+.theatre-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 16px #ffd70033;
+  background: linear-gradient(90deg, #232323 60%, #2c2c2c 100%);
+  border-color: #ffd70055;
+}
+
+.theatre-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+  text-shadow: 0 1px 6px #0007;
+  margin-right: 18px;
+}
+
+.theatre-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.theatre-admin {
+  font-size: 1.08rem;
+  color: #ffd700;
+  background: #232323;
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 1px 4px #0002;
+}
+
+.theatres-loading, .theatres-error {
+  color: #fff;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 80px;
+} 
+
+.theatre-detail-container {
+  max-width: 600px;
+  margin: 48px auto 0 auto;
+  padding: 36px 24px 40px 24px;
+  background: linear-gradient(135deg, #181818 80%, #232323 100%);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  min-height: 480px;
+}
+
+.theatre-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+
+.theatre-detail-image {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 12px #0006;
+  border: 3px solid #ffd70055;
+  background: #232323;
+}
+
+.theatre-detail-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.theatre-detail-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffd700;
+  margin: 0 0 6px 0;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 12px #000a;
+}
+
+.theatre-detail-admin {
+  font-size: 1.1rem;
+  color: #fff;
+  background: #232323;
+  padding: 4px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 1px 4px #0002;
+  display: inline-block;
+}
+
+.theatre-detail-layout-block {
+  margin-top: 10px;
+  margin-bottom: 36px;
+}
+
+.theatre-detail-layout-label {
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.theatre-detail-layout-grid {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #191919;
+  border-radius: 8px;
+  padding: 12px 0 12px 0;
+  box-shadow: 0 1px 8px #0002;
+  align-items: center;
+}
+
+.theatre-detail-layout-row {
+  display: flex;
+  gap: 6px;
+}
+
+.theatre-detail-layout-seat {
+  font-size: 1.35rem;
+  margin: 0 3px;
+  filter: drop-shadow(0 1px 2px #0006);
+  transition: transform 0.12s;
+}
+
+.theatre-detail-layout-seat-empty {
+  opacity: 0.18;
+}
+
+.theatre-detail-shows-block {
+  margin-top: 18px;
+}
+
+.theatre-detail-shows-title {
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 1.18rem;
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+}
+
+.theatre-detail-no-shows {
+  color: #bbb;
+  font-size: 1.08rem;
+  margin-top: 8px;
+}
+
+.theatre-detail-shows-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.theatre-detail-show-item {
+  margin-bottom: 12px;
+  background: #232323;
+  border-radius: 8px;
+  padding: 12px 20px;
+  color: #fff;
+  box-shadow: 0 1px 6px #0002;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.08rem;
+}
+
+.theatre-detail-show-time {
+  color: #ffd700;
+  margin-left: 12px;
+  font-size: 0.98rem;
+} 

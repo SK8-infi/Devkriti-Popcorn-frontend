@@ -13,7 +13,8 @@ export const AppProvider = ({ children })=>{
     const [isAdmin, setIsAdmin] = useState(false)
     const [shows, setShows] = useState([])
     const [favoriteMovies, setFavoriteMovies] = useState([])
-    const [theatre, setTheatre] = useState(undefined) // undefined = loading, null = not set, string = set
+    const [theatre, setTheatre] = useState(undefined); // name
+    const [theatreId, setTheatreId] = useState(undefined); // _id
     const [city, setCity] = useState(undefined) // undefined = loading, null = not set, string = set
 
     const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
@@ -86,13 +87,16 @@ export const AppProvider = ({ children })=>{
                     const { data } = await axios.get('/api/admin/my-theatre', { headers: { Authorization: `Bearer ${await getToken()}` } });
                     if (data.success && data.theatre) {
                         setTheatre(data.theatre.name || null);
+                        setTheatreId(data.theatre._id || null);
                         setCity(data.city || null);
                     } else {
                         setTheatre(null);
+                        setTheatreId(null);
                         setCity(null);
                     }
                 } catch (error) {
                     setTheatre(null);
+                    setTheatreId(null);
                     setCity(null);
                 }
             }
@@ -106,14 +110,17 @@ export const AppProvider = ({ children })=>{
             const { data } = await axios.get('/api/admin/my-theatre', { headers: { Authorization: `Bearer ${await getToken()}` } })
             if (data.success && data.theatre) {
                 setTheatre(data.theatre.name || null)
+                setTheatreId(data.theatre._id || null)
                 setCity(data.city || null)
             } else {
                 setTheatre(null)
+                setTheatreId(null)
                 setCity(null)
             }
             return data;
         } catch (error) {
             setTheatre(null)
+            setTheatreId(null)
             setCity(null)
             console.error('Failed to fetch theatre from backend', error)
         }
@@ -127,6 +134,7 @@ export const AppProvider = ({ children })=>{
                 const theatreRes = await axios.get('/api/admin/my-theatre', { headers: { Authorization: `Bearer ${await getToken()}` } });
                 if (theatreRes.data && theatreRes.data.success) {
                     setTheatre(theatreRes.data.theatre?.name || null);
+                    setTheatreId(theatreRes.data.theatre?._id || null);
                     setCity(theatreRes.data.city || null);
                 }
             }
@@ -142,7 +150,7 @@ export const AppProvider = ({ children })=>{
         fetchIsAdmin,
         user, getToken, navigate, isAdmin, shows, 
         favoriteMovies, fetchFavoriteMovies, image_base_url,
-        theatre, setAdminTheatre,
+        theatre, theatreId, setAdminTheatre,
         city, setCity,
         fetchTheatreFromBackend
     }

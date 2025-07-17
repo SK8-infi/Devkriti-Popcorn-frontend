@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { MenuIcon, SearchIcon, TicketPlus, XIcon, MapPin, Heart } from 'lucide-react'
@@ -13,6 +13,8 @@ import robot from '../assets/robot.svg';
 import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
 
+const allowedCities = ["Delhi", "Mumbai", "Gwalior", "Indore", "Pune", "Chennai"];
+
 const Navbar = () => {
 
  const [isOpen, setIsOpen] = useState(false)
@@ -25,6 +27,68 @@ const Navbar = () => {
 
  const {favoriteMovies} = useAppContext()
  const [menuOpen, setMenuOpen] = useState(false);
+
+ // Location modal state
+ const [showLocationModal, setShowLocationModal] = useState(false);
+ const [userCity, setUserCity] = useState("");
+ const [selectedCity, setSelectedCity] = useState("");
+ const [loadingCity, setLoadingCity] = useState(false);
+ const [savingCity, setSavingCity] = useState(false);
+ const [cityError, setCityError] = useState("");
+
+ // Fetch user's city from backend
+ useEffect(() => {
+   if (user) {
+     setLoadingCity(true);
+     fetch(`/api/user/by-id/${user.id}`)
+       .then(res => res.json())
+       .then(data => {
+         if (data.success && data.user && data.user.city) {
+           setUserCity(data.user.city);
+           setSelectedCity(data.user.city);
+         } else {
+           setUserCity("");
+           setSelectedCity("");
+         }
+         setLoadingCity(false);
+       })
+       .catch(() => {
+         setLoadingCity(false);
+       });
+   }
+ }, [user]);
+
+ // Handle city save
+ const handleSaveCity = () => {
+   if (!selectedCity) {
+     setCityError("Please select a city.");
+     return;
+   }
+   setSavingCity(true);
+   fetch('/api/user/update-city', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify({ city: selectedCity }),
+     credentials: 'include',
+   })
+     .then(res => res.json())
+     .then(data => {
+       if (data.success) {
+         setUserCity(selectedCity);
+         setShowLocationModal(false);
+         setCityError("");
+       } else {
+         setCityError(data.message || "Failed to update city.");
+       }
+       setSavingCity(false);
+     })
+     .catch(() => {
+       setCityError("Failed to update city.");
+       setSavingCity(false);
+     });
+ };
 
   return (
     <div className='navbar'>
@@ -67,8 +131,9 @@ const Navbar = () => {
           </div>
         )}
         <div className='navbar-icons'>
-          <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Select Location'>
+          <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Select Location' onClick={() => setShowLocationModal(true)}>
             <MapPin size={20}/>
+            {userCity && <span style={{ marginLeft: 6, fontSize: 14 }}>{userCity}</span>}
           </motion.button>
           <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Search' onClick={() => {
             setShowSearch((prev) => !prev);
@@ -98,6 +163,31 @@ const Navbar = () => {
           }
         </div>
       </div>
+      {/* Location Modal */}
+      {showLocationModal && (
+        <div className="location-modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.3)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="location-modal" style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 320, boxShadow: '0 2px 16px rgba(0,0,0,0.15)', position: 'relative' }}>
+            <button onClick={() => setShowLocationModal(false)} style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}><XIcon /></button>
+            <h2 style={{ marginBottom: 16 }}>Select Your City</h2>
+            {loadingCity ? (
+              <div>Loading...</div>
+            ) : (
+              <>
+                <select value={selectedCity} onChange={e => { setSelectedCity(e.target.value); setCityError(""); }} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #ccc', fontSize: 16, marginBottom: 16 }}>
+                  <option value="">-- Select City --</option>
+                  {allowedCities.map(city => (
+                    <option key={city} value={city}>{city}</option>
+                  ))}
+                </select>
+                {cityError && <div style={{ color: 'red', marginBottom: 8 }}>{cityError}</div>}
+                <button onClick={handleSaveCity} disabled={savingCity} style={{ background: '#fbbf24', color: '#222', border: 'none', borderRadius: 6, padding: '8px 20px', fontSize: 16, cursor: 'pointer', fontWeight: 600 }}>
+                  {savingCity ? 'Saving...' : 'Save'}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       {/* Add Dock component for Notification and Ask AI */}
       <Dock
         items={[

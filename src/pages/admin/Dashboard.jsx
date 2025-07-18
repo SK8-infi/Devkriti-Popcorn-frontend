@@ -85,15 +85,15 @@ const Dashboard = () => {
           )}
         </div>
         <div className="flex flex-wrap gap-4 items-center justify-center w-full max-w-4xl scale-90">
-          {dashboardCards.map((card, index) => (
+                    {dashboardCards.map((card, index) => (
             <div key={index} className="flex items-center gap-2 px-4 py-3 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md backdrop-blur-md min-w-[135px] max-w-xs w-full transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04] cursor-pointer">
               <card.icon className="w-6 h-6 text-primary flex-shrink-0" />
               <div className="flex flex-col flex-1">
                 <span className="text-xs text-gray-200 font-medium uppercase tracking-wide">{card.title}</span>
                 <span className="text-xl font-bold text-white leading-tight">{card.value}</span>
-              </div>
-            </div>
-          ))}
+                            </div>
+                        </div>
+                    ))}
         </div>
       </div>
       <p className="mt-10 text-lg font-medium">Active Shows</p>
@@ -121,7 +121,7 @@ const Dashboard = () => {
                   {movie.genres ? movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ") : ''}
                   {movie.release_date ? ` • ${movie.release_date.split("-")[0]}` : ''}
                 </p>
-              </div>
+                </div>
             </div>
           </div>
         ))}
@@ -155,9 +155,9 @@ const Dashboard = () => {
                   {selectedMovie.movie.runtime ? `${selectedMovie.movie.runtime} min • ` : ''}
                   {selectedMovie.movie.genres ? selectedMovie.movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ") : ''}
                   {selectedMovie.movie.release_date ? ` • ${selectedMovie.movie.release_date.split("-")[0]}` : ''}
-                </p>
-              </div>
-            </div>
+                            </p>
+                        </div>
+                    </div>
             {/* Showtimes List */}
             <div className="w-full mt-6">
               <h3 className="text-lg font-semibold text-white mb-2">Showtimes</h3>

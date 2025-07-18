@@ -108,8 +108,7 @@ const AddShows = () => {
 
   return nowPlayingMovies.length > 0 ? (
     <>
-      <Title text1="Add" text2="Shows" />
-      <p className="mt-10 text-lg font-medium">Now Playing Movies</p>
+      <p className="mt-4 text-lg font-medium">Now Playing Movies</p>
       <div className="overflow-x-auto pb-4">
         <div className="group flex flex-wrap gap-4 mt-4 w-max">
             {nowPlayingMovies.map((movie) =>(
@@ -136,25 +135,27 @@ const AddShows = () => {
         </div>
       </div>
 
-       {/* Show Price Input */}
-       <div className="mt-8">
-            <label className="block text-sm font-medium mb-2">Show Price</label>
-            <div className="inline-flex items-center gap-2 border border-gray-600 px-3 py-2 rounded-md">
-                <p className="text-gray-400 text-sm">{currency}</p>
-                <input min={0} type="number" value={showPrice} onChange={(e) => setShowPrice(e.target.value)} placeholder="Enter show price" className="outline-none" />
-            </div>
+      {/* Show Price & Date/Time Selection Side by Side */}
+      <div className="flex flex-col md:flex-row gap-8 mt-8 w-full">
+        {/* Show Price Input */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <label className="block text-sm font-semibold mb-3 text-white">Show Price</label>
+          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
+            <p className="text-white font-bold text-base">{currency}</p>
+            <input min={0} type="number" value={showPrice} onChange={(e) => setShowPrice(e.target.value)} placeholder="Enter show price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+          </div>
         </div>
-
         {/* Date & Time Selection */}
-        <div className="mt-6">
-            <label className="block text-sm font-medium mb-2">Select Date and Time</label>
-            <div className="inline-flex gap-5 border border-gray-600 p-1 pl-3 rounded-lg">
-                <input type="datetime-local" value={dateTimeInput} onChange={(e) => setDateTimeInput(e.target.value)} className="outline-none rounded-md" />
-                <button onClick={handleDateTimeAdd} className="bg-primary/80 text-white px-3 py-2 text-sm rounded-lg hover:bg-primary cursor-pointer" >
-                    Add Time
-                </button>
-            </div>
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <label className="block text-sm font-semibold mb-3 text-white">Select Date and Time</label>
+          <div className="flex gap-3 border border-primary/30 px-4 py-3 rounded-lg w-full">
+            <input type="datetime-local" value={dateTimeInput} onChange={(e) => setDateTimeInput(e.target.value)} className="outline-none rounded-md w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+            <button onClick={handleDateTimeAdd} className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg shadow hover:bg-primary/80 transition-all cursor-pointer font-semibold" >
+              Add Time
+            </button>
+          </div>
         </div>
+      </div>
 
        {/* Display Selected Times */}
         {Object.keys(dateTimeSelection).length > 0 && (
@@ -177,9 +178,16 @@ const AddShows = () => {
             </ul>
             </div>
        )}
-       <button onClick={handleSubmit} disabled={addingShow} className="bg-primary text-white px-8 py-2 mt-6 rounded hover:bg-primary/90 transition-all cursor-pointer" >
-            Add Show
+      <div className="flex justify-start mt-4">
+        <button
+          onClick={handleSubmit}
+          disabled={addingShow}
+          className="px-8 py-3 bg-white/20 text-white rounded-xl font-semibold shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/40 hover:text-primary hover:scale-105 focus:outline-none border-none"
+          style={{ border: 'none' }}
+        >
+          {addingShow ? 'Adding...' : 'Add Show'}
         </button>
+      </div>
     </>
   ) : <Loading />
 }

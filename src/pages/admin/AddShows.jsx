@@ -64,8 +64,8 @@ const AddShows = () => {
         try {
             setAddingShow(true)
 
-            if (!theatre) {
-                toast.error('Set your theatre name first!');
+            if (!theatreId) {
+                toast.error('Theatre ID not found! Please set your theatre first.');
                 setAddingShow(false);
                 return;
             }
@@ -80,7 +80,7 @@ const AddShows = () => {
                 movieId: selectedMovie,
                 showsInput,
                 showPrice: Number(showPrice),
-                theatreId: theatreId || theatre // fallback if theatreId is not in context
+                theatreId: theatreId // Only use ObjectId
             }
 
             const { data } = await axios.post('/api/show/add', payload, {headers: { Authorization: `Bearer ${await getToken()}` }})

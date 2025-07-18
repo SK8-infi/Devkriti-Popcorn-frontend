@@ -17,6 +17,9 @@ const SeatLayout = () => {
   const [selectedTime, setSelectedTime] = useState(null)
   const [show, setShow] = useState(null)
   const [occupiedSeats, setOccupiedSeats] = useState([])
+  const [theatreLayout, setTheatreLayout] = useState(null)
+  const [theatreName, setTheatreName] = useState("")
+  const [theatreCity, setTheatreCity] = useState("")
 
   const navigate = useNavigate()
 
@@ -103,47 +106,153 @@ const SeatLayout = () => {
     }
   },[selectedTime])
 
+  // Fetch theatre layout when show and selectedTime are set
+  useEffect(() => {
+    if (show && selectedTime) {
+      const theatreId = selectedTime.theatre;
+      if (!theatreId) return;
+      axios.get(`/api/admin/theatre/${theatreId}`)
+        .then(res => {
+          if (res.data.success && res.data.theatre) {
+            setTheatreLayout(res.data.theatre.layout);
+            setTheatreName(res.data.theatre.name);
+            setTheatreCity(res.data.theatre.city);
+            console.log('Loaded layout:', res.data.theatre.layout);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [show, selectedTime, axios]);
+
+  // Render dynamic seats
+  const renderDynamicSeats = (layout) => (
+    <div className='flex flex-col items-center mt-10 text-xs text-gray-300'>
+      <div className='flex flex-col gap-2'>
+        {layout.map((row, rowIdx) => (
+          <div key={rowIdx} className='flex gap-2 mb-2'>
+            {row.map((cell, colIdx) => {
+              const seatId = `${String.fromCharCode(65 + rowIdx)}${colIdx + 1}`;
+              let seatClass = 'h-8 w-8 rounded border border-primary/60 cursor-pointer';
+              if (cell === 2) seatClass += ' bg-yellow-300 text-black font-bold'; // VIP
+              if (cell === 0) seatClass += ' opacity-30 cursor-not-allowed'; // Unavailable
+              if (selectedSeats.includes(seatId)) seatClass += ' seat-selected-yellow';
+              if (occupiedSeats.includes(seatId)) seatClass += ' opacity-50';
+              return (
+                <button
+                  key={seatId}
+                  onClick={() => cell !== 0 && !occupiedSeats.includes(seatId) ? handleSeatClick(seatId) : null}
+                  className={seatClass}
+                  disabled={cell === 0 || occupiedSeats.includes(seatId)}
+                  title={cell === 2 ? 'VIP' : cell === 0 ? 'Unavailable' : 'Regular'}
+                >
+                  {seatId}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Debug log before rendering
+  if (theatreLayout) {
+    console.log('Rendering layout:', theatreLayout);
+  }
+
+  // Calculate seat price tally (hardcoded: base 100, VIP 150)
+  let normalCount = 0, vipCount = 0;
+  let seatPrice = 100;
+  let vipSeatPrice = 150;
+  let totalPrice = 0;
+  if (theatreLayout && selectedSeats.length > 0) {
+    selectedSeats.forEach(seatId => {
+      // Parse seatId like 'A1' to row/col
+      const rowIdx = seatId.charCodeAt(0) - 65;
+      const colIdx = parseInt(seatId.slice(1), 10) - 1;
+      const seatType = theatreLayout?.[rowIdx]?.[colIdx];
+      if (seatType === 2) {
+        vipCount++;
+        totalPrice += vipSeatPrice;
+      } else {
+        normalCount++;
+        totalPrice += seatPrice;
+      }
+    });
+  }
+
   return show ? (
-    <div className='flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50'>
+    <div className='flex flex-col md:flex-row gap-8 px-2 md:px-10 lg:px-32 py-10 md:pt-20 bg-gradient-to-br from-[#181818] to-[#232323] min-h-[90vh]'>
       {/* Available Timings */}
-      <div className='w-60 bg-primary/10 border border-primary/20 rounded-lg py-10 h-max md:sticky md:top-30'>
-        <p className='text-lg font-semibold px-6'>Available Timings</p>
-        <div className='mt-5 space-y-1'>
+      <div className='w-full md:w-72 bg-white/10 border border-primary/20 rounded-2xl py-8 h-max md:sticky md:top-28 shadow-lg flex flex-col items-center'>
+        <p className='text-xl font-bold px-6 mb-4 text-primary tracking-wide'>Available Timings</p>
+        <div className='flex flex-col gap-2 w-full px-4'>
           {show.dateTime[date].map((item)=>(
-            <div key={item.time} onClick={()=> setSelectedTime(item)} className={`flex items-center gap-2 px-6 py-2 w-max rounded-r-md cursor-pointer transition${selectedTime?.time === item.time ? ' selected-yellow' : ''}`}>
-              <ClockIcon className={`w-4 h-4${selectedTime?.time === item.time ? ' selected-yellow' : ''}`}/>
-              <p className={`text-sm${selectedTime?.time === item.time ? ' selected-yellow' : ''}`}>{isoTimeFormat(item.time)}</p>
-            </div>
+            <button
+              key={item.time}
+              onClick={()=> setSelectedTime(item)}
+              className={`flex items-center gap-2 px-5 py-3 w-full rounded-lg cursor-pointer transition font-semibold text-base border-2 ${selectedTime?.time === item.time ? 'bg-primary text-white border-primary scale-105 shadow' : 'bg-white/20 text-primary border-primary/20 hover:bg-primary/10'}`}
+              style={{outline: selectedTime?.time === item.time ? '2px solid #FFD600' : 'none'}}
+            >
+              <ClockIcon className={`w-5 h-5 ${selectedTime?.time === item.time ? 'text-yellow-300' : 'text-primary'}`}/>
+              <span>{isoTimeFormat(item.time)}</span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Seats Layout */}
-      <div className='relative flex-1 flex flex-col items-center max-md:mt-16'>
-          <h1 className='text-2xl font-semibold mb-4'>Select your seat</h1>
-          <img src={assets.screenImage} alt="screen" />
+      {/* Seats Layout Card */}
+      <div className='relative flex-1 flex flex-col items-center max-md:mt-10'>
+        <div className='w-full max-w-2xl bg-white/10 border border-primary/20 rounded-2xl shadow-2xl p-8 flex flex-col items-center'>
+          <h1 className='text-3xl font-bold mb-2 text-primary tracking-tight'>Select Your Seat</h1>
+          <div className='mb-2 text-lg font-semibold text-primary'>{theatreName} <span className='text-gray-400 text-base font-normal'>({theatreCity})</span></div>
+          <img src={assets.screenImage} alt="screen" className='w-2/3 max-w-xs my-2'/>
           <p className='text-gray-400 text-sm mb-6'>SCREEN SIDE</p>
 
-          <div className='flex flex-col items-center mt-10 text-xs text-gray-300'>
-              <div className='grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-2 mb-6'>
-                {groupRows[0].map(row => renderSeats(row))}
-              </div>
-
-               <div className='grid grid-cols-2 gap-11'>
-                {groupRows.slice(1).map((group, idx)=>(
-                  <div key={idx}>
-                    {group.map(row => renderSeats(row))}
-                  </div>
-                ))}
-              </div>
+          {/* Seat Legend */}
+          <div className='flex gap-6 mb-6 items-center'>
+            <div className='flex items-center gap-2'><span className='inline-block w-6 h-6 rounded bg-green-500 border-2 border-primary'></span> <span className='text-white text-sm'>Regular</span></div>
+            <div className='flex items-center gap-2'><span className='inline-block w-6 h-6 rounded bg-yellow-300 border-2 border-yellow-500'></span> <span className='text-yellow-200 text-sm'>VIP</span></div>
+            <div className='flex items-center gap-2'><span className='inline-block w-6 h-6 rounded bg-gray-400 border-2 border-gray-500 opacity-40'></span> <span className='text-gray-300 text-sm'>Unavailable</span></div>
+            <div className='flex items-center gap-2'><span className='inline-block w-6 h-6 rounded bg-primary border-2 border-yellow-300'></span> <span className='text-yellow-300 text-sm'>Selected</span></div>
           </div>
 
-          <button onClick={bookTickets} className='flex items-center gap-1 mt-20 px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer active:scale-95'>
-            Proceed to Checkout
-            <ArrowRightIcon strokeWidth={3} className="w-4 h-4"/>
-          </button>
+          {/* Seat price tally (sticky on desktop) */}
+          {selectedSeats.length > 0 && (
+            <div className='mb-6 text-base font-medium text-white bg-primary/90 px-8 py-4 rounded-xl flex flex-col items-center gap-1 shadow-lg md:sticky md:top-8 z-10'>
+              <div>Total: <span className='text-yellow-300 font-bold text-xl'>₹{totalPrice}</span></div>
+              <div className='text-xs text-gray-200'>
+                {normalCount > 0 && <span>{normalCount} x Regular (₹{seatPrice})</span>}
+                {normalCount > 0 && vipCount > 0 && <span> &nbsp;|&nbsp; </span>}
+                {vipCount > 0 && <span>{vipCount} x VIP (₹{vipSeatPrice})</span>}
+              </div>
+            </div>
+          )}
 
-         
+          {/* Show seat layout or prompt to select time */}
+          {!selectedTime ? (
+            <div className='mt-10 text-lg text-yellow-300 font-semibold'>Please select a time first</div>
+          ) : Array.isArray(theatreLayout) && theatreLayout.length > 0
+            ? renderDynamicSeats(theatreLayout)
+            : (
+              <div className='mt-10'>
+                Loading layout...
+                <pre style={{color: 'red', fontSize: 12}}>
+                  {JSON.stringify(theatreLayout, null, 2)}
+                </pre>
+              </div>
+            )
+          }
+
+          <button
+            onClick={bookTickets}
+            className='flex items-center gap-2 mt-10 px-12 py-4 text-lg bg-yellow-300 text-primary font-bold rounded-full shadow-lg hover:bg-yellow-400 transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2'
+            style={{minWidth: 200}}
+          >
+            Proceed to Checkout
+            <ArrowRightIcon strokeWidth={3} className="w-6 h-6"/>
+          </button>
+        </div>
       </div>
     </div>
   ) : (

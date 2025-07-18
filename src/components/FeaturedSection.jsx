@@ -10,14 +10,14 @@ const FeaturedSection = () => {
     const navigate = useNavigate()
     const {shows } = useAppContext()
 
-  const uniqueMovies = [];
-  const seenMovieIds = new Set();
-  shows.forEach(show => {
-    if (show.movie && !seenMovieIds.has(show.movie._id)) {
-      uniqueMovies.push(show.movie);
-      seenMovieIds.add(show.movie._id);
-    }
-  });
+    // Get unique movies from shows
+    const uniqueMoviesMap = new Map();
+    shows.forEach(show => {
+      if (show.movie && !uniqueMoviesMap.has(show.movie._id)) {
+        uniqueMoviesMap.set(show.movie._id, show);
+      }
+    });
+    const uniqueShows = Array.from(uniqueMoviesMap.values());
 
   return (
     <section className='featured-section' style={{ width: '100%', background: '#000', color: '#ffefcb', padding: '60px 0 40px 0', position: 'relative' }}>
@@ -30,8 +30,8 @@ const FeaturedSection = () => {
           </button>
         </div>
         <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%' }}>
-          {uniqueMovies.map((movie)=>(
-              <MovieCard key={movie._id} movie={movie}/>
+          {uniqueShows.map((show)=>(
+              <MovieCard key={show.movie._id} movie={show.movie}/>
           ))}
         </div>
       </div>

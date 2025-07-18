@@ -37,28 +37,30 @@ const ListShows = () => {
 
   return !loading ? (
     <>
-      <Title text1="List" text2="Shows" />
-      <div className="max-w-4xl mt-6 overflow-x-auto">
-         <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
-             <thead>
-                <tr className="bg-primary/20 text-left text-white">
-                    <th className="p-2 font-medium pl-5">Movie Name</th>
-                    <th className="p-2 font-medium">Show Time</th>
-                    <th className="p-2 font-medium">Total Bookings</th>
-                    <th className="p-2 font-medium">Earnings</th>
-                </tr>
+      {/* Removed section title, now handled by navbar */}
+      <div className="w-full mt-6 animate-fade-in-up">
+        <div className="w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-0 overflow-x-auto">
+          <table className="w-full border-collapse rounded-2xl overflow-hidden text-nowrap">
+            <thead>
+              <tr className="bg-white text-left text-black">
+                <th className="p-2 font-bold pl-5">Movie Name</th>
+                <th className="p-2 font-bold">Show Time</th>
+                <th className="p-2 font-bold">Total Bookings</th>
+                <th className="p-2 font-bold">Earnings</th>
+              </tr>
             </thead>
             <tbody className="text-sm font-light">
-                {shows.map((show, index) => (
-                    <tr key={index} className="border-b border-primary/10 bg-primary/5 even:bg-primary/10">
-                        <td className="p-2 min-w-45 pl-5 alta-font">{show.movie.title}</td>
-                        <td className="p-2">{dateFormat(show.showDateTime)}</td>
-                        <td className="p-2">{Object.keys(show.occupiedSeats).length}</td>
-                        <td className="p-2">{currency} {Object.keys(show.occupiedSeats).length * show.showPrice}</td>
-                    </tr>
-                ))}
+              {shows.map((show, index) => (
+                <tr key={index} className="border-b border-primary/10 bg-primary/5 even:bg-primary/10 transition-all duration-300 hover:bg-white/20 hover:scale-[1.01]">
+                  <td className="p-2 min-w-45 pl-5 alta-font">{show.movie.title}</td>
+                  <td className="p-2">{dateFormat(show.showDateTime)}</td>
+                  <td className="p-2">{Object.keys(show.occupiedSeats).length}</td>
+                  <td className="p-2">{currency} {Object.keys(show.occupiedSeats).length * show.showPrice}</td>
+                </tr>
+              ))}
             </tbody>
-         </table>
+          </table>
+        </div>
       </div>
     </>
   ) : <Loading />

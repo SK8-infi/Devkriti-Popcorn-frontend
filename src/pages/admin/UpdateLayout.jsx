@@ -109,10 +109,9 @@ const UpdateLayout = () => {
   if (loading || !layout) return <Loading />;
 
   return (
-    <div className="layout-container">
-      <Title text1="Update" text2="Theatre Layout" />
-
-      <div className="seat-type-selector">
+    <div className="layout-container bg-white/20 border border-white/30 rounded-2xl shadow-lg p-0 backdrop-blur-md animate-fade-in-up">
+      {/* Removed section title, now handled by navbar */}
+      <div className="seat-type-selector flex justify-center">
         <span>Select Seat Type:</span>
         <button
           className={`seat-btn ${selectedType === SEAT_AVAILABLE ? 'active available' : ''}`}
@@ -134,13 +133,13 @@ const UpdateLayout = () => {
         </button>
       </div>
 
-      <div className="legend">
+      <div className="legend flex justify-center">
         <span className="seat-cell available"></span> Regular
         <span className="seat-cell vip"></span> VIP
         <span className="seat-cell unavailable"></span> No Seat
       </div>
 
-      <div className="controls-container">
+      <div className="controls-container flex justify-center">
         <button onClick={addRow} className="control-btn add">+ Row</button>
         <button onClick={removeRow} className="control-btn remove">- Row</button>
         <button onClick={addCol} className="control-btn add">+ Col</button>
@@ -151,16 +150,16 @@ const UpdateLayout = () => {
         <table className="layout-table">
           <thead>
             <tr>
-              <th></th>
+              <th className="bg-white/20 text-black font-bold rounded-tl-xl backdrop-blur-md border border-white/30 px-4 py-2"> </th>
               {layout[0].map((_, colIdx) => (
-                <th key={colIdx}>{colIdx + 1}</th>
+                <th key={colIdx} className="bg-white/20 text-black font-bold backdrop-blur-md border border-white/30 px-4 py-2 rounded-md">{colIdx + 1}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {layout.map((row, rowIdx) => (
               <tr key={rowIdx}>
-                <th>{getRowLabel(rowIdx)}</th>
+                <th className="bg-white/20 text-black font-bold backdrop-blur-md border border-white/30 px-4 py-2 rounded-md">{getRowLabel(rowIdx)}</th>
                 {row.map((cell, colIdx) => (
                   <td
                     key={colIdx}
@@ -179,13 +178,16 @@ const UpdateLayout = () => {
         </table>
       </div>
 
-      <button
-        onClick={saveLayout}
-        className="save-btn"
-        disabled={saving}
-      >
-        {saving ? 'Saving...' : 'Save Layout'}
-      </button>
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={saveLayout}
+          className="px-8 py-3 bg-white text-black rounded-xl font-semibold shadow-md backdrop-blur-md transition-all duration-200 hover:bg-gray-100 hover:text-primary focus:outline-none border-none"
+          style={{ border: 'none' }}
+          disabled={saving}
+        >
+          {saving ? 'Saving...' : 'Save Layout'}
+        </button>
+      </div>
     </div>
   );
 };

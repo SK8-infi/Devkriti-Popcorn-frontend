@@ -1,4 +1,4 @@
-import logo from './popcorn.svg'
+import logo from './logo.png'
 import screenImage from './screenImage.svg'
 import profile from './profile.png'
 

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 @font-face {
   font-family: 'ALTA';
@@ -21,7 +22,7 @@
 }
 
 * {
-  font-family: 'Glacial Indifference', Arial, sans-serif;
+  font-family: 'Montserrat', Arial, sans-serif;
   scrollbar-width: thin;
   scrollbar-color: #787777 #1e1e1e;
 }
@@ -29,6 +30,7 @@
 body{
   color: white;
   background-color: #000000;
+  font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .no-scrollbar{
@@ -69,4 +71,58 @@ input::-webkit-inner-spin-button {
 :root {
   --color-primary: #F84565;
   --color-primary-dull: #D63854;
+}
+
+html, body, * {
+  font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+/* Movie Card Flip Effect */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.movie-flip-card {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%; /* 2:3 aspect ratio */
+}
+.movie-flip-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+.movie-flip-card:hover .movie-flip-inner {
+  transform: rotateY(180deg);
+}
+.movie-flip-front, .movie-flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.movie-flip-back {
+  background: #000;
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }

@@ -1,7 +1,8 @@
 .layout-container {
-  max-width: 800px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 24px;
+  padding: 24px 0;
   background: transparent;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.07);
@@ -18,31 +19,49 @@
 .seat-btn {
   padding: 6px 14px;
   border: 1.5px solid #ccc;
-  background-color: #eee;
+  background-color: rgba(255,255,255,0.18);
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: border 0.2s, box-shadow 0.2s;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .seat-btn.active {
   border: 2.5px solid #1976d2;
   box-shadow: 0 2px 8px #1976d220;
+  background: rgba(255,255,255,0.28);
 }
 
 .seat-btn.available.active {
   background-color: #4caf50;
-  color: white;
+  color: #fff;
+  border-color: #4caf50;
+}
+.seat-btn.available.active:hover {
+  background-color: #388e3c;
+  color: #fff;
 }
 
 .seat-btn.vip.active {
-  background-color: #ffeb3b;
-  color: black;
+  background-color: #FFD600;
+  color: #111;
+  border-color: #FFD600;
+}
+.seat-btn.vip.active:hover {
+  background-color: #FFD600;
+  color: #111;
 }
 
 .seat-btn.unavailable.active {
   background-color: #999;
-  color: white;
+  color: #fff;
+  border-color: #999;
+}
+.seat-btn.unavailable.active:hover {
+  background-color: #616161;
+  color: #fff;
 }
 
 .controls-container {
@@ -54,20 +73,40 @@
 
 .control-btn {
   padding: 6px 12px;
-  border: none;
+  border: 1.5px solid #ccc;
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
+  background: rgba(255,255,255,0.18);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .control-btn.add {
-  background-color: #2196f3;
-  color: white;
+  border-color: #2196f3;
+  background: #2196f3;
+  color: #fff;
+}
+.control-btn.add:hover {
+  background: #1769aa;
+  color: #fff;
 }
 
 .control-btn.remove {
-  background-color: #f44336;
-  color: white;
+  border-color: #f44336;
+  background: #f44336;
+  color: #fff;
+}
+.control-btn.remove:hover {
+  background: #b71c1c;
+  color: #fff;
+}
+
+.control-btn:hover, .seat-btn:hover {
+  background: rgba(255,255,255,0.32);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  color: #111;
 }
 
 .table-wrapper {
@@ -123,38 +162,44 @@
 
 .seat-cell {
   cursor: pointer;
-  transition: background-color 0.2s ease, box-shadow 0.2s, transform 0.15s;
+  transition: background-color 0.2s ease, box-shadow 0.2s, transform 0.15s, border 0.2s;
   border-radius: 8px;
-  box-shadow: 0 1px 4px rgb(255, 255, 255);
+  box-shadow: 0 1px 4px rgba(255,255,255,0.12);
   opacity: 0.9;
+  background: rgba(255,255,255,0.18);
+  border: 2px solid #fff;
+  backdrop-filter: blur(6px);
 }
 
 .seat-cell.available {
-  background-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.18);
+  border-color: #4caf50;
 }
 
 .seat-cell.available:hover {
-  background-color: #45a049;
+  background-color: rgba(76, 175, 80, 0.28);
   box-shadow: 0 0 0 2px #4caf5033;
   transform: scale(1.08);
 }
 
 .seat-cell.vip {
-  background-color: #ffeb3b;
+  background-color: rgba(255, 235, 59, 0.18);
+  border-color: #ffeb3b;
 }
 
 .seat-cell.vip:hover {
-  background-color: #fdd835;
+  background-color: rgba(255, 235, 59, 0.28);
   box-shadow: 0 0 0 2px #ffeb3b33;
   transform: scale(1.08);
 }
 
 .seat-cell.unavailable {
-  background-color: #ccc;
+  background-color: rgba(153, 153, 153, 0.18);
+  border-color: #999;
 }
 
 .seat-cell.unavailable:hover {
-  background-color: #bbb;
+  background-color: rgba(153, 153, 153, 0.28);
   box-shadow: 0 0 0 2px #bbb;
   transform: scale(1.08);
 }
@@ -162,12 +207,20 @@
 .save-btn {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #1976d2;
-  color: white;
-  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #1976d2;
+  border: 2px solid #1976d2;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.save-btn:hover {
+  background: rgba(25, 118, 210, 0.12);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(25,118,210,0.12);
 }
 
 .save-btn:disabled {
@@ -202,4 +255,18 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
+} 
+
+/* Legend seat-cell colors */
+.legend .seat-cell.available {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+.legend .seat-cell.vip {
+  background: #FFD600;
+  border-color: #FFD600;
+}
+.legend .seat-cell.unavailable {
+  background: #fff;
+  border-color: #fff;
 } 

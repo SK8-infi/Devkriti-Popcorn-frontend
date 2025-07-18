@@ -165,18 +165,55 @@ const Navbar = () => {
       </div>
       {/* Location Modal */}
       {showLocationModal && (
-        <div className="location-modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.3)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="location-modal" style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 320, boxShadow: '0 2px 16px rgba(0,0,0,0.15)', position: 'relative' }}>
-            <button onClick={() => setShowLocationModal(false)} style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}><XIcon /></button>
+        <div
+          className="location-modal-overlay"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.3)',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <div
+            className="location-modal"
+            style={{
+              background: '#000',
+              borderRadius: 12,
+              padding: 32,
+              minWidth: 320,
+              boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
+              position: 'relative'
+            }}
+          >
+            <button
+              onClick={() => setShowLocationModal(false)}
+              style={{
+                position: 'absolute',
+                top: 12,
+                right: 12,
+                background: '#000',
+                border: 'none',
+                fontSize: 20,
+                cursor: 'pointer'
+              }}
+            >
+              <XIcon />
+            </button>
             <h2 style={{ marginBottom: 16 }}>Select Your City</h2>
             {loadingCity ? (
               <div>Loading...</div>
             ) : (
               <>
-                <select value={selectedCity} onChange={e => { setSelectedCity(e.target.value); setCityError(""); }} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #ccc', fontSize: 16, marginBottom: 16 }}>
-                  <option value="">-- Select City --</option>
+                <select value={selectedCity} onChange={e => { setSelectedCity(e.target.value); setCityError(""); }} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #ccc', fontSize: 16, marginBottom: 16, background: '#000', color: '#fff' }}>
+                  <option value="" style={{ background: '#000', color: '#fff' }}>-- Select City --</option>
                   {allowedCities.map(city => (
-                    <option key={city} value={city}>{city}</option>
+                    <option key={city} value={city} style={{ background: '#000', color: '#fff' }}>{city}</option>
                   ))}
                 </select>
                 {cityError && <div style={{ color: 'red', marginBottom: 8 }}>{cityError}</div>}

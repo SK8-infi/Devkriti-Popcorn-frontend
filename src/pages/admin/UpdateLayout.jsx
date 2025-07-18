@@ -179,14 +179,14 @@ const UpdateLayout = () => {
       </div>
 
       <div className="flex justify-center mt-8">
-        <button
-          onClick={saveLayout}
+      <button
+        onClick={saveLayout}
           className="px-8 py-3 bg-white text-black rounded-xl font-semibold shadow-md backdrop-blur-md transition-all duration-200 hover:bg-gray-100 hover:text-primary focus:outline-none border-none"
           style={{ border: 'none' }}
-          disabled={saving}
-        >
-          {saving ? 'Saving...' : 'Save Layout'}
-        </button>
+        disabled={saving}
+      >
+        {saving ? 'Saving...' : 'Save Layout'}
+      </button>
       </div>
     </div>
   );

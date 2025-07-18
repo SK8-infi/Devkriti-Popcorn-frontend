@@ -102,6 +102,31 @@ const MovieDetails = () => {
         </div>
       </div>
 
+      {/* Upcoming Shows Section */}
+      <div className='mt-12'>
+        <h2 className='text-2xl font-semibold mb-4'>Upcoming Shows</h2>
+        {show.dateTime && Object.keys(show.dateTime).length > 0 ? (
+          <div className='flex flex-col gap-4'>
+            {Object.entries(show.dateTime).map(([date, times]) => (
+              <div key={date} className='border-b border-gray-700 pb-2'>
+                <div className='font-medium text-lg text-primary mb-1'>{date}</div>
+                <div className='flex flex-wrap gap-3'>
+                  {times.map(({ time, showId, theatreName, theatreCity }) => (
+                    <div key={showId} className='flex items-center gap-4 bg-primary/80 text-white px-4 py-2 rounded cursor-pointer text-sm'>
+                      <span>{new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className='font-semibold'>{theatreName}</span>
+                      <span className='text-yellow-200'>{theatreCity}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className='text-gray-400'>No upcoming shows for this movie.</div>
+        )}
+      </div>
+
       <p className='text-lg font-medium mt-20'>Your Favorite Cast</p>
       <div className='overflow-x-auto no-scrollbar mt-8 pb-4'>
         <div className='flex items-center gap-4 w-max px-4'>
@@ -119,9 +144,21 @@ const MovieDetails = () => {
       <p className='text-lg font-medium mt-20 mb-8'>You May Also Like</p>
       {shows && shows.length > 0 ? (
         <div className='flex flex-wrap max-sm:justify-center gap-8'>
-            {shows.filter(movie => movie._id !== id).slice(0,4).map((movie, index)=> (
-              <MovieCard key={index} movie={movie.movie}/>
-            ))}
+          {/* Only show each movie once */}
+          {(() => {
+            const uniqueMovies = [];
+            const seen = new Set();
+            for (const movie of shows) {
+              if (movie._id !== id && !seen.has(movie.movie._id)) {
+                uniqueMovies.push(movie);
+                seen.add(movie.movie._id);
+              }
+              if (uniqueMovies.length === 4) break;
+            }
+            return uniqueMovies.map((movie, index) => (
+              <MovieCard key={movie.movie._id} movie={movie.movie}/>
+            ));
+          })()}
         </div>
       ) : (
         <div className='flex justify-center my-10'>

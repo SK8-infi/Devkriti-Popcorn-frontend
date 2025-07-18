@@ -11,6 +11,15 @@ const FeaturedSection = () => {
     const navigate = useNavigate()
     const {shows } = useAppContext()
 
+    // Get unique movies from shows
+    const uniqueMoviesMap = new Map();
+    shows.forEach(show => {
+      if (show.movie && !uniqueMoviesMap.has(show.movie._id)) {
+        uniqueMoviesMap.set(show.movie._id, show);
+      }
+    });
+    const uniqueShows = Array.from(uniqueMoviesMap.values());
+
   return (
     <div className='featured-section' style={{ zIndex: 20, position: 'sticky', top: '54px', background: 'none', color: '#ffefcb', height: 'calc(100vh - 54px)', padding: '0 4vw', overflow: 'hidden' }}>
       <img src={seagreenCurtain} alt="Sea Green Curtain" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }} />
@@ -23,8 +32,8 @@ const FeaturedSection = () => {
           </button>
         </div>
         <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%' }}>
-          {shows.map((show)=>(
-              <MovieCard key={show._id} movie={show.movie}/>
+          {uniqueShows.map((show)=>(
+              <MovieCard key={show.movie._id} movie={show.movie}/>
           ))}
         </div>
       </div>

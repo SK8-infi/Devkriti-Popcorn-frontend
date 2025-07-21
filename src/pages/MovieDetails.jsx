@@ -15,6 +15,7 @@ const MovieDetails = () => {
   const navigate = useNavigate()
   const {id} = useParams()
   const [show, setShow] = useState(null)
+  const [movie, setMovie] = useState(null)
   const [isFavorited, setIsFavorited] = useState(false)
   const [error, setError] = useState(null)
 
@@ -22,9 +23,13 @@ const MovieDetails = () => {
 
   const getShow = async ()=>{
     try {
-      const { data } = await axios.get(`/api/show/${id}`)
-      if(data.success){
-        setShow(data)
+      const [{ data: showData }, { data: movieData }] = await Promise.all([
+        axios.get(`/api/show/${id}`),
+        axios.get(`/api/movies/${id}`)
+      ]);
+      if(showData.success && movieData.movie){
+        setShow(showData)
+        setMovie(movieData.movie)
         setError(null)
       } else {
         setError('Movie not found.')
@@ -69,24 +74,24 @@ const MovieDetails = () => {
     )
   }
 
-  return show ? (
+  return show && movie ? (
     <div className='px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
       <div className='flex flex-col md:flex-row gap-8 max-w-6xl mx-auto'>
 
-        <img src={image_base_url + show.movie.poster_path} alt="" className='max-md:mx-auto rounded-xl h-104 max-w-70 object-cover'/>
+        <img src={movie.poster_url || image_base_url + movie.poster_path} alt="" className='max-md:mx-auto rounded-xl h-104 max-w-70 object-cover'/>
 
         <div className='relative flex flex-col gap-3'>
-          <p className='text-primary'>ENGLISH</p>
-          <h1 className='text-4xl font-semibold max-w-96 text-balance' style={{fontFamily: 'Times New Roman, Times, serif'}}>{show.movie.title}</h1>
+          <p className='text-primary'>{movie.original_language?.toUpperCase() || 'ENGLISH'}</p>
+          <h1 className='text-4xl font-semibold max-w-96 text-balance' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
           <div className='flex items-center gap-2 text-gray-300'>
             <StarIcon className="w-5 h-5 text-primary fill-primary"/>
-            {show.movie.vote_average.toFixed(1)} User Rating
+            {movie.vote_average?.toFixed(1) || 'N/A'} User Rating
           </div>
 
-          <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{show.movie.overview}</p>
+          <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{movie.overview}</p>
 
           <p>
-            {timeFormat(show.movie.runtime)} • {show.movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ")} • {show.movie.release_date.split("-")[0]}
+            {timeFormat(movie.runtime)} • {Array.isArray(movie.genres) ? movie.genres.map(genre => (typeof genre === 'string' ? genre : genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name)).join(", ") : ''} • {movie.release_date?.split("-")[0]}
           </p>
 
           <div className='flex items-center flex-wrap gap-4 mt-4'>
@@ -156,7 +161,7 @@ const MovieDetails = () => {
               if (uniqueMovies.length === 4) break;
             }
             return uniqueMovies.map((movie, index) => (
-              <MovieCard key={movie.movie._id} movie={movie.movie}/>
+              <MovieCard key={movie.movie._id || movie.movie.id} movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}/>
             ));
           })()}
         </div>

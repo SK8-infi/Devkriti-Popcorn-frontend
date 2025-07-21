@@ -28,7 +28,7 @@ const HeroSection = () => {
       .then(data => {
         if (data.movies) {
           setGalleryItems(
-            data.movies.map(movie => ({
+            data.movies.slice(0, 10).map(movie => ({
               image: getImageUrl(movie.poster_url), // for gallery
               backdrop: getImageUrl(movie.backdrop_url) || getImageUrl(movie.poster_url), // for background
               text: movie.title,
@@ -136,7 +136,11 @@ const HeroSection = () => {
           {/* Genres */}
           <span>
             {galleryItems[activeIndex].genres && galleryItems[activeIndex].genres.length > 0
-              ? galleryItems[activeIndex].genres.map(g => g.name === 'Science Fiction' ? 'Sci-Fi' : g.name).join(', ')
+              ? galleryItems[activeIndex].genres.map(g =>
+                  typeof g === 'string'
+                    ? (g === 'Science Fiction' ? 'Sci-Fi' : g)
+                    : (g.name === 'Science Fiction' ? 'Sci-Fi' : g.name)
+                ).join(', ')
               : 'Movie'}
           </span>
           <span style={{ color: '#aaa' }}>|</span>

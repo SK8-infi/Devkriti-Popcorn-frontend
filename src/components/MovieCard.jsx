@@ -13,8 +13,9 @@ const MovieCard = ({movie}) => {
   return (
     <div className='movie-card'>
 
-      <img onClick={()=> {navigate(`/movies/${movie._id}`); scrollTo(0, 0)}}
-       src={image_base_url + movie.backdrop_path} alt="" className='movie-card-img'/>
+      <img
+        onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
+        src={image_base_url + movie.backdrop_path} alt="" className='movie-card-img'/>
 
        <p className='movie-card-title' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</p>
 
@@ -23,7 +24,7 @@ const MovieCard = ({movie}) => {
        </p>
 
        <div className='movie-card-footer'>
-        <button onClick={()=> {navigate(`/movies/${movie._id}`); scrollTo(0, 0)}} className='movie-card-buy-btn'>Buy Tickets</button>
+        <button onClick={()=> { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }} className='movie-card-buy-btn'>Buy Tickets</button>
 
         <p className='movie-card-rating'>
             <StarIcon className="star-icon"/>

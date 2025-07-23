@@ -27,17 +27,23 @@ const HeroSection = () => {
       .then(res => res.json())
       .then(data => {
         if (data.movies) {
-          setGalleryItems(
-            data.movies.slice(0, 10).map(movie => ({
-              image: getImageUrl(movie.poster_url), // for gallery
-              backdrop: getImageUrl(movie.backdrop_url) || getImageUrl(movie.poster_url), // for background
-              text: movie.title,
-              release_date: movie.release_date,
-              overview: movie.overview,
-              runtime: movie.runtime, // new
-              genres: movie.genres,   // new
-            }))
-          );
+          const items = data.movies.slice(0, 10).map(movie => ({
+            image: getImageUrl(movie.poster_url), // for gallery
+            backdrop: getImageUrl(movie.backdrop_url) || getImageUrl(movie.poster_url), // for background
+            text: movie.title,
+            release_date: movie.release_date,
+            overview: movie.overview,
+            runtime: movie.runtime, // new
+            genres: movie.genres,   // new
+          }));
+          setGalleryItems(items);
+          // Preload all backdrops
+          items.forEach(item => {
+            if (item.backdrop) {
+              const img = new window.Image();
+              img.src = item.backdrop;
+            }
+          });
         }
       })
       .catch(err => {

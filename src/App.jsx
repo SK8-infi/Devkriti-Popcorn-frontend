@@ -20,6 +20,7 @@ import { SignIn } from '@clerk/clerk-react'
 import Loading from './components/Loading'
 import Theatres from './pages/Theatres';
 import Theatre from './pages/Theatre';
+import ManageRooms from './pages/admin/ManageRooms';
 
 const App = () => {
 
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="add-shows" element={<AddShows/>}/>
           <Route path="list-shows" element={<ListShows/>}/>
           <Route path="update-layout" element={<UpdateLayout/>}/>
+          <Route path="manage-rooms" element={<ManageRooms/>}/>
         </Route>
       </Routes>
       {/* Render Footer on all pages except the homepage */}

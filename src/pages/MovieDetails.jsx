@@ -84,8 +84,13 @@ const MovieDetails = () => {
           <p className='text-primary'>{movie.original_language?.toUpperCase() || 'ENGLISH'}</p>
           <h1 className='text-4xl font-semibold max-w-96 text-balance' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
           <div className='flex items-center gap-2 text-gray-300'>
+<<<<<<< Updated upstream
             <StarIcon className="w-5 h-5 text-primary fill-primary"/>
             {movie.vote_average?.toFixed(1) || 'N/A'} User Rating
+=======
+            <StarIcon className="w-5 h-5" style={{ color: '#FFD600', fill: '#FFD600' }}/>
+            {show.movie.vote_average.toFixed(1)} User Rating
+>>>>>>> Stashed changes
           </div>
 
           <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{movie.overview}</p>
@@ -149,12 +154,15 @@ const MovieDetails = () => {
       <p className='text-lg font-medium mt-20 mb-8'>You May Also Like</p>
       {shows && shows.length > 0 ? (
         <div className='flex flex-wrap max-sm:justify-center gap-8'>
-          {/* Only show each movie once */}
+          {/* Only show each movie once and not the current movie or those with open booking window */}
           {(() => {
             const uniqueMovies = [];
             const seen = new Set();
             for (const movie of shows) {
-              if (movie._id !== id && !seen.has(movie.movie._id)) {
+              // Exclude current movie and movies with open booking window
+              const isCurrent = movie._id === id;
+              const hasOpenBooking = movie.dateTime && Object.keys(movie.dateTime).length > 0;
+              if (!isCurrent && !hasOpenBooking && !seen.has(movie.movie._id)) {
                 uniqueMovies.push(movie);
                 seen.add(movie.movie._id);
               }

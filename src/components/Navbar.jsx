@@ -131,9 +131,9 @@ const Navbar = () => {
           </div>
         )}
         <div className='navbar-icons'>
-          <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Select Location' onClick={() => setShowLocationModal(true)}>
+          <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Select Location' onClick={() => setShowLocationModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <MapPin size={20}/>
-            {userCity && <span style={{ marginLeft: 6, fontSize: 14 }}>{userCity}</span>}
+            {userCity && <span style={{ marginLeft: 6, fontSize: 14, display: 'flex', alignItems: 'center', height: 20 }}>{userCity}</span>}
           </motion.button>
           <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Search' onClick={() => {
             setShowSearch((prev) => !prev);

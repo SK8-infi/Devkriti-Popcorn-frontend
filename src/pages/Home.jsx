@@ -2,7 +2,7 @@ import React from 'react'
 import HeroSection from '../components/HeroSection'
 import FeaturedSection from '../components/FeaturedSection'
 import TrailersSection from '../components/TrailersSection'
-import AboutUs from '../components/AboutUs';
+import Footer from '../components/Footer';
 
 const Home = () => {
   return (
@@ -10,7 +10,7 @@ const Home = () => {
       <HeroSection />
       <FeaturedSection />
       <TrailersSection />
-      <AboutUs />
+      <Footer />
     </>
   )
 }

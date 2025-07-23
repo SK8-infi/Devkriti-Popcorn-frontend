@@ -10,26 +10,30 @@ export const assets = {
 
 export const dummyTrailers = [
     {
-        image: "https://img.youtube.com/vi/uYPbbksJxIg/maxresdefault.jpg", // Oppenheimer
-        videoUrl: 'https://www.youtube.com/watch?v=uYPbbksJxIg'
-    },
-    {
-        image: "https://img.youtube.com/vi/EXeTwQWrcwY/maxresdefault.jpg", // The Batman
-        videoUrl: 'https://www.youtube.com/watch?v=EXeTwQWrcwY'
+        image: "https://img.youtube.com/vi/2QKg5SZ_35I/maxresdefault.jpg", // Deadpool & Wolverine (2024)
+        videoUrl: 'https://www.youtube.com/watch?v=2QKg5SZ_35I'
     },
     {
         image: "https://img.youtube.com/vi/Way9Dexny3w/maxresdefault.jpg", // Dune: Part Two
         videoUrl: 'https://www.youtube.com/watch?v=Way9Dexny3w'
     },
     {
-        image: "https://img.youtube.com/vi/2MSwBM_CbyY/maxresdefault.jpg", // Inside Out 2
+        image: "https://img.youtube.com/vi/1VIZ89FEjYI/maxresdefault.jpg", // Godzilla x Kong: The New Empire (2024)
+        videoUrl: 'https://www.youtube.com/watch?v=1VIZ89FEjYI'
+    },
+    {
+        image: "https://img.youtube.com/vi/2S24-y0Ij3Y/maxresdefault.jpg", // Barbie (2023)
+        videoUrl: 'https://www.youtube.com/watch?v=2S24-y0Ij3Y'
+    },
+    {
+        image: "https://img.youtube.com/vi/2MSwBM_CbyY/maxresdefault.jpg", // Inside Out 2 (2024)
         videoUrl: 'https://www.youtube.com/watch?v=2MSwBM_CbyY'
     },
     {
-        image: "https://img.youtube.com/vi/2QKg5SZ_35I/maxresdefault.jpg", // Deadpool & Wolverine
-        videoUrl: 'https://www.youtube.com/watch?v=2QKg5SZ_35I'
+        image: "https://img.youtube.com/vi/2m1drlOZSDw/maxresdefault.jpg", // Furiosa: A Mad Max Saga (2024)
+        videoUrl: 'https://www.youtube.com/watch?v=2m1drlOZSDw'
     },
-]
+];
 
 const dummyCastsData = [
     { "name": "Milla Jovovich", "profile_path": "https://image.tmdb.org/t/p/original/usWnHCzbADijULREZYSJ0qfM00y.jpg", },

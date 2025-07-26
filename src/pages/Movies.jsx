@@ -6,6 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
+  const [shows, setShows] = useState([]); // Added shows state
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const Movies = () => {
       );
       const filteredMovies = (moviesData.movies || []).filter(movie => futureShowMovieIds.has(String(movie.id)));
       setMovies(filteredMovies);
+      setShows(showsData.shows || []); // Set shows state
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);

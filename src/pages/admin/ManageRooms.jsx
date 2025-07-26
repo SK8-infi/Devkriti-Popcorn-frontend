@@ -8,7 +8,7 @@ const ROOM_TYPES = ["Normal", "3D", "IMAX"];
 const defaultLayout = Array(8).fill().map(() => Array(10).fill(1));
 
 const ManageRooms = () => {
-  const { axios, getToken } = useAppContext();
+  const { axios, getToken, user } = useAppContext();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addForm, setAddForm] = useState({ name: '', type: 'Normal', layout: defaultLayout });
@@ -31,7 +31,15 @@ const ManageRooms = () => {
     setLoading(false);
   };
 
-  useEffect(() => { fetchRooms(); }, []);
+  useEffect(() => { 
+    if (user) {
+      fetchRooms(); 
+    } else {
+      // If no user, stop loading but keep rooms empty
+      setLoading(false);
+      setRooms([]);
+    }
+  }, [user]);
 
   // Add room
   const handleAddRoom = async (e) => {

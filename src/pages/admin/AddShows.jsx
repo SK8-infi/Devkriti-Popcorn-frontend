@@ -18,9 +18,12 @@ const AddShows = () => {
     const [dateTimeInput, setDateTimeInput] = useState("");
     const [showPrice, setShowPrice] = useState("");
     const [addingShow, setAddingShow] = useState(false)
+    const [rooms, setRooms] = useState([]);
+    const [selectedRoomType, setSelectedRoomType] = useState('Normal');
+    const [selectedRoomId, setSelectedRoomId] = useState('');
+    const [existingShows, setExistingShows] = useState([]);
 
-
-     const fetchNowPlayingMovies = async () => {
+    const fetchNowPlayingMovies = async () => {
         try {
             const { data } = await axios.get('/api/show/now-playing', {
                 headers: { Authorization: `Bearer ${await getToken()}` }})
@@ -60,6 +63,55 @@ const AddShows = () => {
         });
     };
 
+    // Fetch rooms
+    const fetchRooms = async () => {
+      try {
+        const { data } = await axios.get('/api/admin/my-theatre', { headers: { Authorization: `Bearer ${await getToken()}` } });
+        if (data.success && data.theatre && data.theatre.rooms) {
+          setRooms(data.theatre.rooms);
+        } else {
+          setRooms([]);
+        }
+      } catch (e) {
+        setRooms([]);
+      }
+    };
+
+    // Fetch existing shows for the theatre
+    const fetchExistingShows = async () => {
+      try {
+        const { data } = await axios.get('/api/admin/shows', { headers: { Authorization: `Bearer ${await getToken()}` } });
+        if (data.success) {
+          setExistingShows(data.shows);
+        } else {
+          setExistingShows([]);
+        }
+      } catch (e) {
+        setExistingShows([]);
+      }
+    };
+
+    // Check if a room is available for the selected date/time combinations
+    const isRoomAvailable = (roomId) => {
+      if (Object.keys(dateTimeSelection).length === 0) return true;
+      
+      for (const [date, times] of Object.entries(dateTimeSelection)) {
+        for (const time of times) {
+          const selectedDateTime = new Date(`${date}T${time}`);
+          
+          // Check if there's any existing show at the same time in the same room
+          const conflict = existingShows.some(show => {
+            const showDateTime = new Date(show.showDateTime);
+            return show.room === roomId && 
+                   showDateTime.getTime() === selectedDateTime.getTime();
+          });
+          
+          if (conflict) return false;
+        }
+      }
+      return true;
+    };
+
     const handleSubmit = async ()=>{
         try {
             setAddingShow(true)
@@ -70,7 +122,7 @@ const AddShows = () => {
                 return;
             }
 
-            if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice){
+            if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice || !selectedRoomId){
                 return toast('Missing required fields');
             }
 
@@ -80,7 +132,8 @@ const AddShows = () => {
                 movieId: selectedMovie,
                 showsInput,
                 showPrice: Number(showPrice),
-                theatreId: theatreId // Only use ObjectId
+                theatreId: theatreId, // Only use ObjectId
+                roomId: selectedRoomId
             }
 
             const { data } = await axios.post('/api/show/add', payload, {headers: { Authorization: `Bearer ${await getToken()}` }})
@@ -90,6 +143,7 @@ const AddShows = () => {
                 setSelectedMovie(null)
                 setDateTimeSelection({})
                 setShowPrice("")
+                setSelectedRoomId("")
             }else{
                 toast.error(data.message)
             }
@@ -101,10 +155,27 @@ const AddShows = () => {
     }
 
     useEffect(() => {
-        if(user){
-            fetchNowPlayingMovies();
-        }
+      if(user){
+        fetchNowPlayingMovies();
+        fetchRooms();
+        fetchExistingShows();
+      }
     }, [user]);
+
+    // Refetch existing shows when date/time selection changes
+    useEffect(() => {
+      if (user && Object.keys(dateTimeSelection).length > 0) {
+        fetchExistingShows();
+      }
+    }, [dateTimeSelection, user]);
+
+    // Reset room selection if currently selected room becomes unavailable
+    useEffect(() => {
+      if (selectedRoomId && !isRoomAvailable(selectedRoomId)) {
+        setSelectedRoomId('');
+        toast.error('Selected room is not available for the chosen times. Please select another room.');
+      }
+    }, [existingShows, dateTimeSelection, selectedRoomId]);
 
   return nowPlayingMovies.length > 0 ? (
     <>
@@ -178,6 +249,50 @@ const AddShows = () => {
             </ul>
             </div>
        )}
+      {/* Room Type and Room Selection */}
+      <div className="flex flex-col md:flex-row gap-8 mt-8 w-full">
+        {/* Room Type Select */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <label className="block text-sm font-semibold mb-3 text-white">Room Type</label>
+          <select value={selectedRoomType} onChange={e => { setSelectedRoomType(e.target.value); setSelectedRoomId(''); }} className="border border-primary/30 px-4 py-3 rounded-lg w-full bg-black/40 text-white">
+            <option value="Normal">Normal</option>
+            <option value="3D">3D</option>
+            <option value="IMAX">IMAX</option>
+          </select>
+        </div>
+        {/* Room Select */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <label className="block text-sm font-semibold mb-3 text-white">Select Room</label>
+          <select value={selectedRoomId} onChange={e => setSelectedRoomId(e.target.value)} className="border border-primary/30 px-4 py-3 rounded-lg w-full bg-black/40 text-white">
+            <option value="">Select a room</option>
+            {rooms.filter(room => room.type === selectedRoomType).map(room => {
+              const available = isRoomAvailable(room._id);
+              return (
+                <option 
+                  key={room._id} 
+                  value={available ? room._id : ""} 
+                  disabled={!available}
+                  style={{ 
+                    color: available ? 'white' : '#888',
+                    backgroundColor: available ? 'inherit' : '#333'
+                  }}
+                >
+                  {room.name} ({room.type}) {!available ? '- UNAVAILABLE' : ''}
+                </option>
+              );
+            })}
+          </select>
+          {Object.keys(dateTimeSelection).length > 0 ? (
+            <p className="text-xs text-gray-400 mt-2">
+              * Unavailable rooms have conflicting shows at selected times
+            </p>
+          ) : (
+            <p className="text-xs text-gray-400 mt-2">
+              Select date and time first to check room availability
+            </p>
+          )}
+        </div>
+      </div>
       <div className="flex justify-start mt-4">
         <button
           onClick={handleSubmit}

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { assets } from '../../assets/assets'
 
 const pathTitleMap = {
+  '/admin/update-layout': 'Theatre Layout',
   '/admin/list-bookings': 'List Bookings',
   '/admin/list-shows': 'Listed Shows',
   '/admin/add-shows': 'Add Shows',

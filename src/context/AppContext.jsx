@@ -16,7 +16,6 @@ export const AppProvider = ({ children })=>{
     const [theatre, setTheatre] = useState(undefined); // name
     const [theatreId, setTheatreId] = useState(undefined); // _id
     const [city, setCity] = useState(undefined) // undefined = loading, null = not set, string = set
-    const [allMovies, setAllMovies] = useState([])
 
     const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
 
@@ -66,20 +65,8 @@ export const AppProvider = ({ children })=>{
         }
     }
 
-    const fetchAllMovies = async ()=>{
-        try {
-            const { data } = await axios.get('/api/movies')
-            if(data.success){
-                setAllMovies(data.movies)
-            }
-        } catch (error) {
-            console.error('Error fetching all movies:', error)
-        }
-    }
-
     useEffect(()=>{
         fetchShows()
-        fetchAllMovies()
     },[])
 
     useEffect(()=>{
@@ -165,8 +152,7 @@ export const AppProvider = ({ children })=>{
         favoriteMovies, fetchFavoriteMovies, image_base_url,
         theatre, theatreId, setAdminTheatre,
         city, setCity,
-        fetchTheatreFromBackend,
-        allMovies, fetchAllMovies
+        fetchTheatreFromBackend
     }
 
     return (

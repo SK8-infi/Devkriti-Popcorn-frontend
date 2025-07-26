@@ -16,6 +16,7 @@ const AdminSidebar = () => {
         { name: 'Add Shows', path: '/admin/add-shows', icon: PlusSquareIcon },
         { name: 'Listed Shows', path: '/admin/list-shows', icon: ListIcon },
         { name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon },
+        { name: 'Theatre Layout', path: '/admin/update-layout', icon: LayoutDashboardIcon },
         { name: 'Manage Rooms', path: '/admin/manage-rooms', icon: ListCollapseIcon },
     ]
 

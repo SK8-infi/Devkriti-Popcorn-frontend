@@ -16,7 +16,7 @@
 }
 
 .movie-card-img {
-  border-radius: 0 !important;
+  border-radius: 6px;
   width: 200px;
   height: 300px;
   object-fit: cover;
@@ -78,76 +78,4 @@
   height: 1rem;
   color: #f3ce13;
   fill: #f3ce13;
-}
-
-/* Hover Animation Styles */
-.movie-card-content {
-  position: relative;
-  overflow: hidden;
-}
-
-.movie-card-text-content {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.movie-card-book-btn-container {
-  position: absolute;
-  top: 330px;
-  left: 0;
-  right: 0;
-  height: 110px;
-  transform: translateX(100%);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.movie-card-book-btn {
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.movie-card-book-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-.movie-card-book-btn:active {
-  transform: translateY(0);
-}
-
-/* Hover state animations */
-.movie-card-tmdb:hover .movie-card-text-content {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.movie-card-tmdb:hover .movie-card-book-btn-container {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-/* Enhanced card hover effect */
-.movie-card-tmdb {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.movie-card-tmdb:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(16,30,54,.15);
 } 

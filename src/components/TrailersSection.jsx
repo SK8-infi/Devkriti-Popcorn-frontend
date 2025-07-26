@@ -1,38 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { dummyTrailers } from '../assets/assets';
 import ReactPlayer from 'react-player';
-import { useAppContext } from '../context/AppContext';
 import './TrailersSection.css';
 
 const TrailersSection = () => {
-  const { allMovies } = useAppContext();
-  const [centerIdx, setCenterIdx] = useState(0); // Start with first trailer
+  const [centerIdx, setCenterIdx] = useState(2); // Start with a middle trailer
   const [animDirection, setAnimDirection] = useState(null); // 'left' or 'right' or null
-  const [trailers, setTrailers] = useState([]);
-
-  // Extract trailers from movies when allMovies changes
-  useEffect(() => {
-    if (allMovies && allMovies.length > 0) {
-      const movieTrailers = [];
-      allMovies.forEach(movie => {
-        if (movie.trailers && movie.trailers.length > 0) {
-          // Add the first trailer of each movie with movie info
-          movieTrailers.push({
-            ...movie.trailers[0],
-            movieTitle: movie.title,
-            movieId: movie.id,
-            image: movie.trailers[0].thumbnail_url
-          });
-        }
-      });
-      setTrailers(movieTrailers.slice(0, 6)); // Limit to 6 trailers
-      setCenterIdx(Math.min(2, Math.floor(movieTrailers.length / 2))); // Start in middle or beginning
-    } else {
-      // Fallback to dummy trailers if no real trailers available
-      setTrailers(dummyTrailers);
-      setCenterIdx(2);
-    }
-  }, [allMovies]);
 
   const handleLeft = () => {
     if (centerIdx > 0) {
@@ -44,7 +17,7 @@ const TrailersSection = () => {
     }
   };
   const handleRight = () => {
-    if (centerIdx < trailers.length - 1) {
+    if (centerIdx < dummyTrailers.length - 1) {
       setAnimDirection('right');
       setTimeout(() => {
         setCenterIdx(idx => idx + 1);
@@ -77,7 +50,7 @@ const TrailersSection = () => {
                 transition: 'all 0.3s',
               }}>
                 <ReactPlayer
-                  url={trailers[centerIdx - 1]?.youtube_url || trailers[centerIdx - 1]?.videoUrl}
+                  url={dummyTrailers[centerIdx - 1].videoUrl}
                   controls={false}
                   width="100%"
                   height="260px"
@@ -106,7 +79,7 @@ const TrailersSection = () => {
               onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
             >
               <ReactPlayer
-                url={trailers[centerIdx]?.youtube_url || trailers[centerIdx]?.videoUrl}
+                url={dummyTrailers[centerIdx].videoUrl}
                 controls={true}
                 width="100%"
                 height="520px"
@@ -114,7 +87,7 @@ const TrailersSection = () => {
               />
             </div>
             {/* Right trailer (if exists) */}
-            {centerIdx < trailers.length - 1 && (
+            {centerIdx < dummyTrailers.length - 1 && (
               <div style={{
                 minWidth: 340,
                 maxWidth: 380,
@@ -130,7 +103,7 @@ const TrailersSection = () => {
                 transition: 'all 0.3s',
               }}>
                 <ReactPlayer
-                  url={trailers[centerIdx + 1]?.youtube_url || trailers[centerIdx + 1]?.videoUrl}
+                  url={dummyTrailers[centerIdx + 1].videoUrl}
                   controls={false}
                   width="100%"
                   height="260px"
@@ -139,7 +112,7 @@ const TrailersSection = () => {
               </div>
             )}
           </div>
-          <button onClick={handleRight} disabled={centerIdx === trailers.length - 1} style={{ background: 'none', border: 'none', color: '#FFD6A0', fontSize: 40, cursor: centerIdx === trailers.length - 1 ? 'not-allowed' : 'pointer', padding: 0, marginLeft: 12, zIndex: 2 }}>&#8594;</button>
+          <button onClick={handleRight} disabled={centerIdx === dummyTrailers.length - 1} style={{ background: 'none', border: 'none', color: '#FFD6A0', fontSize: 40, cursor: centerIdx === dummyTrailers.length - 1 ? 'not-allowed' : 'pointer', padding: 0, marginLeft: 12, zIndex: 2 }}>&#8594;</button>
         </div>
       </div>
     </section>

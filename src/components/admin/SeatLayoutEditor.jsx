@@ -70,7 +70,6 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
       <div className="seat-type-selector flex justify-center">
         <span>Select Seat Type:</span>
         <button
-          type="button"
           className={`seat-btn ${selectedType === SEAT_AVAILABLE ? 'active available' : ''}`}
           onClick={() => setSelectedType(SEAT_AVAILABLE)}
           disabled={disabled}
@@ -78,7 +77,6 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
           Regular
         </button>
         <button
-          type="button"
           className={`seat-btn ${selectedType === SEAT_VIP ? 'active vip' : ''}`}
           onClick={() => setSelectedType(SEAT_VIP)}
           disabled={disabled}
@@ -86,7 +84,6 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
           VIP
         </button>
         <button
-          type="button"
           className={`seat-btn ${selectedType === SEAT_UNAVAILABLE ? 'active unavailable' : ''}`}
           onClick={() => setSelectedType(SEAT_UNAVAILABLE)}
           disabled={disabled}
@@ -102,10 +99,10 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
       </div>
 
       <div className="controls-container flex justify-center">
-        <button type="button" onClick={addRow} className="control-btn add" disabled={disabled}>+ Row</button>
-        <button type="button" onClick={removeRow} className="control-btn remove" disabled={disabled}>- Row</button>
-        <button type="button" onClick={addCol} className="control-btn add" disabled={disabled}>+ Col</button>
-        <button type="button" onClick={removeCol} className="control-btn remove" disabled={disabled}>- Col</button>
+        <button onClick={addRow} className="control-btn add" disabled={disabled}>+ Row</button>
+        <button onClick={removeRow} className="control-btn remove" disabled={disabled}>- Row</button>
+        <button onClick={addCol} className="control-btn add" disabled={disabled}>+ Col</button>
+        <button onClick={removeCol} className="control-btn remove" disabled={disabled}>- Col</button>
       </div>
 
       <div className="table-wrapper">

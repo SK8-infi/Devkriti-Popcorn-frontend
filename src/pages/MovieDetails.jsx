@@ -6,7 +6,6 @@ import timeFormat from '../lib/timeFormat'
 import DateSelect from '../components/DateSelect'
 import MovieCard from '../components/MovieCard'
 import Loading from '../components/Loading'
-import TrailerModal from '../components/TrailerModal'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import './MovieDetails.css'
@@ -19,8 +18,6 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState(null)
   const [isFavorited, setIsFavorited] = useState(false)
   const [error, setError] = useState(null)
-  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false)
-  const [selectedTrailer, setSelectedTrailer] = useState(null)
 
   const {shows, axios, getToken, user, fetchFavoriteMovies, favoriteMovies, image_base_url} = useAppContext()
 
@@ -66,15 +63,6 @@ const MovieDetails = () => {
     getShow()
   },[id])
 
-  const handlePlayTrailer = () => {
-    if (movie && movie.trailers && movie.trailers.length > 0) {
-      setSelectedTrailer(movie.trailers[0]); // Use the first (highest priority) trailer
-      setIsTrailerModalOpen(true);
-    } else {
-      toast.error('No trailer available for this movie');
-    }
-  }
-
   console.log("SHOW STATE:", show);
 
   if (error) {
@@ -107,18 +95,10 @@ const MovieDetails = () => {
           </p>
 
           <div className='flex items-center flex-wrap gap-4 mt-4'>
-            <button 
-              onClick={handlePlayTrailer}
-              disabled={!movie?.trailers?.length}
-              className={`flex items-center gap-2 px-7 py-3 text-sm transition rounded-md font-medium cursor-pointer active:scale-95 ${
-                movie?.trailers?.length 
-                  ? 'bg-gray-800 hover:bg-gray-900' 
-                  : 'bg-gray-600 cursor-not-allowed opacity-50'
-              }`}
-            >
+            <button className='flex items-center gap-2 px-7 py-3 text-sm bg-gray-800 hover:bg-gray-900 transition rounded-md font-medium cursor-pointer active:scale-95'>
               <PlayCircleIcon className="w-5 h-5"/>
               Watch Trailer
-            </button>
+              </button>
             <a href="#dateSelect" className='px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-md font-medium cursor-pointer active:scale-95'>Buy Tickets</a>
             <button onClick={handleFavorite} className='bg-gray-700 p-2.5 rounded-full transition cursor-pointer active:scale-95'>
               <Heart className={`w-5 h-5${isFavorited ? ' heart-favorited' : ''}`} />
@@ -193,13 +173,6 @@ const MovieDetails = () => {
           <Loading />
         </div>
       )}
-
-      {/* Trailer Modal */}
-      <TrailerModal 
-        isOpen={isTrailerModalOpen}
-        onClose={() => setIsTrailerModalOpen(false)}
-        trailer={selectedTrailer}
-      />
 
     </div>
   ) : <Loading />

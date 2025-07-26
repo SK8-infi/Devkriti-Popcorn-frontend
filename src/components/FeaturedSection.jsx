@@ -30,15 +30,9 @@ const FeaturedSection = () => {
               <ArrowRight style={{transition: 'transform 0.2s'}}/>
           </button>
         </div>
-<<<<<<< Updated upstream
         <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%' }}>
           {uniqueShows.map((show)=>(
               <MovieCard key={show.movie._id || show.movie.id} movie={{ ...show.movie, id: show.movie.id || show.movie._id }}/>
-=======
-          <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%', flexWrap: 'wrap', marginTop: 32 }}>
-            {uniqueShows.map((show)=>(
-                <MovieCard key={show.movie._id} movie={show.movie}/>
->>>>>>> Stashed changes
           ))}
         </div>
       </div>

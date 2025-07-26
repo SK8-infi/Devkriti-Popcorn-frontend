@@ -84,13 +84,8 @@ const MovieDetails = () => {
           <p className='text-primary'>{movie.original_language?.toUpperCase() || 'ENGLISH'}</p>
           <h1 className='text-4xl font-semibold max-w-96 text-balance' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
           <div className='flex items-center gap-2 text-gray-300'>
-<<<<<<< Updated upstream
-            <StarIcon className="w-5 h-5 text-primary fill-primary"/>
-            {movie.vote_average?.toFixed(1) || 'N/A'} User Rating
-=======
             <StarIcon className="w-5 h-5" style={{ color: '#FFD600', fill: '#FFD600' }}/>
             {show.movie.vote_average.toFixed(1)} User Rating
->>>>>>> Stashed changes
           </div>
 
           <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{movie.overview}</p>

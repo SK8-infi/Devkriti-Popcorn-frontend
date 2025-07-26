@@ -188,7 +188,6 @@ const SeatLayout = () => {
         <p className='text-xl font-bold px-6 mb-4 text-primary tracking-wide'>Available Timings</p>
         <div className='flex flex-col gap-2 w-full px-4'>
           {show.dateTime[date].map((item)=>(
-<<<<<<< Updated upstream
             <button
               key={item.time}
               onClick={()=> setSelectedTime(item)}
@@ -198,16 +197,6 @@ const SeatLayout = () => {
               <ClockIcon className={`w-5 h-5 ${selectedTime?.time === item.time ? 'text-yellow-300' : 'text-primary'}`}/>
               <span>{isoTimeFormat(item.time)}</span>
             </button>
-=======
-            <div
-              key={item.time}
-              onClick={()=> setSelectedTime(item)}
-              className={`timing-glass${selectedTime?.time === item.time ? ' selected' : ''}`}
-            >
-              <ClockIcon className='w-4 h-4'/>
-              <span>{isoTimeFormat(item.time)}</span>
-            </div>
->>>>>>> Stashed changes
           ))}
         </div>
       </div>
@@ -228,7 +217,6 @@ const SeatLayout = () => {
             <div className='flex items-center gap-2'><span className='inline-block w-6 h-6 rounded bg-primary border-2 border-yellow-300'></span> <span className='text-yellow-300 text-sm'>Selected</span></div>
           </div>
 
-<<<<<<< Updated upstream
           {/* Seat price tally (sticky on desktop) */}
           {selectedSeats.length > 0 && (
             <div className='mb-6 text-base font-medium text-white bg-primary/90 px-8 py-4 rounded-xl flex flex-col items-center gap-1 shadow-lg md:sticky md:top-8 z-10'>
@@ -240,12 +228,6 @@ const SeatLayout = () => {
               </div>
             </div>
           )}
-=======
-          <button onClick={bookTickets} className='proceed-btn flex items-center gap-1'>
-            Proceed to Checkout
-            <ArrowRightIcon strokeWidth={3} className="w-4 h-4"/>
-          </button>
->>>>>>> Stashed changes
 
           {/* Show seat layout or prompt to select time */}
           {!selectedTime ? (

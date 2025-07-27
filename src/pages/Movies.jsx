@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import MovieCard from '../components/MovieCard'
 import './Movies.css'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
-  const [shows, setShows] = useState([]); // Added shows state
   const [loading, setLoading] = useState(true);
+  const [noResult, setNoResult] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     Promise.all([
@@ -22,26 +25,34 @@ const Movies = () => {
       );
       const filteredMovies = (moviesData.movies || []).filter(movie => futureShowMovieIds.has(String(movie.id)));
       setMovies(filteredMovies);
-      setShows(showsData.shows || []); // Set shows state
       setLoading(false);
+
+      // Search logic
+      const params = new URLSearchParams(location.search);
+      const search = params.get('search');
+      if (search) {
+        const found = filteredMovies.find(movie => movie.title.toLowerCase().includes(search.toLowerCase()));
+        if (found) {
+          navigate(`/movies/${found.id || found._id}`);
+        } else {
+          setNoResult(true);
+        }
+      } else {
+        setNoResult(false);
+      }
     }).catch(() => setLoading(false));
-  }, []);
+  }, [location.search, navigate]);
 
-  // Get unique movies from shows
-  const uniqueMoviesMap = new Map();
-  shows.forEach(show => {
-    if (show.movie && !uniqueMoviesMap.has(show.movie._id)) {
-      uniqueMoviesMap.set(show.movie._id, show);
-    }
-  });
-  const uniqueShows = Array.from(uniqueMoviesMap.values());
-
-  return shows.length > 0 ? (
+  return noResult ? (
+    <div className='movies-empty'>
+      <h1 className='movies-empty-title'>No shows for this movie.</h1>
+    </div>
+  ) : movies.length > 0 ? (
     <div className='movies-container'>
       <h1 className='movies-title'>Now Showing</h1>
       <div className='movies-list'>
-        {uniqueShows.map((show)=> (
-          <MovieCard movie={show.movie} key={show.movie._id}/>
+        {movies.map((movie) => (
+          <MovieCard movie={movie} key={movie.id}/>
         ))}
       </div>
     </div>
@@ -49,11 +60,7 @@ const Movies = () => {
     <div className='movies-empty'>
       <h1 className='movies-empty-title'>Loading movies...</h1>
     </div>
-  ) : (
-    <div className='movies-empty'>
-      <h1 className='movies-empty-title'>No movies available</h1>
-    </div>
-  )
+  ) : null;
 }
 
 export default Movies

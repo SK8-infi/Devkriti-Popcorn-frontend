@@ -35,6 +35,7 @@ const Navbar = () => {
  const [loadingCity, setLoadingCity] = useState(false);
  const [savingCity, setSavingCity] = useState(false);
  const [cityError, setCityError] = useState("");
+ const [searchQuery, setSearchQuery] = useState("");
 
  // Fetch user's city from backend
  useEffect(() => {
@@ -147,6 +148,15 @@ const Navbar = () => {
               type='text'
               className='navbar-search-input'
               placeholder='Search movies...'
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  navigate(`/movies?search=${encodeURIComponent(searchQuery.trim())}`);
+                  setShowSearch(false);
+                  setSearchQuery("");
+                }
+              }}
               style={{ marginLeft: '0.5rem', padding: '0.5rem 1rem', borderRadius: '9999px', border: 'none', outline: 'none', fontSize: '0.85rem', minWidth: '140px' }}
             />
           )}

@@ -35,6 +35,7 @@ const HeroSection = () => {
             overview: movie.overview,
             runtime: movie.runtime, // new
             genres: movie.genres,   // new
+            logo: movie.logos && movie.logos.length > 0 ? movie.logos[0].url : null, // new
           }));
           setGalleryItems(items);
           // Preload all backdrops
@@ -61,6 +62,10 @@ const HeroSection = () => {
       if (item.backdrop) {
         const backdropImg = new window.Image();
         backdropImg.src = item.backdrop;
+      }
+      if (item.logo) {
+        const logoImg = new window.Image();
+        logoImg.src = item.logo;
       }
     });
   }, [galleryItems]);
@@ -108,7 +113,7 @@ const HeroSection = () => {
       {/* Movie Info Block */}
       <div style={{
         position: 'absolute',
-        top: '220px',
+        top: '180px',
         left: '60px',
         zIndex: 3,
         color: '#fff',
@@ -119,12 +124,37 @@ const HeroSection = () => {
         minWidth: '340px',
         maxWidth: '600px',
       }}>
+        {/* Movie Logo */}
+        {galleryItems[activeIndex].logo && (
+          <div style={{
+            marginBottom: '8px',
+          }}>
+            <img 
+              src={galleryItems[activeIndex].logo}
+              alt={`${galleryItems[activeIndex].text} logo`}
+              style={{
+                maxHeight: '80px',
+                maxWidth: '300px',
+                height: 'auto',
+                width: 'auto',
+                filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',
+                objectFit: 'contain',
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+        
+        {/* Movie Title (shown when no logo or as fallback) */}
         <div style={{
-          fontSize: '2.2rem',
+          fontSize: galleryItems[activeIndex].logo ? '1.8rem' : '2.2rem',
           fontWeight: 700,
           letterSpacing: '-1px',
           lineHeight: 1.1,
-          fontFamily: 'Times New Roman, Times, serif'
+          fontFamily: 'Times New Roman, Times, serif',
+          display: galleryItems[activeIndex].logo ? 'none' : 'block'
         }}>
           {galleryItems[activeIndex].text}
         </div>

@@ -5,14 +5,16 @@ import timeFormat from '../lib/timeFormat'
 import { useAppContext } from '../context/AppContext'
 import './MovieCard.css'
 import CircularRating from './CircularRating';
+import TrailerModal from './TrailerModal';
 
 const MovieCard = ({movie}) => {
 
     const navigate = useNavigate()
     const {image_base_url} = useAppContext()
+    const [showTrailer, setShowTrailer] = React.useState(false);
 
   return (
-    <div className='movie-card movie-card-tmdb' style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px 0 rgba(16,30,54,.08)', overflow: 'hidden', width: 220, height: 440, display: 'flex', flexDirection: 'column', position: 'relative', transition: 'box-shadow 0.2s, transform 0.2s' }}>
+    <div className='movie-card movie-card-tmdb' style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px 0 rgba(16,30,54,.08)', overflow: 'hidden', width: 220, height: 440, display: 'flex', flexDirection: 'column', position: 'relative', transition: 'box-shadow 0.2s, transform 0.2s', borderBottom: '1px dashed #FFD6A0' }}>
       <div style={{ position: 'relative', width: '100%', height: 330 }}>
         <img
           onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
@@ -35,10 +37,10 @@ const MovieCard = ({movie}) => {
       </div>
       <div className="movie-card-book-btn-container">
         <button 
-          className="movie-card-book-btn"
+          className="movie-card-show-trailer-btn"
           onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
         >
-          Book Now
+          Book Ticket
         </button>
       </div>
     </div>

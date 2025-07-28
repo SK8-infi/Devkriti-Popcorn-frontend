@@ -2,27 +2,30 @@
   position: relative;
   margin-top: 10rem;
   margin-bottom: 15rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   overflow: hidden;
   min-height: 80vh;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 @media (min-width: 768px) {
   .movies-container {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 @media (min-width: 1024px) {
   .movies-container {
-    padding-left: 10rem;
-    padding-right: 10rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 @media (min-width: 1280px) {
   .movies-container {
-    padding-left: 11rem;
-    padding-right: 11rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }
 
@@ -36,7 +39,7 @@
 .movies-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 2.5rem;
   justify-content: flex-start;
 }
 @media (max-width: 640px) {

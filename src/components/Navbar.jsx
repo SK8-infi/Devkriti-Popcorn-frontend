@@ -7,7 +7,7 @@ import { useAppContext } from '../context/AppContext'
 import './Navbar.css'
 import Dock from './Dock';
 import ticket from '../assets/ticket.svg';
-import heart from '../assets/heart.svg';
+import heart from '../assets/heart.png';
 import notification from '../assets/notification.svg';
 import robot from '../assets/robot.svg';
 import { motion } from 'framer-motion';

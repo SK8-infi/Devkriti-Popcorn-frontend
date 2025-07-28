@@ -124,11 +124,9 @@ const HeroSection = () => {
         minWidth: '340px',
         maxWidth: '600px',
       }}>
-        {/* Movie Logo */}
-        {galleryItems[activeIndex].logo && (
-          <div style={{
-            marginBottom: '8px',
-          }}>
+        {/* Movie Logo or Placeholder */}
+        {galleryItems[activeIndex].logo ? (
+          <div style={{ marginBottom: '8px', minHeight: '80px', minWidth: '300px', display: 'flex', alignItems: 'center' }}>
             <img 
               src={galleryItems[activeIndex].logo}
               alt={`${galleryItems[activeIndex].text} logo`}
@@ -145,8 +143,10 @@ const HeroSection = () => {
               }}
             />
           </div>
+        ) : (
+          // Placeholder to reserve space for logo
+          <div style={{ minHeight: '80px', minWidth: '300px', marginBottom: '8px' }} />
         )}
-        
         {/* Movie Title (shown when no logo or as fallback) */}
         <div style={{
           fontSize: galleryItems[activeIndex].logo ? '1.8rem' : '2.2rem',
@@ -185,7 +185,7 @@ const HeroSection = () => {
             {galleryItems[activeIndex].runtime ? `${Math.floor(galleryItems[activeIndex].runtime / 60)}h ${galleryItems[activeIndex].runtime % 60}m` : '~2h'}
           </span>
         </div>
-        <div style={{ fontSize: '1.08rem', opacity: 0.92, lineHeight: 1.5 }}>
+        <div style={{ fontSize: '1.08rem', opacity: 0.92, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis', maxHeight: '4.5em' }}>
           {galleryItems[activeIndex].overview}
         </div>
       </div>

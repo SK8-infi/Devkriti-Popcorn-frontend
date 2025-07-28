@@ -1,9 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import logo from '../assets/logo.png'
 import ticket from '../assets/ticket.svg'
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <footer className='footer-section' style={{ zIndex: 60, position: 'sticky', top: '54px', background: '#000', padding: '40px 0 20px 0' }}>
       {/* Logo with horizontal line design */}
@@ -44,33 +47,38 @@ const Footer = () => {
               List your Show
             </div>
             <div style={{ fontSize: '14px', lineHeight: '1.5', color: '#ccc' }}>
-              Got a show, event, activity or a great experience? Partner with us & get listed on Popcorn
+              Got a show to be listed? Partner with us & get listed on Popcorn
             </div>
           </div>
         </div>
-        <button style={{
-          background: 'linear-gradient(135deg, #FFD600 0%, #FFA500 100%)',
-          color: '#000',
-          border: 'none',
-          padding: '10.5px 21px',
-          borderRadius: '8px',
-          fontSize: '15px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          whiteSpace: 'nowrap',
-          boxShadow: '0 4px 16px rgba(255, 214, 0, 0.3)',
-          transition: 'all 0.3s ease',
-          textTransform: 'uppercase',
-          letterSpacing: '0.5px'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.transform = 'translateY(-2px)';
-          e.target.style.boxShadow = '0 6px 20px rgba(255, 214, 0, 0.4)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.transform = 'translateY(0)';
-          e.target.style.boxShadow = '0 4px 16px rgba(255, 214, 0, 0.3)';
-        }}>
+        <button 
+          onClick={() => {
+            navigate('/contact');
+            window.scrollTo(0, 0);
+          }}
+          style={{
+            background: 'linear-gradient(135deg, #FFD600 0%, #FFA500 100%)',
+            color: '#000',
+            border: 'none',
+            padding: '10.5px 21px',
+            borderRadius: '8px',
+            fontSize: '15px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 4px 16px rgba(255, 214, 0, 0.3)',
+            transition: 'all 0.3s ease',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-2px)';
+            e.target.style.boxShadow = '0 6px 20px rgba(255, 214, 0, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 4px 16px rgba(255, 214, 0, 0.3)';
+          }}>
           Contact today!
         </button>
       </div>

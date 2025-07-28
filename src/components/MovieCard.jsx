@@ -6,6 +6,7 @@ import { useAppContext } from '../context/AppContext'
 import './MovieCard.css'
 import CircularRating from './CircularRating';
 import TrailerModal from './TrailerModal';
+import GlareHover from './GlareHover';
 
 const MovieCard = ({movie}) => {
 
@@ -36,12 +37,28 @@ const MovieCard = ({movie}) => {
         </div>
       </div>
       <div className="movie-card-book-btn-container">
-        <button 
-          className="movie-card-show-trailer-btn"
-          onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
+        <GlareHover
+          width="auto"
+          height="auto"
+          background="#111"
+          borderRadius="12px"
+          borderColor="transparent"
+          glareColor="#ffffff"
+          glareOpacity={0.3}
+          glareAngle={-30}
+          glareSize={300}
+          transitionDuration={800}
+          playOnce={false}
+          style={{ display: 'inline-block' }}
         >
-          Book Ticket
-        </button>
+          <button 
+            className="movie-card-show-trailer-btn"
+            onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
+            style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+          >
+            Book Ticket
+          </button>
+        </GlareHover>
       </div>
     </div>
   )

@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import logo from '../assets/logo.png'
 import ticket from '../assets/ticket.svg'
+import GlareHover from './GlareHover'
 
 const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className='footer-section' style={{ zIndex: 60, position: 'sticky', top: '54px', background: '#000', padding: '40px 0 20px 0' }}>
+    <footer className='footer-section' style={{ zIndex: 60, position: 'sticky', top: '54px', padding: '0 0 20px 0' }}>
       {/* Logo with horizontal line design */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '5px', marginTop: '60px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '60px' }}>
         <div style={{ flex: 1, height: '1px', background: '#444', marginRight: '20px' }}></div>
         <div style={{ 
           padding: '8px 16px', 
@@ -43,44 +44,52 @@ const Footer = () => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: '200px' }}>
           <div style={{ color: '#fff' }}>
-            <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '6px', color: '#FFD600' }}>
-              List your Show
-            </div>
+                            <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '6px', color: '#FFD6A0' }}>
+                  List your Show
+                </div>
             <div style={{ fontSize: '14px', lineHeight: '1.5', color: '#ccc' }}>
               Got a show to be listed? Partner with us & get listed on Popcorn
             </div>
           </div>
         </div>
-        <button 
-          onClick={() => {
-            navigate('/contact');
-            window.scrollTo(0, 0);
-          }}
-          style={{
-            background: 'linear-gradient(135deg, #FFD600 0%, #FFA500 100%)',
-            color: '#000',
-            border: 'none',
-            padding: '10.5px 21px',
-            borderRadius: '8px',
-            fontSize: '15px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            whiteSpace: 'nowrap',
-            boxShadow: '0 4px 16px rgba(255, 214, 0, 0.3)',
-            transition: 'all 0.3s ease',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 6px 20px rgba(255, 214, 0, 0.4)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 4px 16px rgba(255, 214, 0, 0.3)';
-          }}>
-          Contact today!
-        </button>
+                      <GlareHover
+                width="auto"
+                height="auto"
+                background="linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)"
+                borderRadius="8px"
+                borderColor="transparent"
+                glareColor="#ffffff"
+                glareOpacity={0.3}
+                glareAngle={-30}
+                glareSize={300}
+                transitionDuration={800}
+                playOnce={false}
+                style={{ display: 'inline-block' }}
+              >
+          <button 
+            onClick={() => {
+              navigate('/contact');
+              window.scrollTo(0, 0);
+            }}
+            style={{
+              background: 'transparent',
+              color: '#000',
+              border: 'none',
+              padding: '10.5px 21px',
+              borderRadius: '8px',
+              fontSize: '15px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              boxShadow: 'none',
+              transition: 'all 0.3s ease',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              pointerEvents: 'auto'
+            }}>
+            Contact today!
+          </button>
+        </GlareHover>
       </div>
 
       {/* Social Media Icons */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Star, Heart } from 'lucide-react';
+import GlareHover from '../components/GlareHover';
 import './ContactUs.css';
 
 const ContactUs = () => {
@@ -158,23 +159,39 @@ const ContactUs = () => {
                 />
               </div>
 
-              <button 
-                type="submit" 
-                className="submit-btn"
-                disabled={isSubmitting}
+              <GlareHover
+                width="100%"
+                height="auto"
+                background="linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)"
+                borderRadius="10px"
+                borderColor="transparent"
+                glareColor="#ffffff"
+                glareOpacity={0.3}
+                glareAngle={-30}
+                glareSize={300}
+                transitionDuration={800}
+                playOnce={false}
+                style={{ display: 'block' }}
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="loading-spinner"></div>
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send size={20} />
-                    Send Message
-                  </>
-                )}
-              </button>
+                <button 
+                  type="submit" 
+                  className="submit-btn"
+                  disabled={isSubmitting}
+                  style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="loading-spinner"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </GlareHover>
 
               {submitStatus === 'success' && (
                 <div className="success-message">
@@ -224,22 +241,82 @@ const ContactUs = () => {
               <h2>Stay Connected</h2>
               <p>Follow us on social media for the latest movie updates, exclusive offers, and behind-the-scenes content.</p>
               <div className="social-links">
-                <a href="#" className="social-link">
-                  <Star size={20} />
-                  <span>Facebook</span>
-                </a>
-                <a href="#" className="social-link">
-                  <Star size={20} />
-                  <span>Twitter</span>
-                </a>
-                <a href="#" className="social-link">
-                  <Star size={20} />
-                  <span>Instagram</span>
-                </a>
-                <a href="#" className="social-link">
-                  <Star size={20} />
-                  <span>LinkedIn</span>
-                </a>
+                <GlareHover
+                  width="auto"
+                  height="auto"
+                  background="rgba(255, 214, 160, 0.1)"
+                  borderRadius="25px"
+                  borderColor="rgba(255, 214, 160, 0.3)"
+                  glareColor="#ffffff"
+                  glareOpacity={0.3}
+                  glareAngle={-30}
+                  glareSize={300}
+                  transitionDuration={800}
+                  playOnce={false}
+                  style={{ display: 'inline-block' }}
+                >
+                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+                    <Star size={20} />
+                    <span>Facebook</span>
+                  </a>
+                </GlareHover>
+                <GlareHover
+                  width="auto"
+                  height="auto"
+                  background="rgba(255, 214, 160, 0.1)"
+                  borderRadius="25px"
+                  borderColor="rgba(255, 214, 160, 0.3)"
+                  glareColor="#ffffff"
+                  glareOpacity={0.3}
+                  glareAngle={-30}
+                  glareSize={300}
+                  transitionDuration={800}
+                  playOnce={false}
+                  style={{ display: 'inline-block' }}
+                >
+                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+                    <Star size={20} />
+                    <span>Twitter</span>
+                  </a>
+                </GlareHover>
+                <GlareHover
+                  width="auto"
+                  height="auto"
+                  background="rgba(255, 214, 160, 0.1)"
+                  borderRadius="25px"
+                  borderColor="rgba(255, 214, 160, 0.3)"
+                  glareColor="#ffffff"
+                  glareOpacity={0.3}
+                  glareAngle={-30}
+                  glareSize={300}
+                  transitionDuration={800}
+                  playOnce={false}
+                  style={{ display: 'inline-block' }}
+                >
+                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+                    <Star size={20} />
+                    <span>Instagram</span>
+                  </a>
+                </GlareHover>
+                <GlareHover
+                  width="auto"
+                  height="auto"
+                  background="rgba(255, 214, 160, 0.1)"
+                  borderRadius="25px"
+                  borderColor="rgba(255, 214, 160, 0.3)"
+                  glareColor="#ffffff"
+                  glareOpacity={0.3}
+                  glareAngle={-30}
+                  glareSize={300}
+                  transitionDuration={800}
+                  playOnce={false}
+                  style={{ display: 'inline-block' }}
+                >
+                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+                    <Star size={20} />
+                    <span>LinkedIn</span>
+                  </a>
+                </GlareHover>
               </div>
             </div>
             <div className="newsletter-signup">
@@ -251,10 +328,25 @@ const ContactUs = () => {
                   placeholder="Enter your email address"
                   className="newsletter-input"
                 />
-                <button className="newsletter-btn">
-                  <Heart size={16} />
-                  Subscribe
-                </button>
+                <GlareHover
+                  width="auto"
+                  height="auto"
+                  background="linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)"
+                  borderRadius="10px"
+                  borderColor="transparent"
+                  glareColor="#ffffff"
+                  glareOpacity={0.3}
+                  glareAngle={-30}
+                  glareSize={300}
+                  transitionDuration={800}
+                  playOnce={false}
+                  style={{ display: 'inline-block' }}
+                >
+                  <button className="newsletter-btn" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+                    <Heart size={16} />
+                    Subscribe
+                  </button>
+                </GlareHover>
               </div>
             </div>
           </div>

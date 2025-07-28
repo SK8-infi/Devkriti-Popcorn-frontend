@@ -76,21 +76,21 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #FFD600 0%, #FFA500 100%);
+  background: linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%);
   color: #000;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 25px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 214, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 214, 160, 0.3);
 }
 
 .filter-toggle-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 214, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(255, 214, 160, 0.4);
 }
 
 .filters-section {
@@ -124,7 +124,7 @@
 }
 
 .filters-header h3 {
-  color: #FFD600;
+  color: #FFD6A0;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
@@ -135,7 +135,7 @@
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -152,7 +152,7 @@
 
 .filter-group label {
   display: block;
-  color: #FFD600;
+  color: #FFD6A0;
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: 0.75rem;
@@ -163,7 +163,7 @@
   padding: 0.75rem 1rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 12px;
   color: #fff;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -175,9 +175,9 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #FFD600;
+  border-color: #FFD6A0;
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 214, 160, 0.1);
 }
 
 .filter-options {
@@ -191,7 +191,7 @@
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0.5rem 1rem;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -205,11 +205,11 @@
 }
 
 .filter-option.active {
-  background: linear-gradient(135deg, #FFD600 0%, #FFA500 100%);
+  background: linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%);
   color: #000;
-  border-color: #FFD600;
+  border-color: #FFD6A0;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(255, 214, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 214, 160, 0.3);
 }
 
 .active-filters {
@@ -224,7 +224,7 @@
 }
 
 .active-filters span:first-child {
-  color: #FFD600;
+  color: #FFD6A0;
   font-weight: 600;
   margin-right: 0.5rem;
 }
@@ -233,20 +233,20 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: rgba(255, 214, 0, 0.2);
-  color: #FFD600;
+  background: rgba(255, 214, 160, 0.2);
+  color: #FFD6A0;
   padding: 0.25rem 0.75rem;
-  border-radius: 15px;
+  border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
-  border: 1px solid rgba(255, 214, 0, 0.3);
+  border: 1px solid rgba(255, 214, 160, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .active-filter-tag:hover {
-  background: rgba(255, 214, 0, 0.3);
-  border-color: rgba(255, 214, 0, 0.5);
+  background: rgba(255, 214, 160, 0.3);
+  border-color: rgba(255, 214, 160, 0.5);
 }
 
 .active-filter-tag svg {
@@ -266,7 +266,7 @@
 }
 
 .no-results h3 {
-  color: #FFD600;
+  color: #FFD6A0;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }

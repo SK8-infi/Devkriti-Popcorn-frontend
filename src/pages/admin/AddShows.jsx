@@ -22,6 +22,16 @@ const AddShows = () => {
     const [selectedRoomType, setSelectedRoomType] = useState('Normal');
     const [selectedRoomId, setSelectedRoomId] = useState('');
     const [existingShows, setExistingShows] = useState([]);
+    
+    // Custom time picker state
+    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedHour, setSelectedHour] = useState("12");
+    const [selectedMinute, setSelectedMinute] = useState("00");
+    const [showTimePicker, setShowTimePicker] = useState(false);
+
+    // Generate minutes in multiples of 5
+    const minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+    const hours = Array.from({length: 24}, (_, i) => i.toString().padStart(2, '0'));
 
     const fetchNowPlayingMovies = async () => {
         try {
@@ -36,17 +46,23 @@ const AddShows = () => {
     };
 
     const handleDateTimeAdd = () => {
-        if (!dateTimeInput) return;
-        const [date, time] = dateTimeInput.split("T");
-        if (!date || !time) return;
-
+        if (!selectedDate || !selectedHour || !selectedMinute) return;
+        
+        const timeString = `${selectedHour}:${selectedMinute}`;
+        const dateTimeString = `${selectedDate}T${timeString}`;
+        
         setDateTimeSelection((prev) => {
-            const times = prev[date] || [];
-            if (!times.includes(time)) {
-                return { ...prev, [date]: [...times, time] };
+            const times = prev[selectedDate] || [];
+            if (!times.includes(timeString)) {
+                return { ...prev, [selectedDate]: [...times, timeString] };
             }
             return prev;
         });
+        
+        // Reset time picker
+        setSelectedHour("12");
+        setSelectedMinute("00");
+        setShowTimePicker(false);
     };
 
     const handleRemoveTime = (date, time) => {
@@ -220,13 +236,76 @@ const AddShows = () => {
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <label className="block text-sm font-semibold mb-3 text-white">Select Date and Time</label>
           <div className="flex gap-3 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <input type="datetime-local" value={dateTimeInput} onChange={(e) => setDateTimeInput(e.target.value)} className="outline-none rounded-md w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
-            <button onClick={handleDateTimeAdd} className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg shadow hover:bg-primary/80 transition-all cursor-pointer font-semibold" >
+            <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="outline-none rounded-md w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+            <button onClick={() => setShowTimePicker(true)} className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg shadow hover:bg-primary/80 transition-all cursor-pointer font-semibold" >
+              Select Time
+            </button>
+            <button onClick={handleDateTimeAdd} disabled={!selectedDate || !selectedHour || !selectedMinute} className="bg-amber-200/90 text-amber-900 px-4 py-2 text-sm rounded-lg shadow hover:bg-amber-300/80 transition-all cursor-pointer font-semibold disabled:opacity-50 disabled:cursor-not-allowed" >
               Add Time
             </button>
           </div>
         </div>
       </div>
+
+      {/* Custom Time Picker Modal */}
+      {showTimePicker && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center relative border-2 border-primary">
+            <h2 className="text-2xl font-bold mb-4 text-black">Select Time</h2>
+            <div className="flex gap-4 mb-6">
+              {/* Hour Selection */}
+              <div className="flex flex-col items-center">
+                <label className="text-sm font-semibold text-black mb-2">Hour</label>
+                <select 
+                  value={selectedHour} 
+                  onChange={(e) => setSelectedHour(e.target.value)}
+                  className="border border-primary/40 p-3 rounded text-lg bg-primary/5 text-black"
+                >
+                  {hours.map(hour => (
+                    <option key={hour} value={hour}>{hour}</option>
+                  ))}
+                </select>
+              </div>
+              {/* Minute Selection */}
+              <div className="flex flex-col items-center">
+                <label className="text-sm font-semibold text-black mb-2">Minute</label>
+                <select 
+                  value={selectedMinute} 
+                  onChange={(e) => setSelectedMinute(e.target.value)}
+                  className="border border-primary/40 p-3 rounded text-lg bg-primary/5 text-black"
+                >
+                  {minutes.map(minute => (
+                    <option key={minute} value={minute}>{minute}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="text-lg font-semibold text-black mb-6">
+              Selected Time: {selectedHour}:{selectedMinute}
+            </div>
+            <div className="flex gap-3 justify-center items-center">
+              <button
+                onClick={() => setShowTimePicker(false)}
+                className="bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold text-lg hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setShowTimePicker(false)}
+                className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold text-lg hover:bg-green-700 transition"
+              >
+                OK
+              </button>
+              <button
+                onClick={() => setShowTimePicker(false)}
+                className="bg-primary text-white px-6 py-2 rounded-lg font-semibold text-lg hover:bg-primary/90 transition"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
        {/* Display Selected Times */}
         {Object.keys(dateTimeSelection).length > 0 && (

@@ -16,7 +16,6 @@ const Movies = () => {
   // Filter states
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
-  const [selectedFormats, setSelectedFormats] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -78,11 +77,7 @@ const Movies = () => {
     return Array.from(languages).sort();
   };
 
-  const getUniqueFormats = () => {
-    // For now, we'll use common movie formats
-    // In a real app, this would come from the backend based on available show formats
-    return ['2D', '3D', 'IMAX', '4DX', 'Dolby Atmos'];
-  };
+
 
   const getUniqueRatings = () => {
     // Define rating ranges for filtering
@@ -161,13 +156,7 @@ const Movies = () => {
         if (!hasSelectedLanguage) return false;
       }
 
-      // Format filter - for now, we'll show all movies as they might have different formats
-      // In a real implementation, this would check against available show formats
-      if (selectedFormats.length > 0) {
-        // For demo purposes, we'll assume all movies have all formats
-        // In reality, this would check the actual show formats available
-        return true;
-      }
+
 
       // Rating filter
       if (selectedRatings.length > 0) {
@@ -186,7 +175,6 @@ const Movies = () => {
   const clearAllFilters = () => {
     setSelectedGenres([]);
     setSelectedLanguages([]);
-    setSelectedFormats([]);
     setSelectedRatings([]);
     setSearchTerm('');
   };
@@ -207,13 +195,7 @@ const Movies = () => {
     );
   };
 
-  const toggleFormat = (format) => {
-    setSelectedFormats(prev => 
-      prev.includes(format) 
-        ? prev.filter(f => f !== format)
-        : [...prev, format]
-    );
-  };
+
 
   const toggleRating = (rating) => {
     setSelectedRatings(prev => 
@@ -258,7 +240,6 @@ const Movies = () => {
   const filteredMovies = getFilteredMovies();
   const uniqueGenres = getUniqueGenres();
   const uniqueLanguages = getUniqueLanguages();
-  const uniqueFormats = getUniqueFormats();
 
   return noResult ? (
     <div className='movies-empty'>
@@ -331,21 +312,7 @@ const Movies = () => {
             </div>
           </div>
 
-          {/* Formats */}
-          <div className="filter-group">
-            <label>Formats</label>
-            <div className="filter-options">
-              {uniqueFormats.map(format => (
-                <button
-                  key={format}
-                  onClick={() => toggleFormat(format)}
-                  className={`filter-option ${selectedFormats.includes(format) ? 'active' : ''}`}
-                >
-                  {format}
-                </button>
-              ))}
-            </div>
-          </div>
+
 
           {/* Ratings */}
           <div className="filter-group">
@@ -364,7 +331,7 @@ const Movies = () => {
           </div>
 
           {/* Active Filters Display */}
-          {(selectedGenres.length > 0 || selectedLanguages.length > 0 || selectedFormats.length > 0 || selectedRatings.length > 0 || searchTerm) && (
+          {(selectedGenres.length > 0 || selectedLanguages.length > 0 || selectedRatings.length > 0 || searchTerm) && (
             <div className="active-filters">
               <span>Active Filters:</span>
               {selectedGenres.map(genre => (
@@ -375,11 +342,6 @@ const Movies = () => {
               {selectedLanguages.map(language => (
                 <span key={language} className="active-filter-tag">
                   {language} <XIcon size={12} onClick={() => toggleLanguage(language)} />
-                </span>
-              ))}
-              {selectedFormats.map(format => (
-                <span key={format} className="active-filter-tag">
-                  {format} <XIcon size={12} onClick={() => toggleFormat(format)} />
                 </span>
               ))}
               {selectedRatings.map(rating => (

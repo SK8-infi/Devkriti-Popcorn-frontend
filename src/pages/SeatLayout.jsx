@@ -80,7 +80,11 @@ const SeatLayout = () => {
 
   const bookTickets = async ()=>{
     try {
-      if(!user) return toast.error('Please login to proceed')
+      if(!user) {
+        toast.error('Please login to book tickets')
+        // Optionally redirect to login or show login modal
+        return
+      }
 
         if(!selectedTime || !selectedSeats.length) return toast.error('Please select a time and seats');
 

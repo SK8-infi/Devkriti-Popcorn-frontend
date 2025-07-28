@@ -36,6 +36,11 @@ export const AppProvider = ({ children })=>{
             }
         } catch (error) {
             console.error(error)
+            // Don't show error for non-authenticated users
+            if (user && location.pathname.startsWith('/admin')){
+                navigate('/')
+                toast.error('You are not authorized to access admin dashboard')
+            }
         }
     }
 
@@ -59,10 +64,17 @@ export const AppProvider = ({ children })=>{
             if(data.success){
                 setFavoriteMovies(data.movies)
             }else{
-                toast.error(data.message)
+                // Don't show error for non-authenticated users
+                if (user) {
+                    toast.error(data.message)
+                }
             }
         } catch (error) {
             console.error(error)
+            // Don't show error for non-authenticated users
+            if (user) {
+                toast.error('Failed to fetch favorites')
+            }
         }
     }
 
@@ -86,6 +98,10 @@ export const AppProvider = ({ children })=>{
         if(user){
             fetchIsAdmin()
             fetchFavoriteMovies()
+        } else {
+            // Reset admin status for non-authenticated users
+            setIsAdmin(false)
+            setFavoriteMovies([])
         }
     },[user])
 

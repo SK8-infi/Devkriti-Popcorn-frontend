@@ -17,6 +17,7 @@ const Movies = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedFormats, setSelectedFormats] = useState([]);
+  const [selectedRatings, setSelectedRatings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
   const location = useLocation();
@@ -25,7 +26,7 @@ const Movies = () => {
   // Get unique genres, languages, and formats from movies
   const getUniqueGenres = () => {
     const genres = new Set();
-    allMovies.forEach(movie => {
+    movies.forEach(movie => {
       if (movie.genres && Array.isArray(movie.genres)) {
         movie.genres.forEach(genre => genres.add(genre.name));
       }
@@ -36,7 +37,7 @@ const Movies = () => {
   const getUniqueLanguages = () => {
     const languages = new Set();
     
-    allMovies.forEach(movie => {
+    movies.forEach(movie => {
       if (movie.spoken_languages && Array.isArray(movie.spoken_languages)) {
         movie.spoken_languages.forEach(lang => {
           languages.add(lang.english_name);
@@ -83,9 +84,20 @@ const Movies = () => {
     return ['2D', '3D', 'IMAX', '4DX', 'Dolby Atmos'];
   };
 
+  const getUniqueRatings = () => {
+    // Define rating ranges for filtering
+    return [
+      { label: '9+ Stars', min: 9, max: 10 },
+      { label: '8+ Stars', min: 8, max: 10 },
+      { label: '7+ Stars', min: 7, max: 10 },
+      { label: '6+ Stars', min: 6, max: 10 },
+      { label: '5+ Stars', min: 5, max: 10 }
+    ];
+  };
+
   // Filter movies based on selected filters
   const getFilteredMovies = () => {
-    return allMovies.filter(movie => {
+    return movies.filter(movie => {
       // Search term filter
       if (searchTerm && !movie.title.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
@@ -157,6 +169,16 @@ const Movies = () => {
         return true;
       }
 
+      // Rating filter
+      if (selectedRatings.length > 0) {
+        const movieRating = movie.vote_average || 0;
+        const hasSelectedRating = selectedRatings.some(ratingRange => {
+          const rating = getUniqueRatings().find(r => r.label === ratingRange);
+          return rating && movieRating >= rating.min && movieRating <= rating.max;
+        });
+        if (!hasSelectedRating) return false;
+      }
+
       return true;
     });
   };
@@ -165,6 +187,7 @@ const Movies = () => {
     setSelectedGenres([]);
     setSelectedLanguages([]);
     setSelectedFormats([]);
+    setSelectedRatings([]);
     setSearchTerm('');
   };
 
@@ -189,6 +212,14 @@ const Movies = () => {
       prev.includes(format) 
         ? prev.filter(f => f !== format)
         : [...prev, format]
+    );
+  };
+
+  const toggleRating = (rating) => {
+    setSelectedRatings(prev => 
+      prev.includes(rating) 
+        ? prev.filter(r => r !== rating)
+        : [...prev, rating]
     );
   };
 
@@ -316,8 +347,24 @@ const Movies = () => {
             </div>
           </div>
 
+          {/* Ratings */}
+          <div className="filter-group">
+            <label>Ratings</label>
+            <div className="filter-options">
+              {getUniqueRatings().map(rating => (
+                <button
+                  key={rating.label}
+                  onClick={() => toggleRating(rating.label)}
+                  className={`filter-option ${selectedRatings.includes(rating.label) ? 'active' : ''}`}
+                >
+                  {rating.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Active Filters Display */}
-          {(selectedGenres.length > 0 || selectedLanguages.length > 0 || selectedFormats.length > 0 || searchTerm) && (
+          {(selectedGenres.length > 0 || selectedLanguages.length > 0 || selectedFormats.length > 0 || selectedRatings.length > 0 || searchTerm) && (
             <div className="active-filters">
               <span>Active Filters:</span>
               {selectedGenres.map(genre => (
@@ -333,6 +380,11 @@ const Movies = () => {
               {selectedFormats.map(format => (
                 <span key={format} className="active-filter-tag">
                   {format} <XIcon size={12} onClick={() => toggleFormat(format)} />
+                </span>
+              ))}
+              {selectedRatings.map(rating => (
+                <span key={rating} className="active-filter-tag">
+                  {rating} <XIcon size={12} onClick={() => toggleRating(rating)} />
                 </span>
               ))}
               {searchTerm && (

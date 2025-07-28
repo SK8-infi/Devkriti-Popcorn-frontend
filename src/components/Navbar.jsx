@@ -37,8 +37,16 @@ const Navbar = () => {
  const [cityError, setCityError] = useState("");
  const [searchQuery, setSearchQuery] = useState("");
 
- // Fetch user's city from backend
+ // Fetch user's city from backend or localStorage
  useEffect(() => {
+   // Check localStorage first for non-authenticated users
+   const savedCity = localStorage.getItem('userCity');
+   if (savedCity) {
+     setUserCity(savedCity);
+     setSelectedCity(savedCity);
+   }
+   
+   // If user is authenticated, fetch from backend
    if (user) {
      setLoadingCity(true);
      fetch(`/api/user/by-id/${user.id}`)
@@ -47,7 +55,8 @@ const Navbar = () => {
          if (data.success && data.user && data.user.city) {
            setUserCity(data.user.city);
            setSelectedCity(data.user.city);
-         } else {
+           localStorage.setItem('userCity', data.user.city);
+         } else if (!savedCity) {
            setUserCity("");
            setSelectedCity("");
          }
@@ -56,6 +65,8 @@ const Navbar = () => {
        .catch(() => {
          setLoadingCity(false);
        });
+   } else {
+     setLoadingCity(false);
    }
  }, [user]);
 
@@ -66,6 +77,35 @@ const Navbar = () => {
      return;
    }
    setSavingCity(true);
+   
+   // For non-authenticated users, save to localStorage and backend
+   if (!user) {
+     localStorage.setItem('userCity', selectedCity);
+     setUserCity(selectedCity);
+     
+     // Also save to backend for consistency
+     fetch('/api/user/update-city-public', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({ city: selectedCity }),
+     })
+     .then(() => {
+       setShowLocationModal(false);
+       setCityError("");
+       setSavingCity(false);
+     })
+     .catch(() => {
+       // Even if backend fails, we still save to localStorage
+       setShowLocationModal(false);
+       setCityError("");
+       setSavingCity(false);
+     });
+     return;
+   }
+   
+   // For authenticated users, save to backend
    fetch('/api/user/update-city', {
      method: 'POST',
      headers: {
@@ -78,6 +118,7 @@ const Navbar = () => {
      .then(data => {
        if (data.success) {
          setUserCity(selectedCity);
+         localStorage.setItem('userCity', selectedCity);
          setShowLocationModal(false);
          setCityError("");
        } else {
@@ -110,7 +151,7 @@ const Navbar = () => {
             <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Contact Us</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/contact' className='navbar-link'>Contact Us</Link>
           </motion.div>
         </div>
         {/* Mobile Menu */}
@@ -127,7 +168,7 @@ const Navbar = () => {
               <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Contact Us</Link>
+              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/contact' className='navbar-link'>Contact Us</Link>
             </motion.div>
           </div>
         )}

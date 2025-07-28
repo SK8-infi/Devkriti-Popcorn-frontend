@@ -43,8 +43,13 @@ const MyBookings = () => {
   if (!user) {
     return (
       <div className='mybookings-empty' style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <h1 className='mybookings-empty-title'>You need to be logged in to view your bookings.</h1>
-        <div style={{ marginTop: '1.5rem' }}>
+        <h1 className='mybookings-empty-title'>Welcome to Popcorn!</h1>
+        <p style={{ color: '#888', marginTop: '0.5rem', textAlign: 'center' }}>
+          Browse movies, select your location, and explore our theatre listings.<br/>
+          Login to book tickets and manage your bookings.
+        </p>
+        <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem' }}>
+          <button onClick={() => window.location.href = '/movies'} className='mybookings-pay-btn'>Browse Movies</button>
           <button onClick={openSignIn} className='mybookings-pay-btn'>Login</button>
         </div>
       </div>

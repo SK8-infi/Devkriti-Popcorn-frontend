@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext'
 import './Navbar.css'
 import Dock from './Dock';
 import ticket from '../assets/ticket.svg';
-import heart from '../assets/heart.svg';
+import heart from '../assets/heart.png';
 import notification from '../assets/notification.svg';
 import robot from '../assets/robot.svg';
 import { motion } from 'framer-motion';
@@ -34,49 +34,102 @@ const Navbar = () => {
  const [cityError, setCityError] = useState("");
  const [searchQuery, setSearchQuery] = useState("");
 
- // User dropdown state
- const [showUserDropdown, setShowUserDropdown] = useState(false);
+// User dropdown state
+const [showUserDropdown, setShowUserDropdown] = useState(false);
 
- // Fetch user's city from backend
- useEffect(() => {
-   if (user) {
-     setLoadingCity(true);
-     setUserCity(user.city || "");
-     setSelectedCity(user.city || "");
-         setLoadingCity(false);
-   }
- }, [user]);
+// Fetch user's city from backend or localStorage
+useEffect(() => {
+  const savedCity = localStorage.getItem('userCity');
+  if (savedCity) {
+    setUserCity(savedCity);
+    setSelectedCity(savedCity);
+  }
 
- // Handle city save
- const handleSaveCity = async () => {
-   if (!selectedCity) {
-     setCityError("Please select a city.");
-     return;
-   }
-   setSavingCity(true);
-   try {
-     const response = await fetch('/api/user/update-city', {
-     method: 'POST',
-     headers: {
-       'Content-Type': 'application/json',
-         'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-     },
-     body: JSON.stringify({ city: selectedCity }),
-     });
-     const data = await response.json();
-       if (data.success) {
-         setUserCity(selectedCity);
-         setShowLocationModal(false);
-         setCityError("");
-       } else {
-         setCityError(data.message || "Failed to update city.");
-       }
-   } catch (error) {
-       setCityError("Failed to update city.");
-   } finally {
-       setSavingCity(false);
-   }
- };
+  // If user is authenticated, fetch from backend
+  if (user) {
+    setLoadingCity(true);
+
+    fetch(`/api/user/by-id/${user.id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.user && data.user.city) {
+          setUserCity(data.user.city);
+          setSelectedCity(data.user.city);
+          localStorage.setItem('userCity', data.user.city);
+        } else if (!savedCity) {
+          setUserCity("");
+          setSelectedCity("");
+        }
+        setLoadingCity(false);
+      })
+      .catch(() => {
+        setLoadingCity(false);
+      });
+  } else {
+    setLoadingCity(false);
+  }
+}, [user]);
+
+// Handle city save
+const handleSaveCity = async () => {
+  if (!selectedCity) {
+    setCityError("Please select a city.");
+    return;
+  }
+
+  setSavingCity(true);
+
+  if (!user) {
+    // Non-authenticated user: store in localStorage and send to public API
+    localStorage.setItem('userCity', selectedCity);
+    setUserCity(selectedCity);
+
+    try {
+      await fetch('/api/user/update-city-public', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ city: selectedCity }),
+      });
+    } catch (error) {
+      // Backend failed — we already saved locally
+    }
+
+    setShowLocationModal(false);
+    setCityError("");
+    setSavingCity(false);
+    return;
+  }
+
+  // Authenticated user: update via secured API
+  try {
+    const response = await fetch('/api/user/update-city', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      },
+      body: JSON.stringify({ city: selectedCity }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setUserCity(selectedCity);
+      localStorage.setItem('userCity', selectedCity);
+      setShowLocationModal(false);
+      setCityError("");
+    } else {
+      setCityError(data.message || "Failed to update city.");
+    }
+  } catch (error) {
+    setCityError("Failed to update city.");
+  } finally {
+    setSavingCity(false);
+  }
+};
+
 
  const handleLogin = () => {
    login();
@@ -107,7 +160,7 @@ const Navbar = () => {
             <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Contact Us</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/contact' className='navbar-link'>Contact Us</Link>
           </motion.div>
         </div>
         {/* Mobile Menu */}
@@ -124,7 +177,7 @@ const Navbar = () => {
               <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Contact Us</Link>
+              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/contact' className='navbar-link'>Contact Us</Link>
             </motion.div>
           </div>
         )}

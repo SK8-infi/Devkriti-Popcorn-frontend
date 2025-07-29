@@ -54,9 +54,9 @@ const TrailersSection = () => {
   };
 
   return (
-    <section className="trailers-section" style={{ width: '100%', color: '#ffefcb', padding: '60px 0 80px 0', position: 'relative', marginBottom: '100px', overflow: 'hidden' }}>
+    <section className="trailers-section" style={{ width: '100%', color: '#ffefcb', padding: '40px 0 80px 0', position: 'relative', overflow: 'hidden', backgroundColor: '#000000', marginBottom: '60px' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-        <p className="trailers-title" style={{ fontSize: '1.6rem', color: '#FFD6A0', letterSpacing: '1px', marginBottom: 32 }}>Trailers</p>
+        <p className="trailers-title" style={{ fontSize: '1.6rem', color: '#FFD6A0', letterSpacing: '1px', marginBottom: 32, fontWeight: 'bold' }}>Trailers</p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, position: 'relative', minHeight: 380 }}>
           <button onClick={handleLeft} disabled={centerIdx === 0} style={{ background: 'none', border: 'none', color: '#FFD6A0', fontSize: 40, cursor: centerIdx === 0 ? 'not-allowed' : 'pointer', padding: 0, marginRight: 12, zIndex: 2 }}>&#8592;</button>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, width: 1100, overflow: 'visible', position: 'relative' }}>

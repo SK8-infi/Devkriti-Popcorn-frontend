@@ -63,11 +63,11 @@ const FeaturedSection = () => {
   }
 
   return (
-    <section className='featured-section' style={{ width: '100%', color: '#ffefcb', padding: '20px 0 80px 0', position: 'relative', marginBottom: '60px', overflow: 'hidden' }}>
+    <section className='featured-section' style={{ width: '100%', color: '#ffefcb', padding: '20px 0 60px 0', position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div className='featured-header' style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingTop: '2.5rem', paddingBottom: '1.5rem' }}>
-          <p className='featured-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px' }}>NOW SHOWING</p>
+          <p className='featured-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px', fontWeight: 'bold' }}>NOW SHOWING</p>
           <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
               View All 
               <ArrowRight style={{transition: 'transform 0.2s'}}/>

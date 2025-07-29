@@ -148,6 +148,27 @@
 }
 
 .movie-card-tmdb:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px) scale(1.05);
   box-shadow: 0 8px 25px rgba(16,30,54,.15);
+} 
+
+.movie-card-show-trailer-btn {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 4px 15px rgba(16, 30, 54, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.movie-card-show-trailer-btn:hover {
+  background: #111;
+  color: #fff;
+  transform: scale(1.10);
+  box-shadow: 0 8px 24px rgba(16, 30, 54, 0.18);
 } 

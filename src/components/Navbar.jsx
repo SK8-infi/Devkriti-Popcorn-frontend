@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { MenuIcon, SearchIcon, TicketPlus, XIcon, MapPin, Heart } from 'lucide-react'
-import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
+import { MenuIcon, SearchIcon, TicketPlus, XIcon, MapPin, Heart, User, LogOut } from 'lucide-react'
 import { useAppContext } from '../context/AppContext'
 import './Navbar.css'
 import Dock from './Dock';
@@ -20,12 +19,10 @@ const Navbar = () => {
  const [isOpen, setIsOpen] = useState(false)
  const [showSearch, setShowSearch] = useState(false)
  const searchInputRef = React.useRef(null)
- const {user} = useUser()
- const {openSignIn} = useClerk()
+ const { user, isAuthenticated, login, logout } = useAppContext()
 
  const navigate = useNavigate()
 
- const {favoriteMovies} = useAppContext()
  const [menuOpen, setMenuOpen] = useState(false);
 
  // Location modal state
@@ -37,45 +34,36 @@ const Navbar = () => {
  const [cityError, setCityError] = useState("");
  const [searchQuery, setSearchQuery] = useState("");
 
+ // User dropdown state
+ const [showUserDropdown, setShowUserDropdown] = useState(false);
+
  // Fetch user's city from backend
  useEffect(() => {
    if (user) {
      setLoadingCity(true);
-     fetch(`/api/user/by-id/${user.id}`)
-       .then(res => res.json())
-       .then(data => {
-         if (data.success && data.user && data.user.city) {
-           setUserCity(data.user.city);
-           setSelectedCity(data.user.city);
-         } else {
-           setUserCity("");
-           setSelectedCity("");
-         }
+     setUserCity(user.city || "");
+     setSelectedCity(user.city || "");
          setLoadingCity(false);
-       })
-       .catch(() => {
-         setLoadingCity(false);
-       });
    }
  }, [user]);
 
  // Handle city save
- const handleSaveCity = () => {
+ const handleSaveCity = async () => {
    if (!selectedCity) {
      setCityError("Please select a city.");
      return;
    }
    setSavingCity(true);
-   fetch('/api/user/update-city', {
+   try {
+     const response = await fetch('/api/user/update-city', {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json',
+         'Authorization': `Bearer ${localStorage.getItem('authToken')}`
      },
      body: JSON.stringify({ city: selectedCity }),
-     credentials: 'include',
-   })
-     .then(res => res.json())
-     .then(data => {
+     });
+     const data = await response.json();
        if (data.success) {
          setUserCity(selectedCity);
          setShowLocationModal(false);
@@ -83,12 +71,21 @@ const Navbar = () => {
        } else {
          setCityError(data.message || "Failed to update city.");
        }
-       setSavingCity(false);
-     })
-     .catch(() => {
+   } catch (error) {
        setCityError("Failed to update city.");
+   } finally {
        setSavingCity(false);
-     });
+   }
+ };
+
+ const handleLogin = () => {
+   login();
+ };
+
+ const handleLogout = () => {
+   logout();
+   setShowUserDropdown(false);
+   navigate('/');
  };
 
   return (
@@ -161,14 +158,154 @@ const Navbar = () => {
             />
           )}
           {
-              !user ? (
-                  <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} onClick={openSignIn} className='navbar-login-btn'>Login</motion.button>
+              !isAuthenticated ? (
+                  <div style={{ position: 'relative' }}>
+                    <motion.button 
+                      whileHover={{ scale: 1.18 }} 
+                      whileFocus={{ scale: 1.18 }} 
+                      onClick={() => setShowUserDropdown(!showUserDropdown)} 
+                      className='navbar-login-btn'
+                    >
+                      Login
+                    </motion.button>
+                    {showUserDropdown && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        right: 0,
+                        background: '#000',
+                        border: '1px solid #333',
+                        borderRadius: '8px',
+                        padding: '8px 0',
+                        minWidth: '150px',
+                        zIndex: 1000,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                      }}>
+                        <button
+                          onClick={handleLogin}
+                          style={{
+                            width: '100%',
+                            padding: '8px 16px',
+                            background: 'none',
+                            border: 'none',
+                            color: '#fff',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <img src="https://www.google.com/favicon.ico" alt="Google" style={{ width: 16, height: 16 }} />
+                          Login with Google
+                        </button>
+                      </div>
+                    )}
+                  </div>
               ) : (
-                  <UserButton>
-                      <UserButton.MenuItems>
-                          <UserButton.Action label="My Bookings" labelIcon={<TicketPlus width={15}/>} onClick={()=> navigate('/my-bookings')}/>
-                      </UserButton.MenuItems>
-                  </UserButton>
+                  <div style={{ position: 'relative' }}>
+                    <motion.button 
+                      whileHover={{ scale: 1.18 }} 
+                      whileFocus={{ scale: 1.18 }} 
+                      onClick={() => setShowUserDropdown(!showUserDropdown)} 
+                      className='navbar-user-btn'
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#fff',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}
+                    >
+                      {user?.image ? (
+                        <img 
+                          src={user.image} 
+                          alt={user.name} 
+                          style={{ 
+                            width: 32, 
+                            height: 32, 
+                            borderRadius: '50%',
+                            objectFit: 'cover'
+                          }} 
+                        />
+                      ) : (
+                        <User size={20} />
+                      )}
+                      <span style={{ fontSize: 14 }}>{user?.name}</span>
+                    </motion.button>
+                    {showUserDropdown && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        right: 0,
+                        background: '#000',
+                        border: '1px solid #333',
+                        borderRadius: '8px',
+                        padding: '8px 0',
+                        minWidth: '180px',
+                        zIndex: 1000,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                      }}>
+                        <button
+                          onClick={() => { navigate('/my-bookings'); setShowUserDropdown(false); }}
+                          style={{
+                            width: '100%',
+                            padding: '8px 16px',
+                            background: 'none',
+                            border: 'none',
+                            color: '#fff',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <TicketPlus size={16} />
+                          My Bookings
+                        </button>
+                        <button
+                          onClick={() => { navigate('/favorite'); setShowUserDropdown(false); }}
+                          style={{
+                            width: '100%',
+                            padding: '8px 16px',
+                            background: 'none',
+                            border: 'none',
+                            color: '#fff',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <Heart size={16} />
+                          Favorites
+                        </button>
+                        <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid #333' }} />
+                        <button
+                          onClick={handleLogout}
+                          style={{
+                            width: '100%',
+                            padding: '8px 16px',
+                            background: 'none',
+                            border: 'none',
+                            color: '#ff4444',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <LogOut size={16} />
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </div>
               )
           }
         </div>

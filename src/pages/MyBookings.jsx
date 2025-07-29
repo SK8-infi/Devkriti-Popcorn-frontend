@@ -5,27 +5,22 @@ import timeFormat from '../lib/timeFormat'
 import { dateFormat } from '../lib/dateFormat'
 import { useAppContext } from '../context/AppContext'
 import { Link } from 'react-router-dom'
-import { useClerk } from '@clerk/clerk-react'
 import './MyBookings.css'
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY
 
-  const { axios, getToken, user, image_base_url} = useAppContext()
-  const { openSignIn } = useClerk()
+  const { api, user, image_base_url, login } = useAppContext()
 
   const [bookings, setBookings] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   const getMyBookings = async () =>{
     try {
-      const {data} = await axios.get('/api/user/bookings', {
-        headers: { Authorization: `Bearer ${await getToken()}` }
-      })
-        if (data.success) {
-          setBookings(data.bookings)
-        }
-
+      const {data} = await api.get('/api/user/bookings')
+      if (data.success) {
+        setBookings(data.bookings)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -45,7 +40,7 @@ const MyBookings = () => {
       <div className='mybookings-empty' style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <h1 className='mybookings-empty-title'>You need to be logged in to view your bookings.</h1>
         <div style={{ marginTop: '1.5rem' }}>
-          <button onClick={openSignIn} className='mybookings-pay-btn'>Login</button>
+          <button onClick={login} className='mybookings-pay-btn'>Login with Google</button>
         </div>
       </div>
     )

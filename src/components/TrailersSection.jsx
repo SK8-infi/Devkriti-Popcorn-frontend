@@ -76,13 +76,22 @@ const TrailersSection = () => {
                 marginRight: -60,
                 transition: 'all 0.3s',
               }}>
-                <ReactPlayer
-                  url={trailers[centerIdx - 1]?.youtube_url || trailers[centerIdx - 1]?.videoUrl}
-                  controls={false}
-                  width="100%"
-                  height="260px"
-                  style={{ borderRadius: 16, background: '#111' }}
-                />
+                              <ReactPlayer
+                url={trailers[centerIdx - 1]?.youtube_url || trailers[centerIdx - 1]?.videoUrl}
+                controls={false}
+                width="100%"
+                height="260px"
+                style={{ borderRadius: 16, background: '#111' }}
+                config={{
+                  youtube: {
+                    playerVars: {
+                      origin: window.location.origin,
+                      modestbranding: 1,
+                      rel: 0
+                    }
+                  }
+                }}
+              />
               </div>
             )}
             {/* Center trailer with animation */}
@@ -111,6 +120,15 @@ const TrailersSection = () => {
                 width="100%"
                 height="520px"
                 style={{ borderRadius: 28, background: '#111' }}
+                config={{
+                  youtube: {
+                    playerVars: {
+                      origin: window.location.origin,
+                      modestbranding: 1,
+                      rel: 0
+                    }
+                  }
+                }}
               />
             </div>
             {/* Right trailer (if exists) */}
@@ -135,6 +153,15 @@ const TrailersSection = () => {
                   width="100%"
                   height="260px"
                   style={{ borderRadius: 16, background: '#111' }}
+                  config={{
+                    youtube: {
+                      playerVars: {
+                        origin: window.location.origin,
+                        modestbranding: 1,
+                        rel: 0
+                      }
+                    }
+                  }}
                 />
               </div>
             )}

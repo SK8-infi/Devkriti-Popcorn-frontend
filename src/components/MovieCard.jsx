@@ -15,11 +15,14 @@ const MovieCard = ({movie}) => {
     <div className='movie-card movie-card-tmdb' style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px 0 rgba(16,30,54,.08)', overflow: 'hidden', width: 220, height: 440, display: 'flex', flexDirection: 'column', position: 'relative', transition: 'box-shadow 0.2s, transform 0.2s' }}>
       <div style={{ position: 'relative', width: '100%', height: 330 }}>
         <img
-          onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
-          src={image_base_url + movie.poster_path}
-          alt={movie.title}
+          onClick={() => { if (movie.id || movie._id) { navigate(`/movies/${movie.id || movie._id}`); scrollTo(0, 0); } }}
+          src={movie.poster_path ? image_base_url + movie.poster_path : '/placeholder-movie.jpg'}
+          alt={movie.title || 'Movie'}
           className='movie-card-img'
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 0 }}
+          onError={(e) => {
+            e.target.src = '/placeholder-movie.jpg';
+          }}
         />
         <div style={{ position: 'absolute', left: 16, bottom: 0, zIndex: 2, transform: 'translateY(50%)' }}>
           <CircularRating value={typeof movie.vote_average === 'number' ? movie.vote_average * 10 : 0} size={40} />
@@ -36,7 +39,7 @@ const MovieCard = ({movie}) => {
       <div className="movie-card-book-btn-container">
         <button 
           className="movie-card-book-btn"
-          onClick={() => { if (movie.id) { navigate(`/movies/${movie.id}`); scrollTo(0, 0); } }}
+          onClick={() => { if (movie.id || movie._id) { navigate(`/movies/${movie.id || movie._id}`); scrollTo(0, 0); } }}
         >
           Book Now
         </button>

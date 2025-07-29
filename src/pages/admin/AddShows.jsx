@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const AddShows = () => {
 
-    const {axios, getToken, user, image_base_url, theatre, theatreId} = useAppContext()
+    const {api, user, isAdmin} = useAppContext()
 
     const currency = import.meta.env.VITE_CURRENCY
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -25,8 +25,7 @@ const AddShows = () => {
 
     const fetchNowPlayingMovies = async () => {
         try {
-            const { data } = await axios.get('/api/show/now-playing', {
-                headers: { Authorization: `Bearer ${await getToken()}` }})
+            const { data } = await api.get('/api/show/now-playing')
                 if(data.success){
                     setNowPlayingMovies(data.movies)
                 }
@@ -66,7 +65,7 @@ const AddShows = () => {
     // Fetch rooms
     const fetchRooms = async () => {
       try {
-        const { data } = await axios.get('/api/admin/my-theatre', { headers: { Authorization: `Bearer ${await getToken()}` } });
+        const { data } = await api.get('/api/admin/my-theatre');
         if (data.success && data.theatre && data.theatre.rooms) {
           setRooms(data.theatre.rooms);
         } else {
@@ -80,7 +79,7 @@ const AddShows = () => {
     // Fetch existing shows for the theatre
     const fetchExistingShows = async () => {
       try {
-        const { data } = await axios.get('/api/admin/shows', { headers: { Authorization: `Bearer ${await getToken()}` } });
+        const { data } = await api.get('/api/admin/shows');
         if (data.success) {
           setExistingShows(data.shows);
         } else {

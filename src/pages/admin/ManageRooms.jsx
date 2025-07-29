@@ -8,7 +8,7 @@ const ROOM_TYPES = ["Normal", "3D", "IMAX"];
 const defaultLayout = Array(8).fill().map(() => Array(10).fill(1));
 
 const ManageRooms = () => {
-  const { axios, getToken, user } = useAppContext();
+  const { api, user, isAdmin } = useAppContext();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addForm, setAddForm] = useState({ name: '', type: 'Normal', layout: defaultLayout });
@@ -19,7 +19,7 @@ const ManageRooms = () => {
   const fetchRooms = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('/api/admin/my-theatre', { headers: { Authorization: `Bearer ${await getToken()}` } });
+      const { data } = await api.get('/api/admin/my-theatre');
       if (data.success && data.theatre && data.theatre.rooms) {
         setRooms(data.theatre.rooms);
       } else {
@@ -32,20 +32,20 @@ const ManageRooms = () => {
   };
 
   useEffect(() => { 
-    if (user) {
+    if (user && isAdmin) {
       fetchRooms(); 
     } else {
-      // If no user, stop loading but keep rooms empty
+      // If no user or not admin, stop loading but keep rooms empty
       setLoading(false);
       setRooms([]);
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   // Add room
   const handleAddRoom = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/admin/my-theatre/room/add', addForm, { headers: { Authorization: `Bearer ${await getToken()}` } });
+      const { data } = await api.post('/api/admin/my-theatre/room/add', addForm);
       if (data.success) {
         toast.success('Room added!');
         setRooms(data.rooms);
@@ -66,7 +66,7 @@ const ManageRooms = () => {
   const handleEditRoom = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/admin/my-theatre/room/update', { roomId: editRoomId, ...editForm }, { headers: { Authorization: `Bearer ${await getToken()}` } });
+      const { data } = await api.post('/api/admin/my-theatre/room/update', { roomId: editRoomId, ...editForm });
       if (data.success) {
         toast.success('Room updated!');
         setRooms(data.rooms);
@@ -83,7 +83,7 @@ const ManageRooms = () => {
   const handleDeleteRoom = async (roomId) => {
     if (!window.confirm('Delete this room?')) return;
     try {
-      const { data } = await axios.post('/api/admin/my-theatre/room/delete', { roomId }, { headers: { Authorization: `Bearer ${await getToken()}` } });
+      const { data } = await api.post('/api/admin/my-theatre/room/delete', { roomId });
       if (data.success) {
         toast.success('Room deleted!');
         setRooms(data.rooms);

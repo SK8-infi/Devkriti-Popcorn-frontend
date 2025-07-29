@@ -22,6 +22,7 @@ import Theatres from './pages/Theatres';
 import Theatre from './pages/Theatre';
 import ManageRooms from './pages/admin/ManageRooms';
 import ContactUs from './pages/ContactUs';
+import SelectShowtime from './pages/SelectShowtime';
 
 const App = () => {
 
@@ -47,6 +48,7 @@ const App = () => {
         <Route path='/theatres' element={<Theatres/>} />
         <Route path='/theatres/:theatreId' element={<Theatre/>} />
         <Route path='/contact' element={<ContactUs/>} />
+        <Route path='/movies/:id/select-showtime' element={<SelectShowtime/>} />
         <Route path='/admin/*' element={user ? <Layout/> : (
           <div className='min-h-screen flex justify-center items-center'>
             <SignIn fallbackRedirectUrl={'/admin'} />

@@ -12,7 +12,7 @@ const SeatLayout = () => {
 
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
 
-  const {id, date } = useParams()
+  const {id, showId } = useParams()
   const [selectedSeats, setSelectedSeats] = useState([])
   const [selectedTime, setSelectedTime] = useState(null)
   const [show, setShow] = useState(null)
@@ -29,10 +29,37 @@ const SeatLayout = () => {
     try {
       const { data } = await axios.get(`/api/show/${id}`)
       if (data.success){
-        setShow(data)
+        // Find the specific showtime using showId
+        const allShows = data.dateTime || {};
+        let foundShow = null;
+        
+        // Search through all dates and showtimes to find the specific showId
+        for (const [date, showtimes] of Object.entries(allShows)) {
+          for (const showtime of showtimes) {
+            if (showtime.showId === showId) {
+              foundShow = {
+                ...data,
+                selectedShowtime: showtime,
+                selectedDate: date
+              };
+              break;
+            }
+          }
+          if (foundShow) break;
+        }
+        
+        if (foundShow) {
+          setShow(foundShow);
+          setSelectedTime(foundShow.selectedShowtime);
+          setTheatreName(foundShow.selectedShowtime.theatreName || 'Unknown Theatre');
+          setTheatreCity(foundShow.selectedShowtime.theatreCity || '');
+        } else {
+          toast.error('Show not found');
+        }
       }
     } catch (error) {
       console.log(error)
+      toast.error('Failed to load show details');
     }
   }
 
@@ -191,7 +218,7 @@ const SeatLayout = () => {
       <div className='w-full md:w-72 bg-white/10 border border-primary/20 rounded-2xl py-8 h-max md:sticky md:top-28 shadow-lg flex flex-col items-center'>
         <p className='text-xl font-bold px-6 mb-4 text-primary tracking-wide'>Available Timings</p>
         <div className='flex flex-col gap-2 w-full px-4'>
-          {show.dateTime[date].map((item)=>(
+          {show.dateTime[show.selectedDate].map((item)=>(
             <button
               key={item.time}
               onClick={()=> setSelectedTime(item)}

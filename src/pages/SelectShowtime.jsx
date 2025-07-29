@@ -23,6 +23,7 @@ const SelectShowtime = () => {
   const [selectedFormat, setSelectedFormat] = useState(null);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
+  const [selectedShowId, setSelectedShowId] = useState(null);
   const { axios, image_base_url } = useAppContext();
   const navigate = useNavigate();
 
@@ -228,8 +229,8 @@ const SelectShowtime = () => {
               <div className="flex flex-col justify-center">
                 <button
                   className="ml-auto w-12 h-12 bg-black text-white rounded-lg font-semibold shadow hover:bg-gray-900 transition flex items-center justify-center"
-                  onClick={() => navigate(`/movies/${id}/${selectedDate}`)}
-                  disabled={!selectedDate}
+                  onClick={() => selectedShowId && navigate(`/movies/${id}/${selectedShowId}`)}
+                  disabled={!selectedShowId}
                   style={{minHeight: '48px', minWidth: '48px'}}
                 >
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M6 12h12M12 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -240,7 +241,8 @@ const SelectShowtime = () => {
               {times.map((t) => (
                 <button
                   key={t.showId}
-                  className="px-4 py-2 rounded border border-gray-300 text-sm font-semibold transition-all min-w-[90px] text-black bg-white"
+                  className={`px-4 py-2 rounded border text-sm font-semibold transition-all min-w-[90px] text-black bg-white ${selectedShowId === t.showId ? 'border-primary ring-2 ring-primary' : 'border-gray-300'}`}
+                  onClick={() => setSelectedShowId(t.showId)}
                 >
                   {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   <div className="text-[10px] font-normal uppercase">{t.format || ''}</div>

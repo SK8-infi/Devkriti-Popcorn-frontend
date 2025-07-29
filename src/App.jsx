@@ -42,6 +42,8 @@ const App = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isHome = location.pathname === '/';
 
+  const { user } = useAppContext();
+
   return (
     <>
       <Toaster />
@@ -81,14 +83,21 @@ const App = () => {
 
         {/* 🔐 Admin layout and nested routes */}
         <Route path='/admin/*' element={
-          <ProtectedRoute requireAdmin={true}>
-            <Layout />
-          </ProtectedRoute>
+          user ? (
+            <ProtectedRoute requireAdmin={true}>
+              <Layout />
+            </ProtectedRoute>
+          ) : (
+            <div className='min-h-screen flex justify-center items-center'>
+              <SignIn fallbackRedirectUrl={'/admin'} />
+            </div>
+          )
         }>
           <Route index element={<Dashboard />} />
           <Route path="add-shows" element={<AddShows />} />
           <Route path="list-shows" element={<ListShows />} />
           <Route path="manage-rooms" element={<ManageRooms />} />
+          {/* Add more nested admin routes here as needed */}
         </Route>
       </Routes>
 
@@ -98,4 +107,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;

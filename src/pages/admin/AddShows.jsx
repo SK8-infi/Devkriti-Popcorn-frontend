@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const AddShows = () => {
 
-    const {api, user, isAdmin} = useAppContext()
+    const {api, user, isAdmin, image_base_url} = useAppContext()
 
     const currency = import.meta.env.VITE_CURRENCY
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);

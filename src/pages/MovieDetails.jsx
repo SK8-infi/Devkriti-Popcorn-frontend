@@ -140,118 +140,106 @@ const MovieDetails = () => {
           zIndex: -1
         }}
       />
-      
       <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
         <div className='flex flex-col md:flex-row gap-8 max-w-6xl mx-auto'>
-
-        <img src={movie.poster_url || image_base_url + movie.poster_path} alt="" className='max-md:mx-auto rounded-xl h-104 max-w-70 object-cover'/>
-
-        <div className='relative flex flex-col gap-3'>
-          <p className='text-primary'>
-            {(() => {
-              const languages = new Set();
-              
-              // Add original language
-              if (movie.original_language) {
-                languages.add(movie.original_language.toUpperCase());
-              }
-              
-              // Add spoken languages
-              if (movie.spoken_languages && Array.isArray(movie.spoken_languages)) {
-                movie.spoken_languages.forEach(lang => {
-                  languages.add(lang.iso_639_1?.toUpperCase() || lang.english_name?.substring(0, 2).toUpperCase());
-                });
-              }
-              
-              return Array.from(languages).join(' | ') || 'EN';
-            })()}
-          </p>
-          <h1 className='text-4xl font-semibold whitespace-nowrap' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
-          <div className='flex items-center gap-2 text-gray-300'>
-            <StarIcon className="w-5 h-5" style={{ color: '#FFD600', fill: '#FFD600' }}/>
-                            {show.movie.vote_average.toFixed(1)}
-          </div>
-
-          <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{movie.overview}</p>
-
-          <p>
-            {timeFormat(movie.runtime)} • {Array.isArray(movie.genres) ? movie.genres.map(genre => (typeof genre === 'string' ? genre : genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name)).join(", ") : ''} • {movie.release_date?.split("-")[0]}
-          </p>
-
-          <div className='flex items-center flex-wrap gap-4 mt-4'>
-            <GlareHover
-              width="auto"
-              height="auto"
-              background={movie?.trailers?.length ? "#374151" : "#6B7280"}
-              borderRadius="8px"
-              borderColor="transparent"
-              glareColor="#ffffff"
-              glareOpacity={0.3}
-              glareAngle={-30}
-              glareSize={300}
-              transitionDuration={800}
-              playOnce={false}
-              style={{ display: 'inline-block' }}
-            >
-              <button 
-                onClick={handlePlayTrailer}
-                disabled={!movie?.trailers?.length}
-                className={`flex items-center gap-2 px-7 py-3 text-sm transition rounded-md font-medium cursor-pointer active:scale-95 ${
-                  movie?.trailers?.length 
-                    ? 'bg-transparent hover:bg-transparent' 
-                    : 'bg-transparent cursor-not-allowed opacity-50'
-                }`}
-                style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+          <img src={movie.poster_url || image_base_url + movie.poster_path} alt="" className='max-md:mx-auto rounded-xl h-104 max-w-70 object-cover'/>
+          <div className='relative flex flex-col gap-3'>
+            <p className='text-primary'>
+              {(() => {
+                const languages = new Set();
+                if (movie.original_language) {
+                  languages.add(movie.original_language.toUpperCase());
+                }
+                if (movie.spoken_languages && Array.isArray(movie.spoken_languages)) {
+                  movie.spoken_languages.forEach(lang => {
+                    languages.add(lang.iso_639_1?.toUpperCase() || lang.english_name?.substring(0, 2).toUpperCase());
+                  });
+                }
+                return Array.from(languages).join(' | ') || 'EN';
+              })()}
+            </p>
+            <h1 className='text-4xl font-semibold whitespace-nowrap' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
+            <div className='flex items-center gap-2 text-gray-300'>
+              <StarIcon className="w-5 h-5" style={{ color: '#FFD600', fill: '#FFD600' }}/>
+              {show.movie.vote_average.toFixed(1)}
+            </div>
+            <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{movie.overview}</p>
+            <p>
+              {timeFormat(movie.runtime)} • {Array.isArray(movie.genres) ? movie.genres.map(genre => (typeof genre === 'string' ? genre : genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name)).join(", ") : ''} • {movie.release_date?.split("-")[0]}
+            </p>
+            <div className='flex items-center flex-wrap gap-4 mt-4'>
+              <GlareHover
+                width="auto"
+                height="auto"
+                background={movie?.trailers?.length ? "#374151" : "#6B7280"}
+                borderRadius="8px"
+                borderColor="transparent"
+                glareColor="#ffffff"
+                glareOpacity={0.3}
+                glareAngle={-30}
+                glareSize={300}
+                transitionDuration={800}
+                playOnce={false}
+                style={{ display: 'inline-block' }}
               >
-                <PlayCircleIcon className="w-5 h-5"/>
-                Watch Trailer
-              </button>
-            </GlareHover>
-            <GlareHover
-              width="auto"
-              height="auto"
-              background="#FFD600"
-              borderRadius="8px"
-              borderColor="transparent"
-              glareColor="#ffffff"
-              glareOpacity={0.3}
-              glareAngle={-30}
-              glareSize={300}
-              transitionDuration={800}
-              playOnce={false}
-              style={{ display: 'inline-block' }}
-            >
-              <button
-                onClick={() => navigate(`/movies/${id}/select-showtime`)}
-                className='flex items-center gap-2 px-7 py-3 text-sm bg-transparent hover:bg-transparent transition rounded-md font-medium cursor-pointer active:scale-95'
-                style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#000', pointerEvents: 'auto' }}
+                <button 
+                  onClick={handlePlayTrailer}
+                  disabled={!movie?.trailers?.length}
+                  className={`flex items-center gap-2 px-7 py-3 text-sm transition rounded-md font-medium cursor-pointer active:scale-95 ${
+                    movie?.trailers?.length 
+                      ? 'bg-transparent hover:bg-transparent' 
+                      : 'bg-transparent cursor-not-allowed opacity-50'
+                  }`}
+                  style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+                >
+                  <PlayCircleIcon className="w-5 h-5"/>
+                  Watch Trailer
+                </button>
+              </GlareHover>
+              <GlareHover
+                width="auto"
+                height="auto"
+                background="#FFD600"
+                borderRadius="8px"
+                borderColor="transparent"
+                glareColor="#ffffff"
+                glareOpacity={0.3}
+                glareAngle={-30}
+                glareSize={300}
+                transitionDuration={800}
+                playOnce={false}
+                style={{ display: 'inline-block' }}
               >
-                Buy Tickets
-              </button>
-            </GlareHover>
-            <GlareHover
-              width="auto"
-              height="auto"
-              background="#374151"
-              borderRadius="50%"
-              borderColor="transparent"
-              glareColor="#ffffff"
-              glareOpacity={0.3}
-              glareAngle={-30}
-              glareSize={300}
-              transitionDuration={800}
-              playOnce={false}
-              style={{ display: 'inline-block' }}
-            >
-              <button onClick={handleFavorite} className='bg-transparent p-2.5 rounded-full transition cursor-pointer active:scale-95' style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
-                <Heart className={`w-5 h-5${isFavorited ? ' heart-favorited' : ''}`} />
-              </button>
-            </GlareHover>
+                <button
+                  onClick={() => navigate(`/movies/${id}/select-showtime`)}
+                  className='flex items-center gap-2 px-7 py-3 text-sm bg-transparent hover:bg-transparent transition rounded-md font-medium cursor-pointer active:scale-95'
+                  style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#000', pointerEvents: 'auto' }}
+                >
+                  Buy Tickets
+                </button>
+              </GlareHover>
+              <GlareHover
+                width="auto"
+                height="auto"
+                background="#374151"
+                borderRadius="50%"
+                borderColor="transparent"
+                glareColor="#ffffff"
+                glareOpacity={0.3}
+                glareAngle={-30}
+                glareSize={300}
+                transitionDuration={800}
+                playOnce={false}
+                style={{ display: 'inline-block' }}
+              >
+                <button onClick={handleFavorite} className='bg-transparent p-2.5 rounded-full transition cursor-pointer active:scale-95' style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+                  <Heart className={`w-5 h-5${isFavorited ? ' heart-favorited' : ''}`} />
+                </button>
+              </GlareHover>
+            </div>
           </div>
-        </div>
         </div>
       </div>
-      
       {/* Rest of the content outside backdrop */}
       <div className='px-6 md:px-16 lg:px-40'>
         {/* Your Favorite Cast Section */}
@@ -268,55 +256,37 @@ const MovieDetails = () => {
             </div>
           </div>
         </div>
-
         <p className='text-lg font-medium mt-20 mb-8'>You May Also Like</p>
         <div style={{ marginBottom: '60px' }}>
-        {shows && shows.length > 0 ? (
-          <div className='flex flex-wrap max-sm:justify-center gap-8'>
-            {/* Only show each movie once and not the current movie or those with open booking window */}
-            {(() => {
-              const uniqueMovies = [];
-              const seen = new Set();
-              for (const movie of shows) {
-                // Exclude only the current movie
-                const isCurrent = (movie._id === id) || (movie.movie && (movie.movie._id === id || movie.movie.id === id));
-                if (!isCurrent && !seen.has(movie.movie._id)) {
-                  uniqueMovies.push(movie);
-                  seen.add(movie.movie._id);
+          {shows && shows.length > 0 ? (
+            <div className='flex flex-wrap max-sm:justify-center gap-8'>
+              {(() => {
+                const uniqueMovies = [];
+                const seen = new Set();
+                for (const movie of shows) {
+                  // Exclude only the current movie
+                  const isCurrent = (movie._id === id) || (movie.movie && (movie.movie._id === id || movie.movie.id === id));
+                  if (!isCurrent && !seen.has(movie.movie._id)) {
+                    uniqueMovies.push(movie);
+                    seen.add(movie.movie._id);
+                  }
+                  if (uniqueMovies.length === 4) break;
                 }
-                if (uniqueMovies.length === 4) break;
-              }
-{
-  (() => {
-    if (uniqueMovies.length === 4) return uniqueMovies.map((movie, index) => (
-      <MovieCard
-        key={movie.movie._id || movie.movie.id}
-        movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}
-      />
-    ));
-    
-    const result = [];
-    for (let movie of uniqueMovies) {
-      result.push(
-        <MovieCard
-          key={movie.movie._id || movie.movie.id}
-          movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}
-        />
-      );
-      if (result.length === 4) break;
-    }
-    return result;
-  })()
-}
-
+                return uniqueMovies.map((movie, index) => (
+                  <MovieCard
+                    key={movie.movie._id || movie.movie.id}
+                    movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}
+                  />
+                ));
+              })()}
+            </div>
+          ) : null}
+          <TrailerModal 
+            isOpen={isTrailerModalOpen}
+            onClose={() => setIsTrailerModalOpen(false)}
+            trailer={selectedTrailer}
+          />
         </div>
-
-        {/* Trailer Modal */}
-        <TrailerModal 
-          isOpen={isTrailerModalOpen}
-          onClose={() => setIsTrailerModalOpen(false)}
-          trailer={selectedTrailer}
-        />
       </div>
     </div>
   ) : <Loading />

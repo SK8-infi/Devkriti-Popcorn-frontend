@@ -44,7 +44,8 @@ const TrailerModal = ({ isOpen, onClose, trailer }) => {
                 playerVars: {
                   autoplay: 1,
                   rel: 0,
-                  modestbranding: 1
+                  modestbranding: 1,
+                  origin: window.location.origin
                 }
               }
             }}

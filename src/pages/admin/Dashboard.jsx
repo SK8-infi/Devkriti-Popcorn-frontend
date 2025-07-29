@@ -1,4 +1,4 @@
-import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon, MapPin, Building2, XIcon } from 'lucide-react';
+import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon, MapPin, Building2, XIcon, Settings } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { dummyDashboardData } from '../../assets/assets';
 import Loading from '../../components/Loading';
@@ -7,10 +7,11 @@ import { dateFormat } from '../../lib/dateFormat';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import DarkVeil from '../../components/DarkVeil'; // Added DarkVeil import
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
 
-    const {axios, getToken, user, image_base_url, theatre, city} = useAppContext()
+    const {api, user, isAdmin, image_base_url, hasAdAccess, fetchAdAccess} = useAppContext()
 
     const currency = import.meta.env.VITE_CURRENCY
 
@@ -32,7 +33,7 @@ const Dashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-           const { data } = await axios.get("/api/admin/dashboard", {headers: { Authorization: `Bearer ${await getToken()}`}}) 
+           const { data } = await api.get("/api/admin/dashboard") 
            if (data.success) {
             setDashboardData(data.dashboardData)
             setLoading(false)
@@ -47,10 +48,11 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        if(user){
+        if(user && isAdmin){
             fetchDashboardData();
+            fetchAdAccess();
         }   
-    }, [user]);
+    }, [user, isAdmin]);
 
   // Group shows by movie._id
   const movieMap = {};
@@ -68,22 +70,8 @@ const Dashboard = () => {
 
   return !loading ? (
     <>
-      {/* Centered Info Block: Theatre, City, Dashboard Cards */}
+      {/* Centered Info Block: Dashboard Cards */}
       <div className="w-full flex flex-col items-center justify-center mb-4 mt-2">
-        <div className="flex flex-wrap gap-4 items-center justify-center mb-3">
-          {theatre && (
-            <div className="flex items-center gap-2 bg-white/70 border border-white/80 rounded-lg px-4 py-2 text-black shadow-sm backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:scale-105 cursor-pointer">
-              <Building2 className="w-5 h-5 text-black/80" />
-              <span className="font-semibold text-base text-black">{theatre}</span>
-            </div>
-          )}
-          {city && (
-            <div className="flex items-center gap-2 bg-white/70 border border-white/80 rounded-lg px-4 py-2 text-black shadow-sm backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:scale-105 cursor-pointer">
-              <MapPin className="w-5 h-5 text-black/80" />
-              <span className="font-semibold text-base text-black">{city}</span>
-            </div>
-          )}
-        </div>
         <div className="flex flex-wrap gap-4 items-center justify-center w-full max-w-4xl scale-90">
                     {dashboardCards.map((card, index) => (
             <div key={index} className="flex items-center gap-2 px-4 py-3 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md backdrop-blur-md min-w-[135px] max-w-xs w-full transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04] cursor-pointer">
@@ -96,6 +84,19 @@ const Dashboard = () => {
                     ))}
         </div>
       </div>
+
+      {/* Quick Actions */}
+      {hasAdAccess && (
+        <div className="flex justify-center mb-6">
+          <Link 
+            to="/manage-users"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Settings className="w-5 h-5" />
+            Manage Users
+          </Link>
+        </div>
+      )}
       <p className="mt-10 text-lg font-medium">Active Shows</p>
       <div className="relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-4 max-w-7xl mx-auto">
         {uniqueMovies.map(({ movie, shows }) => (

@@ -9,7 +9,7 @@ import DarkVeil from '../../components/DarkVeil';
 
 const Layout = () => {
 
-  const {isAdmin, fetchIsAdmin, theatre, setAdminTheatre, city, fetchUserFromBackend} = useAppContext()
+  const {isAdmin, fetchIsAdmin, theatre, setAdminTheatre, city, fetchUserFromBackend, loading, isAuthenticated} = useAppContext()
   const [modalOpen, setModalOpen] = useState(false)
   const [theatreInput, setTheatreInput] = useState("")
   const [submitting, setSubmitting] = useState(false)
@@ -19,8 +19,11 @@ const Layout = () => {
   const [cityInput, setCityInput] = useState("")
 
   useEffect(()=>{
-    fetchIsAdmin()
-  },[])
+    // Only fetch admin status if user is authenticated
+    if (isAuthenticated) {
+      fetchIsAdmin()
+    }
+  },[isAuthenticated])
 
   useEffect(() => {
     if (isAdmin && typeof theatre !== 'undefined') {
@@ -37,7 +40,23 @@ const Layout = () => {
     }
   }, [isAdmin, theatre, city])
 
-  if (!isAdmin || typeof theatre === 'undefined') return <Loading/>
+  // Show loading while checking authentication
+  if (loading) return <Loading/>
+
+  // Redirect if not authenticated
+  if (!isAuthenticated) {
+    window.location.href = '/';
+    return <Loading/>;
+  }
+
+  // Show loading while checking admin status
+  if (typeof isAdmin === 'undefined') return <Loading/>
+
+  // Redirect if not admin
+  if (!isAdmin) {
+    window.location.href = '/';
+    return <Loading/>;
+  }
 
   return <>
     {/* Animated background for admin panel */}

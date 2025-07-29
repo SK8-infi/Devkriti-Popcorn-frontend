@@ -23,13 +23,41 @@ const MovieDetails = () => {
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false)
   const [selectedTrailer, setSelectedTrailer] = useState(null)
 
-  const {shows, axios, getToken, user, fetchFavoriteMovies, favoriteMovies, image_base_url} = useAppContext()
+  const {api, user, image_base_url} = useAppContext()
+  const [favoriteMovies, setFavoriteMovies] = useState([])
+  const [shows, setShows] = useState([])
+
+  const fetchFavoriteMovies = async () => {
+    try {
+      if (user) {
+        const response = await api.get('/api/user/favorites');
+        if (response.data.success) {
+          setFavoriteMovies(response.data.favorites || []);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+      setFavoriteMovies([]);
+    }
+  };
+
+  const fetchShows = async () => {
+    try {
+      const response = await api.get('/api/show/all');
+      if (response.data.success) {
+        setShows(response.data.shows || []);
+      }
+    } catch (error) {
+      console.error('Error fetching shows:', error);
+      setShows([]);
+    }
+  };
 
   const getShow = async ()=>{
     try {
       const [{ data: showData }, { data: movieData }] = await Promise.all([
-        axios.get(`/api/show/${id}`),
-        axios.get(`/api/movies/${id}`)
+        api.get(`/api/show/${id}`),
+        api.get(`/api/movies/${id}`)
       ]);
       if(showData.success && movieData.movie){
         setShow(showData)
@@ -45,14 +73,26 @@ const MovieDetails = () => {
   }
 
   useEffect(() => {
-    setIsFavorited(!!favoriteMovies.find(movie => movie._id === id));
+    if (favoriteMovies && favoriteMovies.length > 0) {
+      setIsFavorited(!!favoriteMovies.find(movie => movie._id === id));
+    }
   }, [favoriteMovies, id]);
+
+  useEffect(() => {
+    if (user) {
+      fetchFavoriteMovies();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchShows();
+  }, []);
 
   const handleFavorite = async ()=>{
     try {
       if(!user) return toast.error("Please login to proceed");
       setIsFavorited(prev => !prev); // Optimistically update UI
-      const { data } = await axios.post('/api/user/update-favorite', {movieId: id}, {headers: { Authorization: `Bearer ${await getToken()}` }})
+      const { data } = await api.post('/api/user/update-favorite', {movieId: id})
       if(data.success){
         await fetchFavoriteMovies()
         toast.success(data.message)
@@ -246,16 +286,29 @@ const MovieDetails = () => {
                 }
                 if (uniqueMovies.length === 4) break;
               }
-              return uniqueMovies.map((movie, index) => (
-                <MovieCard key={movie.movie._id || movie.movie.id} movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}/>
-              ));
-            })()}
-          </div>
-        ) : (
-          <div className='flex justify-center my-10'>
-            <Loading />
-          </div>
-        )}
+{
+  (() => {
+    if (uniqueMovies.length === 4) return uniqueMovies.map((movie, index) => (
+      <MovieCard
+        key={movie.movie._id || movie.movie.id}
+        movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}
+      />
+    ));
+    
+    const result = [];
+    for (let movie of uniqueMovies) {
+      result.push(
+        <MovieCard
+          key={movie.movie._id || movie.movie.id}
+          movie={{ ...movie.movie, id: movie.movie.id || movie.movie._id }}
+        />
+      );
+      if (result.length === 4) break;
+    }
+    return result;
+  })()
+}
+
         </div>
 
         {/* Trailer Modal */}

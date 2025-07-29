@@ -1,13 +1,46 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import MovieCard from '../components/MovieCard'
 import { useAppContext } from '../context/AppContext'
 import './Favorite.css'
 
 const Favorite = () => {
+  const { api, user } = useAppContext()
+  const [favoriteMovies, setFavoriteMovies] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const {favoriteMovies} = useAppContext()
+  const fetchFavoriteMovies = async () => {
+    try {
+      if (user) {
+        const response = await api.get('/api/user/favorites');
+        if (response.data.success) {
+          setFavoriteMovies(response.data.favorites || []);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+      setFavoriteMovies([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return favoriteMovies.length > 0 ? (
+  useEffect(() => {
+    if (user) {
+      fetchFavoriteMovies();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className='favorite-empty'>
+        <h1 className='favorite-empty-title'>Loading favorites...</h1>
+      </div>
+    );
+  }
+
+  return favoriteMovies && favoriteMovies.length > 0 ? (
     <div className='favorite-container'>
 
       <h1 className='favorite-title'>Your Favorite Movies</h1>

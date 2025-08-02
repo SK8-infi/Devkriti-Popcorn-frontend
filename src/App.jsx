@@ -24,6 +24,7 @@ import ManageUsers from './pages/admin/ManageUsers'
 import ContactUs from './pages/ContactUs'
 import SelectShowtime from './pages/SelectShowtime'
 import SignIn from './pages/admin/SignIn'
+import DebugAccess from './pages/admin/DebugAccess'
 
 const ProtectedRoute = ({ children, requireAuth = true, requireAdmin = false, requireAdAccess = false }) => {
   const { user, isAuthenticated, isAdmin, hasAdAccess, loading } = useAppContext();
@@ -80,6 +81,9 @@ const App = () => {
             <ManageUsers />
           </ProtectedRoute>
         } />
+
+        {/* 🔍 Debug route for troubleshooting access issues */}
+        <Route path='/debug-access' element={<DebugAccess />} />
 
         {/* 🔐 Admin layout and nested routes */}
         <Route path='/admin/*' element={

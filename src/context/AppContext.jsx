@@ -204,24 +204,29 @@ export const AppProvider = ({ children }) => {
 
     const setAdminTheatre = async (theatreName, cityName, addressName) => {
         try {
-            const response = await api.post('/api/user/update-theatre', {
+            console.log('🔧 Setting admin theatre:', { theatreName, cityName, addressName });
+            const response = await api.post('/api/admin/set-theatre', {
                 theatre: theatreName,
                 city: cityName,
                 address: addressName
             });
+
+            console.log('🔧 Theatre setup response:', response.data);
 
             if (response.data.success) {
                 // Update local state with new theatre data
                 setTheatre(theatreName);
                 setTheatreCity(cityName);
                 setTheatreAddress(addressName);
-                setTheatreId(response.data.theatre._id); // Update theatreId
+                setTheatreId(response.data.theatreId); // Update theatreId with theatre ID
+                console.log('✅ Theatre setup successful:', { theatreName, cityName, theatreId: response.data.theatreId });
                 return { success: true };
             } else {
+                console.log('❌ Theatre setup failed:', response.data.message);
                 return { success: false, message: response.data.message };
             }
         } catch (error) {
-            console.error('Error setting admin theatre:', error);
+            console.error('❌ Error setting admin theatre:', error);
             return {
                 success: false,
                 message: error.response?.data?.message || 'Failed to set theatre'

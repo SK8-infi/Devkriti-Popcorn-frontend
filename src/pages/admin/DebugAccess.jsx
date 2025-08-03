@@ -1,90 +1,123 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
-import { toast } from 'react-hot-toast';
 
 const DebugAccess = () => {
-    const { api, user, isAdmin, isAuthenticated, hasAdAccess, loading } = useAppContext();
-    const [debugInfo, setDebugInfo] = useState(null);
-    const [testing, setTesting] = useState(false);
+  const { user, isAdmin, hasOwnerAccess, loading, api } = useAppContext();
+  const [debugInfo, setDebugInfo] = useState({});
 
-    const testAdAccess = async () => {
-        setTesting(true);
-        try {
-            const response = await api.get('/api/user/ad-access');
-            setDebugInfo(response.data);
-            toast.success('AD access test completed');
-        } catch (error) {
-            console.error('AD access test error:', error);
-            setDebugInfo({ error: error.response?.data || error.message });
-            toast.error('AD access test failed');
-        } finally {
-            setTesting(false);
-        }
+  useEffect(() => {
+    const fetchDebugInfo = async () => {
+      try {
+        // Test admin check endpoint
+        const adminResponse = await api.get('/api/auth/admin/check');
+        
+        // Test owner access endpoint
+        const ownerResponse = await api.get('/api/user/owner-access');
+        
+        // Test user data endpoint
+        const userResponse = await api.get('/api/auth/me');
+
+        setDebugInfo({
+          adminCheck: adminResponse.data,
+          ownerAccess: ownerResponse.data,
+          userData: userResponse.data,
+          frontendState: {
+            user: user,
+            isAdmin: isAdmin,
+            hasOwnerAccess: hasOwnerAccess,
+            loading: loading
+          }
+        });
+      } catch (error) {
+        console.error('Debug fetch error:', error);
+        setDebugInfo({
+          error: error.message,
+          frontendState: {
+            user: user,
+            isAdmin: isAdmin,
+            hasOwnerAccess: hasOwnerAccess,
+            loading: loading
+          }
+        });
+      }
     };
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            testAdAccess();
-        }
-    }, [isAuthenticated]);
+    if (!loading) {
+      fetchDebugInfo();
+    }
+  }, [user, isAdmin, hasOwnerAccess, loading, api]);
 
-    if (loading) return <div className="p-8 text-center">Loading...</div>;
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">🔍 Access Debug Information</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Frontend State */}
+          <div className="bg-gray-800 p-6 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4">Frontend State</h2>
+            <pre className="text-sm overflow-auto">
+              {JSON.stringify(debugInfo.frontendState, null, 2)}
+            </pre>
+          </div>
 
-    return (
-        <div className="min-h-screen bg-gray-50 p-8">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-3xl font-bold text-gray-900 mb-8">Debug Access</h1>
-                
-                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <h2 className="text-xl font-semibold mb-4">Current User Status</h2>
-                    <div className="space-y-2">
-                        <div><strong>Authenticated:</strong> {isAuthenticated ? '✅ Yes' : '❌ No'}</div>
-                        <div><strong>Is Admin:</strong> {isAdmin ? '✅ Yes' : '❌ No'}</div>
-                        <div><strong>Has AD Access:</strong> {hasAdAccess ? '✅ Yes' : '❌ No'}</div>
-                        {user && (
-                            <>
-                                <div><strong>User Email:</strong> {user.email}</div>
-                                <div><strong>User Role:</strong> {user.role}</div>
-                                <div><strong>User ID:</strong> {user._id}</div>
-                            </>
-                        )}
-                    </div>
-                </div>
-
-                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <h2 className="text-xl font-semibold mb-4">AD Access Test</h2>
-                    <button
-                        onClick={testAdAccess}
-                        disabled={testing}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                    >
-                        {testing ? 'Testing...' : 'Test AD Access'}
-                    </button>
-                    
-                    {debugInfo && (
-                        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                            <h3 className="font-semibold mb-2">Debug Response:</h3>
-                            <pre className="text-sm overflow-auto">
-                                {JSON.stringify(debugInfo, null, 2)}
-                            </pre>
-                        </div>
-                    )}
-                </div>
-
-                <div className="bg-white rounded-lg shadow-md p-6">
-                    <h2 className="text-xl font-semibold mb-4">Access Requirements</h2>
-                    <div className="space-y-2 text-sm">
-                        <div>✅ Must be logged in</div>
-                        <div>✅ Must be an admin (role: 'admin')</div>
-                        <div>✅ Must have AD access (email in AD_EMAILS)</div>
-                        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
-                            <strong>AD_EMAILS:</strong> shivansh.katiyar1712@gmail.com, veditha888@gmail.com, prabalpoddar73@gmail.com
-                        </div>
-                    </div>
-                </div>
-            </div>
+          {/* Backend Responses */}
+          <div className="bg-gray-800 p-6 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4">Backend Responses</h2>
+            <pre className="text-sm overflow-auto">
+              {JSON.stringify(debugInfo, null, 2)}
+            </pre>
+          </div>
         </div>
-    );
+
+        {/* Access Analysis */}
+        <div className="mt-8 bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Access Analysis</h2>
+          <div className="space-y-2">
+            <div className={`p-3 rounded ${isAdmin ? 'bg-green-600' : 'bg-red-600'}`}>
+              <strong>Admin Access:</strong> {isAdmin ? '✅ Granted' : '❌ Denied'}
+            </div>
+            <div className={`p-3 rounded ${hasOwnerAccess ? 'bg-green-600' : 'bg-red-600'}`}>
+              <strong>Owner Access:</strong> {hasOwnerAccess ? '✅ Granted' : '❌ Denied'}
+            </div>
+            <div className={`p-3 rounded ${user ? 'bg-green-600' : 'bg-red-600'}`}>
+              <strong>User Authenticated:</strong> {user ? '✅ Yes' : '❌ No'}
+            </div>
+            {user && (
+              <div className="p-3 rounded bg-blue-600">
+                <strong>User Role:</strong> {user.role || 'undefined'}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mt-8 bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <div className="space-x-4">
+            <a 
+              href="/admin" 
+              className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Try Admin Dashboard
+            </a>
+            <a 
+              href="/manage-users" 
+              className="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Try Manage Users
+            </a>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="inline-block px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default DebugAccess; 

@@ -11,6 +11,7 @@ import notification from '../assets/notification.svg';
 import robot from '../assets/robot.svg';
 import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
+import { getUserImage } from '../utils/imageUtils';
 
 const allowedCities = ["Delhi", "Mumbai", "Gwalior", "Indore", "Pune", "Chennai"];
 
@@ -38,7 +39,7 @@ const Navbar = () => {
 const [showUserDropdown, setShowUserDropdown] = useState(false);
 
 // Fetch user's city from backend or localStorage
-useEffect(() => {
+ useEffect(() => {
   const savedCity = localStorage.getItem('userCity');
   if (savedCity) {
     setUserCity(savedCity);
@@ -46,11 +47,16 @@ useEffect(() => {
   }
 
   // If user is authenticated, fetch from backend
-  if (user) {
+  if (user && user._id) {
     setLoadingCity(true);
 
-    fetch(`/api/user/by-id/${user.id}`)
-      .then(res => res.json())
+    fetch(`/api/user/by-id/${user._id}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         if (data.success && data.user && data.user.city) {
           setUserCity(data.user.city);
@@ -62,22 +68,24 @@ useEffect(() => {
         }
         setLoadingCity(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Error fetching user city:', error);
         setLoadingCity(false);
+        // Don't show error to user for this background fetch
       });
   } else {
     setLoadingCity(false);
   }
-}, [user]);
+ }, [user]);
 
-// Handle city save
+ // Handle city save
 const handleSaveCity = async () => {
-  if (!selectedCity) {
-    setCityError("Please select a city.");
-    return;
-  }
+   if (!selectedCity) {
+     setCityError("Please select a city.");
+     return;
+   }
 
-  setSavingCity(true);
+   setSavingCity(true);
 
   if (!user) {
     // Non-authenticated user: store in localStorage and send to public API
@@ -86,11 +94,11 @@ const handleSaveCity = async () => {
 
     try {
       await fetch('/api/user/update-city-public', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ city: selectedCity }),
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify({ city: selectedCity }),
       });
     } catch (error) {
       // Backend failed — we already saved locally
@@ -115,18 +123,18 @@ const handleSaveCity = async () => {
 
     const data = await response.json();
 
-    if (data.success) {
-      setUserCity(selectedCity);
+       if (data.success) {
+         setUserCity(selectedCity);
       localStorage.setItem('userCity', selectedCity);
-      setShowLocationModal(false);
-      setCityError("");
-    } else {
-      setCityError(data.message || "Failed to update city.");
-    }
+         setShowLocationModal(false);
+         setCityError("");
+       } else {
+         setCityError(data.message || "Failed to update city.");
+       }
   } catch (error) {
-    setCityError("Failed to update city.");
+       setCityError("Failed to update city.");
   } finally {
-    setSavingCity(false);
+       setSavingCity(false);
   }
 };
 
@@ -272,20 +280,51 @@ const handleSaveCity = async () => {
                         gap: '8px'
                       }}
                     >
-                      {user?.image ? (
-                        <img 
-                          src={user.image} 
-                          alt={user.name} 
-                          style={{ 
-                            width: 32, 
-                            height: 32, 
-                            borderRadius: '50%',
-                            objectFit: 'cover'
-                          }} 
-                        />
-                      ) : (
-                        <User size={20} />
-                      )}
+                      {(() => {
+                        const userImage = getUserImage(user);
+                        return (
+                          <>
+                            {userImage.hasImage ? (
+                              <img 
+                                src={userImage.url} 
+                                alt={user.name} 
+                                style={{ 
+                                  width: 32, 
+                                  height: 32, 
+                                  borderRadius: '50%',
+                                  objectFit: 'cover'
+                                }} 
+                                onError={(e) => {
+                                  // If it's a Google image and we have a fallback URL, try that first
+                                  if (userImage.isGoogleImage && userImage.fallbackUrl) {
+                                    e.target.src = userImage.fallbackUrl;
+                                    return;
+                                  }
+                                  // Otherwise, hide the image and show the fallback
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'flex';
+                                }}
+                              />
+                            ) : null}
+                            {!userImage.hasImage && (
+                              <div style={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: '50%',
+                                backgroundColor: '#ffd700',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '14px',
+                                fontWeight: 'bold',
+                                color: '#232323'
+                              }}>
+                                {userImage.fallback}
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                       <span style={{ fontSize: 14 }}>{user?.name}</span>
                     </motion.button>
                     {showUserDropdown && (

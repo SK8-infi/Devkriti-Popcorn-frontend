@@ -14,17 +14,19 @@ export const useAppContext = () => {
 };
 
 export const AppProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [hasOwnerAccess, setHasOwnerAccess] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [favoriteMovies, setFavoriteMovies] = useState([]);
+    const [theatre, setTheatre] = useState(null); // Theatre name
+    const [theatreCity, setTheatreCity] = useState(null); // Theatre's city
+    const [theatreAddress, setTheatreAddress] = useState(null); // Theatre's address
+    const [theatreId, setTheatreId] = useState(null); // Theatre's MongoDB ID
+    const [userCity, setUserCity] = useState(null); // User's personal city preference
     const navigate = useNavigate();
     const location = useLocation();
-
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(undefined);
-    const [hasAdAccess, setHasAdAccess] = useState(undefined);
-    const [theatre, setTheatre] = useState(undefined);
-    const [city, setCity] = useState(undefined);
-    const [favoriteMovies, setFavoriteMovies] = useState([]);
 
     const api = axios.create({
         baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
@@ -58,38 +60,75 @@ export const AppProvider = ({ children }) => {
         localStorage.removeItem('authToken');
         setUser(null);
         setIsAuthenticated(false);
-        setIsAdmin(undefined);
-        setHasAdAccess(undefined);
-        setTheatre(undefined);
-        setCity(undefined);
+        setIsAdmin(false);
+        setHasOwnerAccess(false);
+        setTheatre(null);
+        setTheatreCity(null);
+        setTheatreAddress(null);
+        setTheatreId(null);
+        setUserCity(null);
         setFavoriteMovies([]);
         toast.success('Logged out successfully');
     };
 
     const fetchUser = async () => {
         try {
-            const token = getToken();
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-
+            console.log('🔍 Fetching user data...');
             const response = await api.get('/api/auth/me');
             if (response.data.success) {
                 const fetchedUser = response.data.user;
+                console.log('✅ User fetched:', fetchedUser);
                 setUser(fetchedUser);
                 setIsAuthenticated(true);
-                setTheatre(fetchedUser.theatre);
-                setCity(fetchedUser.city);
+                setUserCity(fetchedUser.city); // Set user's personal city preference
+                
+                // Fetch theatre data if user is admin or owner
+                if (fetchedUser.role === 'admin' || fetchedUser.role === 'owner') {
+                    console.log('🎭 User is admin/owner, fetching theatre data...');
+                    try {
+                        const theatreResponse = await api.get('/api/admin/my-theatre');
+                        console.log('🎭 Theatre response:', theatreResponse.data);
+                        if (theatreResponse.data.success) {
+                            setTheatre(theatreResponse.data.theatre.name);
+                            setTheatreCity(theatreResponse.data.city);
+                            setTheatreAddress(theatreResponse.data.address);
+                            setTheatreId(theatreResponse.data.theatre._id); // Set theatreId
+                            console.log('✅ Theatre data set:', theatreResponse.data.theatre.name, theatreResponse.data.city);
+                        } else {
+                            // Theatre not found for this admin/owner
+                            console.log('⚠️ Theatre not found for admin/owner');
+                            setTheatre(null);
+                            setTheatreCity(null);
+                            setTheatreAddress(null);
+                            setTheatreId(null);
+                        }
+                    } catch (theatreError) {
+                        console.error('❌ Error fetching theatre:', theatreError);
+                        console.error('❌ Theatre error response:', theatreError.response?.data);
+                        setTheatre(null);
+                        setTheatreCity(null);
+                        setTheatreAddress(null);
+                        setTheatreId(null);
+                    }
+                } else {
+                    console.log('👤 User is not admin/owner');
+                    setTheatre(null);
+                    setTheatreCity(null);
+                    setTheatreAddress(null);
+                    setTheatreId(null);
+                }
 
                 const adminResponse = await api.get('/api/auth/admin/check');
                 if (adminResponse.data.success) {
-                    setIsAdmin(adminResponse.data.isAdmin);
+                    // Consider both admin and owner roles as admin access
+                    const isAdminOrOwner = adminResponse.data.isAdmin || adminResponse.data.isOwner;
+                    setIsAdmin(isAdminOrOwner);
                 }
 
             }
         } catch (error) {
-            console.error('Error fetching user:', error);
+            console.error('❌ Error fetching user:', error);
+            console.error('❌ Error response:', error.response?.data);
             if (error.response?.status === 401) {
                 logout();
             } else if (user && location.pathname.startsWith('/admin')) {
@@ -109,25 +148,27 @@ export const AppProvider = ({ children }) => {
                 return;
             }
             const response = await api.get('/api/auth/admin/check');
-            setIsAdmin(response.data.success ? response.data.isAdmin : false);
+            // Consider both admin and owner roles as admin access
+            const isAdminOrOwner = response.data.success && (response.data.isAdmin || response.data.isOwner);
+            setIsAdmin(isAdminOrOwner);
         } catch (error) {
             console.error('Error fetching admin status:', error);
             setIsAdmin(false);
         }
     };
 
-    const fetchAdAccess = async () => {
+    const fetchOwnerAccess = async () => {
         try {
             const token = getToken();
             if (!token) {
-                setHasAdAccess(false);
+                setHasOwnerAccess(false);
                 return;
             }
-            const response = await api.get('/api/user/ad-access');
-            setHasAdAccess(response.data.success ? response.data.hasAdAccess : false);
+            const response = await api.get('/api/user/owner-access');
+            setHasOwnerAccess(response.data.success ? response.data.hasOwnerAccess : false);
         } catch (error) {
-            console.error('Error fetching AD access:', error);
-            setHasAdAccess(false);
+            console.error('Error fetching owner access:', error);
+            setHasOwnerAccess(false);
         }
     };
 
@@ -145,16 +186,36 @@ export const AppProvider = ({ children }) => {
         }
     };
 
-    const setAdminTheatre = async (theatreName, cityName) => {
+    const fetchDashboardData = async () => {
+        try {
+            const { data } = await api.get('/api/admin/dashboard');
+            if (data.success) {
+                return data.dashboardData;
+            } else {
+                toast.error(data.message);
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+            toast.error('Failed to fetch dashboard data');
+            return null;
+        }
+    };
+
+    const setAdminTheatre = async (theatreName, cityName, addressName) => {
         try {
             const response = await api.post('/api/user/update-theatre', {
                 theatre: theatreName,
-                city: cityName
+                city: cityName,
+                address: addressName
             });
 
             if (response.data.success) {
+                // Update local state with new theatre data
                 setTheatre(theatreName);
-                setCity(cityName);
+                setTheatreCity(cityName);
+                setTheatreAddress(addressName);
+                setTheatreId(response.data.theatre._id); // Update theatreId
                 return { success: true };
             } else {
                 return { success: false, message: response.data.message };
@@ -197,7 +258,7 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             fetchIsAdmin();
-            fetchAdAccess();
+            fetchOwnerAccess();
             fetchFavoriteMovies();
         } else {
             setIsAdmin(false);
@@ -214,22 +275,26 @@ export const AppProvider = ({ children }) => {
         loading,
         isAuthenticated,
         isAdmin,
-        hasAdAccess,
+        hasOwnerAccess,
         login,
         logout,
         getToken,
         fetchUser,
         fetchIsAdmin,
-        fetchAdAccess,
+        fetchOwnerAccess,
         fetchUserFromBackend: fetchUser,
         setAdminTheatre,
         api,
         axios: api,
         image_base_url: 'https://image.tmdb.org/t/p/w500',
         theatre,
-        city,
+        theatreCity,
+        theatreAddress,
+        theatreId,
+        userCity,
         favoriteMovies,
-        fetchFavoriteMovies
+        fetchFavoriteMovies,
+        fetchDashboardData
     };
 
     return (

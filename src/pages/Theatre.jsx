@@ -3,7 +3,11 @@ import { useParams } from 'react-router-dom';
 import './Theatres.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-const PLACEHOLDER_IMG = 'https://ui-avatars.com/api/?background=ffd700&color=232323&name=Admin';
+// This will be dynamically generated based on admin name
+const getPlaceholderImg = (adminName) => {
+  const name = adminName || 'Admin';
+  return `https://ui-avatars.com/api/?background=ffd700&color=232323&name=${encodeURIComponent(name)}`;
+};
 
 const Theatre = () => {
   const { theatreId } = useParams();
@@ -22,11 +26,9 @@ const Theatre = () => {
         const tData = await tRes.json();
         const found = tData.theatres.find(t => t.name === decodeURIComponent(theatreId));
         setTheatre(found);
-        // Fetch admin user details
-        if (found) {
-          const uRes = await fetch(`${API_URL}/api/user/by-id/${found.admin}`);
-          const uData = await uRes.json();
-          setAdmin(uData.user || null);
+        // Admin data is already populated in the theatre object
+        if (found && found.admin) {
+          setAdmin(found.admin);
         }
         // Fetch shows for this theatre
         const sRes = await fetch(`${API_URL}/api/show/all`);
@@ -48,7 +50,7 @@ const Theatre = () => {
   return (
     <div className="theatre-detail-container">
       <div className="theatre-detail-header">
-        <img className="theatre-detail-image" src={admin?.image || PLACEHOLDER_IMG} alt="Theatre" />
+        <img className="theatre-detail-image" src={admin?.image || getPlaceholderImg(admin?.name)} alt="Theatre" />
         <div className="theatre-detail-header-info">
           <h1 className="theatre-detail-title">{theatre.name}</h1>
           <div className="theatre-detail-admin">Admin: {admin?.name || (theatre.admin.slice(0,8)+'...')}</div>

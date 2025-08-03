@@ -4,9 +4,10 @@ import { useAppContext } from '../../context/AppContext';
 import { Users, Shield, User, ArrowLeft, Home, RefreshCw, Search, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/Loading';
+import { getUserImage } from '../../utils/imageUtils';
 
 const ManageUsers = () => {
-    const { api, isAdmin, isAuthenticated, loading, hasAdAccess, fetchAdAccess } = useAppContext();
+    const { api, isAdmin, isAuthenticated, loading, hasOwnerAccess, fetchOwnerAccess } = useAppContext();
     const [users, setUsers] = useState([]);
     const [manageLoading, setManageLoading] = useState(false);
     const [fetchingUsers, setFetchingUsers] = useState(false);
@@ -33,20 +34,20 @@ const ManageUsers = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            fetchAdAccess();
+            fetchOwnerAccess();
         }
     }, [isAuthenticated]);
 
     useEffect(() => {
-        if (isAdmin && hasAdAccess) {
+        if (isAdmin && hasOwnerAccess) {
             fetchUsers();
         }
-    }, [isAdmin, hasAdAccess]);
+    }, [isAdmin, hasOwnerAccess]);
 
     const handleToggleAdmin = async (userId, currentRole, userEmail) => {
         setManageLoading(true);
         try {
-            const endpoint = currentRole === 'admin' ? '/api/user/demote-from-admin' : '/api/user/promote-to-admin';
+            const endpoint = currentRole === 'admin' ? '/api/user/demote-admin' : '/api/user/promote-admin';
             const response = await api.post(endpoint, { email: userEmail });
 
             if (response.data.success) {
@@ -95,10 +96,10 @@ const ManageUsers = () => {
     }
 
     // Show loading while checking AD access
-    if (typeof hasAdAccess === 'undefined') return <Loading/>
+    if (typeof hasOwnerAccess === 'undefined') return <Loading/>
 
     // Redirect if no AD access
-    if (!hasAdAccess) {
+    if (!hasOwnerAccess) {
         window.location.href = '/admin';
         return <Loading/>;
     }
@@ -172,6 +173,7 @@ const ManageUsers = () => {
                                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="all">All Roles</option>
+                                <option value="owner">Owners Only</option>
                                 <option value="admin">Admins Only</option>
                                 <option value="user">Users Only</option>
                             </select>
@@ -187,7 +189,7 @@ const ManageUsers = () => {
                                 Users ({filteredUsers.length} of {users.length})
                             </h3>
                             <div className="text-sm text-gray-500">
-                                {users.filter(u => u.role === 'admin').length} admins, {users.filter(u => u.role === 'user').length} users
+                                {users.filter(u => u.role === 'owner').length} owners, {users.filter(u => u.role === 'admin').length} admins, {users.filter(u => u.role === 'user').length} users
                             </div>
                         </div>
                     </div>
@@ -228,15 +230,37 @@ const ManageUsers = () => {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 h-10 w-10">
-                                                        {user.image ? (
-                                                            <img className="h-10 w-10 rounded-full" src={user.image} alt="" />
-                                                        ) : (
-                                                            <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                                                <span className="text-sm font-medium text-gray-700">
-                                                                    {user.name.charAt(0).toUpperCase()}
-                                                                </span>
-                                                            </div>
-                                                        )}
+                                                        {(() => {
+                                                            const userImage = getUserImage(user);
+                                                            return (
+                                                                <>
+                                                                    {userImage.hasImage ? (
+                                                                        <img 
+                                                                            className="h-10 w-10 rounded-full" 
+                                                                            src={userImage.url} 
+                                                                            alt="" 
+                                                                            onError={(e) => {
+                                                                                // If it's a Google image and we have a fallback URL, try that first
+                                                                                if (userImage.isGoogleImage && userImage.fallbackUrl) {
+                                                                                    e.target.src = userImage.fallbackUrl;
+                                                                                    return;
+                                                                                }
+                                                                                // Otherwise, hide the image and show the fallback
+                                                                                e.target.style.display = 'none';
+                                                                                e.target.nextSibling.style.display = 'flex';
+                                                                            }}
+                                                                        />
+                                                                    ) : null}
+                                                                    {!userImage.hasImage && (
+                                                                        <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                                                            <span className="text-sm font-medium text-gray-700">
+                                                                                {userImage.fallback}
+                                                                            </span>
+                                                                        </div>
+                                                                    )}
+                                                                </>
+                                                            );
+                                                        })()}
                                                     </div>
                                                     <div className="ml-4">
                                                         <div className="text-sm font-medium text-gray-900">{user.name}</div>
@@ -249,7 +273,9 @@ const ManageUsers = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                                    user.role === 'admin' 
+                                                    user.role === 'owner' 
+                                                        ? 'bg-purple-100 text-purple-800'
+                                                        : user.role === 'admin' 
                                                         ? 'bg-green-100 text-green-800' 
                                                         : 'bg-gray-100 text-gray-800'
                                                 }`}>
@@ -260,17 +286,23 @@ const ManageUsers = () => {
                                                 {new Date(user.createdAt).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <button
-                                                    onClick={() => handleToggleAdmin(user._id, user.role, user.email)}
-                                                    disabled={manageLoading}
-                                                    className={`inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md ${
-                                                        user.role === 'admin'
-                                                            ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                                                            : 'bg-green-100 text-green-700 hover:bg-green-200'
-                                                    } disabled:opacity-50 disabled:cursor-not-allowed`}
-                                                >
-                                                    {manageLoading ? 'Updating...' : user.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
-                                                </button>
+                                                {user.role === 'owner' ? (
+                                                    <span className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-500 cursor-not-allowed">
+                                                        Cannot Modify
+                                                    </span>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => handleToggleAdmin(user._id, user.role, user.email)}
+                                                        disabled={manageLoading}
+                                                        className={`inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md ${
+                                                            user.role === 'admin'
+                                                                ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                                                                : 'bg-green-100 text-green-700 hover:bg-green-200'
+                                                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                                                    >
+                                                        {manageLoading ? 'Updating...' : user.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
@@ -286,9 +318,10 @@ const ManageUsers = () => {
                     <div className="text-sm text-blue-700 space-y-1">
                         <p>• Click "Make Admin" to promote a user to admin status</p>
                         <p>• Click "Remove Admin" to demote an admin to user status</p>
+                        <p>• <strong>Owners cannot be modified</strong> - they have permanent access</p>
                         <p>• Use the search bar to find specific users</p>
-                        <p>• Use the filter dropdown to view only admins or users</p>
-                        <p>• Only users with AD access can manage other users</p>
+                        <p>• Use the filter dropdown to view specific roles</p>
+                        <p>• Only users with owner access can manage other users</p>
                     </div>
                 </div>
             </div>

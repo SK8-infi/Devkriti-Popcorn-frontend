@@ -2,26 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { dummyShowsData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import Title from '../../components/admin/Title';
-import { CheckIcon, DeleteIcon, StarIcon } from 'lucide-react';
+import { CheckIcon, DeleteIcon, StarIcon, Building2, MapPin, Globe } from 'lucide-react';
 import { kConverter } from '../../lib/kConverter';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
 const AddShows = () => {
 
-    const {api, user, isAdmin, image_base_url} = useAppContext()
+    const {api, user, isAdmin, image_base_url, theatre, theatreCity, theatreId, getToken} = useAppContext()
 
     const currency = import.meta.env.VITE_CURRENCY
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [dateTimeSelection, setDateTimeSelection] = useState({});
     const [dateTimeInput, setDateTimeInput] = useState("");
-    const [showPrice, setShowPrice] = useState("");
+    const [normalPrice, setNormalPrice] = useState("");
+    const [vipPrice, setVipPrice] = useState("");
     const [addingShow, setAddingShow] = useState(false)
     const [rooms, setRooms] = useState([]);
     const [selectedRoomType, setSelectedRoomType] = useState('Normal');
     const [selectedRoomId, setSelectedRoomId] = useState('');
     const [existingShows, setExistingShows] = useState([]);
+    
+    // Language selection state
+    const [selectedLanguage, setSelectedLanguage] = useState('');
+    const [languageInput, setLanguageInput] = useState('');
+    const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+    const [filteredLanguages, setFilteredLanguages] = useState([]);
     
     // Custom time picker state
     const [selectedDate, setSelectedDate] = useState("");
@@ -32,6 +39,62 @@ const AddShows = () => {
     // Generate minutes in multiples of 5
     const minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
     const hours = Array.from({length: 24}, (_, i) => i.toString().padStart(2, '0'));
+
+    // Common languages list
+    const languages = [
+        "Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "Bengali", "Marathi", 
+        "Gujarati", "Punjabi", "Odia", "Assamese", "Kashmiri", "Sindhi", "Konkani", "Sanskrit",
+        "Spanish", "French", "German", "Italian", "Portuguese", "Russian", "Chinese", "Japanese",
+        "Korean", "Arabic", "Turkish", "Dutch", "Swedish", "Norwegian", "Danish", "Finnish",
+        "Polish", "Czech", "Hungarian", "Romanian", "Bulgarian", "Croatian", "Serbian", "Slovenian",
+        "Slovak", "Estonian", "Latvian", "Lithuanian", "Greek", "Hebrew", "Persian", "Urdu",
+        "Thai", "Vietnamese", "Indonesian", "Malay", "Filipino", "Burmese", "Khmer", "Lao",
+        "Mongolian", "Tibetan", "Nepali", "Sinhala", "Dhivehi", "Kazakh", "Kyrgyz", "Tajik",
+        "Turkmen", "Uzbek", "Azerbaijani", "Georgian", "Armenian", "Kurdish", "Pashto", "Dari"
+    ];
+
+    // Filter languages based on input
+    const filterLanguages = (input) => {
+        if (!input.trim()) {
+            setFilteredLanguages(languages.slice(0, 10));
+            return;
+        }
+        
+        const filtered = languages.filter(lang => 
+            lang.toLowerCase().includes(input.toLowerCase())
+        );
+        setFilteredLanguages(filtered);
+    };
+
+    // Handle language input change
+    const handleLanguageInputChange = (e) => {
+        const value = e.target.value;
+        setLanguageInput(value);
+        setSelectedLanguage(value);
+        filterLanguages(value);
+        setShowLanguageDropdown(true);
+    };
+
+    // Handle language selection from dropdown
+    const handleLanguageSelect = (language) => {
+        setSelectedLanguage(language);
+        setLanguageInput(language);
+        setShowLanguageDropdown(false);
+        setFilteredLanguages([]);
+    };
+
+    // Handle language input focus
+    const handleLanguageFocus = () => {
+        setShowLanguageDropdown(true);
+        filterLanguages(languageInput);
+    };
+
+    // Handle language input blur
+    const handleLanguageBlur = () => {
+        setTimeout(() => {
+            setShowLanguageDropdown(false);
+        }, 300); // Increased from 200ms to 300ms
+    };
 
     const fetchNowPlayingMovies = async () => {
         try {
@@ -108,23 +171,39 @@ const AddShows = () => {
 
     // Check if a room is available for the selected date/time combinations
     const isRoomAvailable = (roomId) => {
-      if (Object.keys(dateTimeSelection).length === 0) return true;
+      if (Object.keys(dateTimeSelection).length === 0) return { available: true, conflict: null };
       
       for (const [date, times] of Object.entries(dateTimeSelection)) {
         for (const time of times) {
           const selectedDateTime = new Date(`${date}T${time}`);
+          const selectedEndTime = new Date(selectedDateTime.getTime() + (3 * 60 * 60 * 1000)); // 3 hours later
           
-          // Check if there's any existing show at the same time in the same room
-          const conflict = existingShows.some(show => {
+          // Check if there's any existing show that overlaps with the 3-hour duration
+          const conflict = existingShows.find(show => {
+            if (show.room !== roomId) return false;
+            
             const showDateTime = new Date(show.showDateTime);
-            return show.room === roomId && 
-                   showDateTime.getTime() === selectedDateTime.getTime();
+            const showEndTime = new Date(showDateTime.getTime() + (3 * 60 * 60 * 1000)); // 3 hours later
+            
+            // Check for overlap: new show starts before existing show ends AND new show ends after existing show starts
+            const overlaps = selectedDateTime < showEndTime && selectedEndTime > showDateTime;
+            
+            return overlaps;
           });
           
-          if (conflict) return false;
+          if (conflict) {
+            return { 
+              available: false, 
+              conflict: {
+                movie: conflict.movie?.title || 'Unknown Movie',
+                time: new Date(conflict.showDateTime).toLocaleString(),
+                room: conflict.room
+              }
+            };
+          }
         }
       }
-      return true;
+      return { available: true, conflict: null };
     };
 
     const handleSubmit = async ()=>{
@@ -137,7 +216,7 @@ const AddShows = () => {
                 return;
             }
 
-            if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice || !selectedRoomId){
+            if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !normalPrice || !vipPrice || !selectedRoomId || !selectedLanguage){
                 return toast('Missing required fields');
             }
 
@@ -146,19 +225,24 @@ const AddShows = () => {
             const payload = {
                 movieId: selectedMovie,
                 showsInput,
-                showPrice: Number(showPrice),
+                normalPrice: Number(normalPrice),
+                vipPrice: Number(vipPrice),
                 theatreId: theatreId, // Only use ObjectId
-                roomId: selectedRoomId
+                roomId: selectedRoomId,
+                language: selectedLanguage
             }
 
-            const { data } = await axios.post('/api/show/add', payload, {headers: { Authorization: `Bearer ${await getToken()}` }})
+            const { data } = await api.post('/api/show/add', payload, {headers: { Authorization: `Bearer ${await getToken()}` }})
 
             if(data.success){
                 toast.success(data.message)
                 setSelectedMovie(null)
                 setDateTimeSelection({})
-                setShowPrice("")
+                setNormalPrice("")
+                setVipPrice("")
                 setSelectedRoomId("")
+                setSelectedLanguage("")
+                setLanguageInput("")
             }else{
                 toast.error(data.message)
             }
@@ -186,7 +270,7 @@ const AddShows = () => {
 
     // Reset room selection if currently selected room becomes unavailable
     useEffect(() => {
-      if (selectedRoomId && !isRoomAvailable(selectedRoomId)) {
+      if (selectedRoomId && !isRoomAvailable(selectedRoomId).available) {
         setSelectedRoomId('');
         toast.error('Selected room is not available for the chosen times. Please select another room.');
       }
@@ -194,6 +278,26 @@ const AddShows = () => {
 
   return nowPlayingMovies.length > 0 ? (
     <>
+      {/* Theatre Info Header */}
+      {(theatre || theatreCity) && (
+        <div className="w-full flex justify-center mb-6">
+          <div className="flex items-center gap-4 bg-white/10 border border-white/30 rounded-xl px-6 py-4 backdrop-blur-md">
+            {theatre && (
+              <div className="flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-primary" />
+                <span className="text-white font-semibold">{theatre}</span>
+              </div>
+            )}
+            {theatreCity && (
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-primary" />
+                <span className="text-white font-semibold">{theatreCity}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <p className="mt-4 text-lg font-medium">Now Playing Movies</p>
       <div className="overflow-x-auto pb-4">
         <div className="group flex flex-wrap gap-4 mt-4 w-max">
@@ -221,16 +325,73 @@ const AddShows = () => {
         </div>
       </div>
 
-      {/* Show Price & Date/Time Selection Side by Side */}
+      {/* Show Price, Language & Date/Time Selection */}
       <div className="flex flex-col md:flex-row gap-8 mt-8 w-full">
-        {/* Show Price Input */}
+        {/* Normal Price Input */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Show Price</label>
+          <label className="block text-sm font-semibold mb-3 text-white">Normal Seat Price</label>
           <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
             <p className="text-white font-bold text-base">{currency}</p>
-            <input min={0} type="number" value={showPrice} onChange={(e) => setShowPrice(e.target.value)} placeholder="Enter show price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+            <input min={0} type="number" value={normalPrice} onChange={(e) => setNormalPrice(e.target.value)} placeholder="Enter normal price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
           </div>
         </div>
+        
+        {/* VIP Price Input */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <label className="block text-sm font-semibold mb-3 text-white">VIP Seat Price</label>
+          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
+            <p className="text-white font-bold text-base">{currency}</p>
+            <input min={0} type="number" value={vipPrice} onChange={(e) => setVipPrice(e.target.value)} placeholder="Enter VIP price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+          </div>
+        </div>
+        
+        {/* Language Input */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center relative">
+          <label className="block text-sm font-semibold mb-3 text-white">Language</label>
+          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
+            <Globe className="w-5 h-5 text-primary" />
+            <input 
+              type="text" 
+              value={languageInput} 
+              onChange={handleLanguageInputChange}
+              onFocus={handleLanguageFocus}
+              onBlur={handleLanguageBlur}
+              onClick={() => {
+                setShowLanguageDropdown(true);
+                filterLanguages(languageInput);
+              }}
+              placeholder="Enter language (e.g., Hindi, English)" 
+              className="outline-none w-full bg-transparent text-white text-base font-medium" 
+              style={{'::placeholder': {color: 'white'}}} 
+            />
+          </div>
+          
+          {/* Language Dropdown */}
+          {showLanguageDropdown && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-[9999] max-h-60 overflow-y-auto">
+              {filteredLanguages.length > 0 ? (
+                filteredLanguages.map((language, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleLanguageSelect(language);
+                    }}
+                  >
+                    {language}
+                  </div>
+                ))
+              ) : (
+                <div className="px-4 py-2 text-gray-500 text-sm">
+                  No languages found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        
         {/* Date & Time Selection */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <label className="block text-sm font-semibold mb-3 text-white">Select Date and Time</label>
@@ -344,7 +505,7 @@ const AddShows = () => {
           <select value={selectedRoomId} onChange={e => setSelectedRoomId(e.target.value)} className="border border-primary/30 px-4 py-3 rounded-lg w-full bg-black/40 text-white">
             <option value="">Select a room</option>
             {rooms.filter(room => room.type === selectedRoomType).map(room => {
-              const available = isRoomAvailable(room._id);
+              const { available, conflict } = isRoomAvailable(room._id);
               return (
                 <option 
                   key={room._id} 
@@ -355,14 +516,14 @@ const AddShows = () => {
                     backgroundColor: available ? 'inherit' : '#333'
                   }}
                 >
-                  {room.name} ({room.type}) {!available ? '- UNAVAILABLE' : ''}
+                  {room.name} ({room.type}) {!available ? `- CONFLICT: ${conflict?.movie || 'Unknown Movie'}` : ''}
                 </option>
               );
             })}
           </select>
           {Object.keys(dateTimeSelection).length > 0 ? (
             <p className="text-xs text-gray-400 mt-2">
-              * Unavailable rooms have conflicting shows at selected times
+              * Unavailable rooms have conflicting shows (3-hour duration assumed)
             </p>
           ) : (
             <p className="text-xs text-gray-400 mt-2">

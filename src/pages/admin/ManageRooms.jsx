@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import SeatLayoutEditor from '../../components/admin/SeatLayoutEditor';
+import { Building2, MapPin } from 'lucide-react';
 
 const ROOM_TYPES = ["Normal", "3D", "IMAX"];
 
 const defaultLayout = Array(8).fill().map(() => Array(10).fill(1));
 
 const ManageRooms = () => {
-  const { api, user, isAdmin } = useAppContext();
+  const { api, user, isAdmin, theatre, theatreCity } = useAppContext();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addForm, setAddForm] = useState({ name: '', type: 'Normal', layout: defaultLayout });
@@ -97,6 +98,26 @@ const ManageRooms = () => {
 
   return (
     <div className="max-w-3xl mx-auto py-10">
+      {/* Theatre Info Header */}
+      {(theatre || theatreCity) && (
+        <div className="w-full flex justify-center mb-6">
+          <div className="flex items-center gap-4 bg-white/10 border border-white/30 rounded-xl px-6 py-4 backdrop-blur-md">
+            {theatre && (
+              <div className="flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-primary" />
+                <span className="text-white font-semibold">{theatre}</span>
+              </div>
+            )}
+            {theatreCity && (
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-primary" />
+                <span className="text-white font-semibold">{theatreCity}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <h1 className="text-2xl font-bold mb-6">Manage Theatre Rooms</h1>
       {loading ? <div>Loading...</div> : (
         <>

@@ -316,7 +316,11 @@ const SelectShowtime = () => {
               <div className="flex flex-col justify-center">
                 <button
                   className="ml-auto w-12 h-12 bg-black text-white rounded-lg font-semibold shadow hover:bg-gray-900 transition flex items-center justify-center"
-                  onClick={() => selectedShowId && navigate(`/movies/${id}/${selectedShowId}`)}
+                  onClick={() => {
+                    console.log('🔍 SelectShowtime: Navigating to showId:', selectedShowId);
+                    console.log('🔍 SelectShowtime: Navigation URL:', `/movies/${id}/${selectedShowId}`);
+                    selectedShowId && navigate(`/movies/${id}/${selectedShowId}`);
+                  }}
                   disabled={!selectedShowId}
                   style={{minHeight: '48px', minWidth: '48px'}}
                 >
@@ -329,11 +333,15 @@ const SelectShowtime = () => {
                 <button
                   key={t.showId}
                   className={`px-4 py-2 rounded border text-sm font-semibold transition-all min-w-[90px] text-black bg-white ${selectedShowId === t.showId ? 'border-primary ring-2 ring-primary' : 'border-gray-300'}`}
-                  onClick={() => setSelectedShowId(t.showId)}
+                  onClick={() => {
+                    console.log('🔍 SelectShowtime: Setting selectedShowId to:', t.showId);
+                    setSelectedShowId(t.showId);
+                  }}
                 >
                   {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   <div className="text-[10px] font-normal uppercase">{t.format || 'Normal'}</div>
                   <div className="text-[10px] font-normal text-gray-500">₹{t.normalPrice} / ₹{t.vipPrice}</div>
+                  <div className="text-[10px] font-normal text-blue-600">{t.language || 'Unknown'}</div>
                 </button>
               ))}
             </div>

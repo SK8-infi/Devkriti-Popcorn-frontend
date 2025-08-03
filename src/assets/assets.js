@@ -232,9 +232,9 @@ export const dummyDashboardData = {
             "showDateTime": "2025-06-30T02:30:00.000Z",
             "showPrice": 59,
             "occupiedSeats": {
-                "A1": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "B1": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "C1": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok"
+                "A1": "507f1f77bcf86cd799439011",
+                "B1": "507f1f77bcf86cd799439011",
+                "C1": "507f1f77bcf86cd799439011"
             },
         },
         {
@@ -257,10 +257,10 @@ export const dummyDashboardData = {
             "showDateTime": "2025-07-15T16:30:00.000Z",
             "showPrice": 81,
             "occupiedSeats": {
-                "A1": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "A2": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "A3": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "A4": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok"
+                "A1": "507f1f77bcf86cd799439011",
+                "A2": "507f1f77bcf86cd799439011",
+                "A3": "507f1f77bcf86cd799439011",
+                "A4": "507f1f77bcf86cd799439011"
             },
         },
         {
@@ -269,12 +269,12 @@ export const dummyDashboardData = {
             "showDateTime": "2025-06-05T15:30:00.000Z",
             "showPrice": 49,
             "occupiedSeats": {
-                "A1": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "A2": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "A3": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "B1": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "B2": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok",
-                "B3": "user_2xO4XPCgWWwWq9EHuQxc5UWqIok"
+                "A1": "507f1f77bcf86cd799439011",
+                "A2": "507f1f77bcf86cd799439011",
+                "A3": "507f1f77bcf86cd799439011",
+                "B1": "507f1f77bcf86cd799439011",
+                "B2": "507f1f77bcf86cd799439011",
+                "B3": "507f1f77bcf86cd799439011"
             },
             "__v": 0
         },
@@ -284,8 +284,8 @@ export const dummyDashboardData = {
             "showDateTime": "2025-06-20T16:00:00.000Z",
             "showPrice": 79,
             "occupiedSeats": {
-                "A1": "user_2xl7eCSUHddibk5lRxfOtw9RMwX",
-                "A2": "user_2xl7eCSUHddibk5lRxfOtw9RMwX"
+                "A1": "507f1f77bcf86cd799439011",
+                "A2": "507f1f77bcf86cd799439011"
             }
         }
     ]

@@ -41,7 +41,7 @@ const Theatres = () => {
           <div className="theatre-card" key={theatre._id} onClick={() => navigate(`/theatres/${encodeURIComponent(theatre.name)}`)} style={{cursor:'pointer'}}>
             <h2 className="theatre-name">{theatre.name}</h2>
             <div className="theatre-meta">
-              <span className="theatre-admin">Admin: {theatre.admin.slice(0, 8)}...</span>
+              <span className="theatre-admin">Admin: {theatre.admin?.name || theatre.admin?.slice(0, 8) + '...'}</span>
             </div>
           </div>
         ))}

@@ -8,56 +8,84 @@ import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import DarkVeil from '../../components/DarkVeil'; // Added DarkVeil import
 import { Link } from 'react-router-dom';
+import TheatreSetupModal from '../../components/admin/TheatreSetupModal';
+import TheatreDebug from '../../components/admin/TheatreDebug';
 
 const Dashboard = () => {
+  const { user, theatre, theatreCity, isAdmin, hasOwnerAccess, loading, fetchDashboardData, api, image_base_url } = useAppContext();
+  const [dashboardData, setDashboardData] = useState(null);
+  const [showSetupModal, setShowSetupModal] = useState(false);
 
-    const {api, user, isAdmin, image_base_url, hasAdAccess, fetchAdAccess} = useAppContext()
+  const currency = import.meta.env.VITE_CURRENCY
 
-    const currency = import.meta.env.VITE_CURRENCY
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
-    const [dashboardData, setDashboardData] = useState({
-        totalBookings: 0,
-        totalRevenue: 0,
-        activeShows: [],
-        totalUser: 0
-    });
-    const [loading, setLoading] = useState(true);
-    const [selectedMovie, setSelectedMovie] = useState(null);
+  // Local fetchDashboardData function as fallback
+  const localFetchDashboardData = async () => {
+    try {
+      console.log('📊 Dashboard: Using local fetchDashboardData');
+      const { data } = await api.get("/api/admin/dashboard");
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+        console.log('✅ Dashboard data fetched:', data.dashboardData);
+      } else {
+        toast.error(data.message);
+        console.error('❌ Dashboard data fetch failed:', data.message);
+      }
+    } catch (error) {
+      toast.error("Error fetching dashboard data");
+      console.error('❌ Dashboard data fetch error:', error);
+    }
+  };
 
-    const dashboardCards = [
-        { title: "Total Bookings", value: dashboardData.totalBookings || "0", icon: ChartLineIcon },
-        { title: "Total Revenue", value: currency + dashboardData.totalRevenue || "0", icon: CircleDollarSignIcon },
-        { title: "Active Shows", value: dashboardData.activeShows.length || "0", icon: PlayCircleIcon },
-        { title: "Total Users", value: dashboardData.totalUser || "0", icon: UsersIcon }
-    ]
+  const dashboardCards = [
+    { title: "Total Bookings", value: dashboardData?.totalBookings || "0", icon: ChartLineIcon },
+    { title: "Total Revenue", value: currency + (dashboardData?.totalRevenue || 0), icon: CircleDollarSignIcon },
+    { title: "Active Shows", value: dashboardData?.activeShows?.length || "0", icon: PlayCircleIcon },
+    { title: "Total Users", value: dashboardData?.totalUser || "0", icon: UsersIcon }
+  ]
 
-    const fetchDashboardData = async () => {
-        try {
-           const { data } = await api.get("/api/admin/dashboard") 
-           if (data.success) {
-            setDashboardData(data.dashboardData)
-            setLoading(false)
-           }else{
-            toast.error(data.message)
-           }
-        } catch (error) {
-            setLoading(false);
-            toast.error("Error fetching dashboard data");
-            console.error(error);
+  useEffect(() => {
+    if(user && isAdmin){
+      console.log('📊 Dashboard: User and admin status confirmed, fetching data...');
+      console.log('📊 Dashboard: fetchDashboardData function:', typeof fetchDashboardData);
+      
+      // Use context function if available, otherwise use local function
+      const fetchData = typeof fetchDashboardData === 'function' ? fetchDashboardData : localFetchDashboardData;
+      fetchData();
+      
+      // Check if theatre setup is needed
+      console.log('🔍 Theatre Setup Check:', { theatre, theatreCity, isAdmin });
+      
+      if (typeof theatre !== 'undefined' && typeof theatreCity !== 'undefined') {
+        const needsSetup = !theatre || !theatreCity;
+        console.log('🎭 Setup needed:', needsSetup, 'Theatre:', theatre, 'Theatre City:', theatreCity);
+        
+        if (needsSetup) {
+          console.log('📋 Showing setup modal');
+          setShowSetupModal(true);
+        } else {
+          console.log('✅ Theatre setup complete');
+          setShowSetupModal(false);
         }
-    };
-
-    useEffect(() => {
-        if(user && isAdmin){
-            fetchDashboardData();
-            fetchAdAccess();
-        }   
-    }, [user, isAdmin]);
+      } else {
+        console.log('⏳ Waiting for theatre/city data to load...');
+      }
+    }   
+  }, [user, isAdmin, theatre, theatreCity]);
 
   // Group shows by movie._id
   const movieMap = {};
-  dashboardData.activeShows.forEach(show => {
-    const movieId = show.movie._id;
+  console.log('🔍 Dashboard: activeShows data:', dashboardData?.activeShows);
+  console.log('🔍 Dashboard: activeShows length:', dashboardData?.activeShows?.length);
+  
+  dashboardData?.activeShows?.forEach(show => {
+    console.log('🔍 Dashboard: Processing show:', show);
+    const movieId = show.movie?._id;
+    if (!movieId) {
+      console.warn('⚠️ Dashboard: Show has no movie._id:', show);
+      return;
+    }
     if (!movieMap[movieId]) {
       movieMap[movieId] = {
         movie: show.movie,
@@ -67,26 +95,73 @@ const Dashboard = () => {
     movieMap[movieId].shows.push(show);
   });
   const uniqueMovies = Object.values(movieMap);
+  console.log('🔍 Dashboard: Unique movies:', uniqueMovies);
 
   return !loading ? (
     <>
+      {/* Theatre Setup Modal */}
+      <TheatreSetupModal 
+        isOpen={showSetupModal} 
+        onClose={() => setShowSetupModal(false)} 
+      />
+
+      {/* Debug Component */}
+      {/* <TheatreDebug /> */}
+
+      {/* Theatre Info Header */}
+      {(theatre || theatreCity) && (
+        <div className="w-full flex justify-center mb-6">
+          <div className="flex items-center gap-4 bg-white/10 border border-white/30 rounded-xl px-6 py-4 backdrop-blur-md">
+            {theatre && (
+              <div className="flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-primary" />
+                <span className="text-white font-semibold">{theatre}</span>
+              </div>
+            )}
+            {theatreCity && (
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-primary" />
+                <span className="text-white font-semibold">{theatreCity}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      
+      {/* Show setup prompt if no theatre info */}
+      {(!theatre && !theatreCity) && (
+        <div className="w-full flex justify-center mb-6">
+          <div className="flex items-center gap-4 bg-yellow-500/20 border border-yellow-500/30 rounded-xl px-6 py-4 backdrop-blur-md">
+            <div className="flex items-center gap-2">
+              <span className="text-yellow-400 font-semibold">⚠️ Theatre setup required</span>
+            </div>
+            <button
+              onClick={() => setShowSetupModal(true)}
+              className="px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-600 transition-colors"
+            >
+              Setup Now
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Centered Info Block: Dashboard Cards */}
       <div className="w-full flex flex-col items-center justify-center mb-4 mt-2">
         <div className="flex flex-wrap gap-4 items-center justify-center w-full max-w-4xl scale-90">
-                    {dashboardCards.map((card, index) => (
+          {dashboardCards.map((card, index) => (
             <div key={index} className="flex items-center gap-2 px-4 py-3 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md backdrop-blur-md min-w-[135px] max-w-xs w-full transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04] cursor-pointer">
               <card.icon className="w-6 h-6 text-primary flex-shrink-0" />
               <div className="flex flex-col flex-1">
                 <span className="text-xs text-gray-200 font-medium uppercase tracking-wide">{card.title}</span>
                 <span className="text-xl font-bold text-white leading-tight">{card.value}</span>
-                            </div>
-                        </div>
-                    ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Quick Actions */}
-      {hasAdAccess && (
+      {hasOwnerAccess && (
         <div className="flex justify-center mb-6">
           <Link 
             to="/manage-users"
@@ -122,7 +197,7 @@ const Dashboard = () => {
                   {movie.genres ? movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ") : ''}
                   {movie.release_date ? ` • ${movie.release_date.split("-")[0]}` : ''}
                 </p>
-                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -156,17 +231,20 @@ const Dashboard = () => {
                   {selectedMovie.movie.runtime ? `${selectedMovie.movie.runtime} min • ` : ''}
                   {selectedMovie.movie.genres ? selectedMovie.movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ") : ''}
                   {selectedMovie.movie.release_date ? ` • ${selectedMovie.movie.release_date.split("-")[0]}` : ''}
-                            </p>
-                        </div>
-                    </div>
+                </p>
+              </div>
+            </div>
             {/* Showtimes List */}
             <div className="w-full mt-6">
               <h3 className="text-lg font-semibold text-white mb-2">Showtimes</h3>
               <ul className="divide-y divide-gray-700 bg-white/10 backdrop-blur-md rounded-lg p-4 shadow-lg max-h-60 overflow-y-auto animate-fade-in-up scrollbar-thin scrollbar-thumb-primary/60 scrollbar-track-transparent">
                 {selectedMovie.shows.map((show) => (
                   <li key={show._id} className="py-2 flex justify-between items-center transition-transform duration-300 hover:scale-[1.03]">
-                    <span className="text-white">{dateFormat(show.showDateTime)}</span>
-                    <span className="text-primary font-semibold">{currency} {show.showPrice}</span>
+                    <div className="flex flex-col">
+                      <span className="text-white">{dateFormat(show.showDateTime)}</span>
+                      <span className="text-gray-400 text-sm">{show.language || 'N/A'}</span>
+                    </div>
+                    <span className="text-primary font-semibold">{currency} {show.normalPrice} / {currency} {show.vipPrice}</span>
                   </li>
                 ))}
               </ul>

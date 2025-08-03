@@ -18,6 +18,7 @@ import ListBookings from './pages/admin/ListBookings'
 import UpdateLayout from './pages/admin/UpdateLayout'
 import { useAppContext } from './context/AppContext'
 import Loading from './components/Loading'
+import LoadingPage from './pages/Loading'
 import Theatres from './pages/Theatres'
 import Theatre from './pages/Theatre'
 import ManageRooms from './pages/admin/ManageRooms'
@@ -56,7 +57,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
-        <Route path='/movies/:id/:date' element={<SeatLayout />} />
+        <Route path='/movies/:id/:showId' element={<SeatLayout />} />
         <Route path='/movies/:id/select-showtime' element={<SelectShowtime />} />
         <Route path='/my-bookings' element={
           <ProtectedRoute>
@@ -77,6 +78,7 @@ const App = () => {
         <Route path='/theatres/:theatreId' element={<Theatre />} />
         <Route path='/contact' element={<ContactUs />} />
         <Route path='/loading/:nextUrl' element={<Loading />} />
+        <Route path='/payment-success' element={<LoadingPage />} />
 
         {/* 🔐 Admin-only route for managing users */}
         <Route path='/manage-users' element={

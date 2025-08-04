@@ -311,7 +311,7 @@ const handleSaveCity = async () => {
                                 width: 32,
                                 height: 32,
                                 borderRadius: '50%',
-                                backgroundColor: '#ffd700',
+                                backgroundColor: '#FFD6A0',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -456,7 +456,7 @@ const handleSaveCity = async () => {
                   ))}
                 </select>
                 {cityError && <div style={{ color: 'red', marginBottom: 8 }}>{cityError}</div>}
-                <button onClick={handleSaveCity} disabled={savingCity} style={{ background: '#fbbf24', color: '#222', border: 'none', borderRadius: 6, padding: '8px 20px', fontSize: 16, cursor: 'pointer', fontWeight: 600 }}>
+                                 <button onClick={handleSaveCity} disabled={savingCity} style={{ background: '#FFD6A0', color: '#222', border: 'none', borderRadius: 6, padding: '8px 20px', fontSize: 16, cursor: 'pointer', fontWeight: 600 }}>
                   {savingCity ? 'Saving...' : 'Save'}
                 </button>
               </>

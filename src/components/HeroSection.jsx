@@ -123,10 +123,38 @@ const HeroSection = () => {
         gap: '18px',
         minWidth: '340px',
         maxWidth: '600px',
+        padding: '0 20px',
+        '@media (max-width: 768px)': {
+          top: '120px',
+          left: '20px',
+          right: '20px',
+          minWidth: 'auto',
+          maxWidth: 'none',
+        },
+        '@media (max-width: 480px)': {
+          top: '100px',
+          left: '15px',
+          right: '15px',
+          gap: '12px',
+        },
       }}>
         {/* Movie Logo or Placeholder */}
         {galleryItems[activeIndex].logo ? (
-          <div style={{ marginBottom: '8px', minHeight: '80px', minWidth: '300px', display: 'flex', alignItems: 'center' }}>
+          <div style={{ 
+            marginBottom: '8px', 
+            minHeight: '80px', 
+            minWidth: '300px', 
+            display: 'flex', 
+            alignItems: 'center',
+            '@media (max-width: 768px)': {
+              minHeight: '60px',
+              minWidth: '250px',
+            },
+            '@media (max-width: 480px)': {
+              minHeight: '50px',
+              minWidth: '200px',
+            },
+          }}>
             <img 
               src={galleryItems[activeIndex].logo}
               alt={`${galleryItems[activeIndex].text} logo`}
@@ -137,6 +165,14 @@ const HeroSection = () => {
                 width: 'auto',
                 filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',
                 objectFit: 'contain',
+                '@media (max-width: 768px)': {
+                  maxHeight: '60px',
+                  maxWidth: '250px',
+                },
+                '@media (max-width: 480px)': {
+                  maxHeight: '50px',
+                  maxWidth: '200px',
+                },
               }}
               onError={(e) => {
                 e.target.style.display = 'none';
@@ -145,7 +181,19 @@ const HeroSection = () => {
           </div>
         ) : (
           // Placeholder to reserve space for logo
-          <div style={{ minHeight: '80px', minWidth: '300px', marginBottom: '8px' }} />
+          <div style={{ 
+            minHeight: '80px', 
+            minWidth: '300px', 
+            marginBottom: '8px',
+            '@media (max-width: 768px)': {
+              minHeight: '60px',
+              minWidth: '250px',
+            },
+            '@media (max-width: 480px)': {
+              minHeight: '50px',
+              minWidth: '200px',
+            },
+          }} />
         )}
         {/* Movie Title (shown when no logo or as fallback) */}
         <div style={{
@@ -154,7 +202,13 @@ const HeroSection = () => {
           letterSpacing: '-1px',
           lineHeight: 1.1,
           fontFamily: 'Times New Roman, Times, serif',
-          display: galleryItems[activeIndex].logo ? 'none' : 'block'
+          display: galleryItems[activeIndex].logo ? 'none' : 'block',
+          '@media (max-width: 768px)': {
+            fontSize: galleryItems[activeIndex].logo ? '1.5rem' : '1.8rem',
+          },
+          '@media (max-width: 480px)': {
+            fontSize: galleryItems[activeIndex].logo ? '1.3rem' : '1.6rem',
+          },
         }}>
           {galleryItems[activeIndex].text}
         </div>
@@ -165,7 +219,7 @@ const HeroSection = () => {
           fontSize: '1.05rem',
           opacity: 0.85
         }}>
-          <span style={{ color: '#ffd700', fontWeight: 600 }}>
+          <span style={{ color: '#FFD6A0', fontWeight: 600 }}>
             {galleryItems[activeIndex].release_date ? new Date(galleryItems[activeIndex].release_date).getFullYear() : ''}
           </span>
           <span style={{ color: '#aaa' }}>|</span>

@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 // This will be dynamically generated based on admin name
 const getPlaceholderImg = (adminName) => {
   const name = adminName || 'Admin';
-  return `https://ui-avatars.com/api/?background=ffd700&color=232323&name=${encodeURIComponent(name)}`;
+  return `https://ui-avatars.com/api/?background=FFD6A0&color=232323&name=${encodeURIComponent(name)}`;
 };
 
 const Theatre = () => {

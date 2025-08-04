@@ -25,6 +25,35 @@
   display: block;
 }
 
+/* Responsive MovieCard */
+@media (max-width: 1024px) {
+  .movie-card-img {
+    width: 180px;
+    height: 270px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-card-img {
+    width: 160px;
+    height: 240px;
+  }
+}
+
+@media (max-width: 640px) {
+  .movie-card-img {
+    width: 140px;
+    height: 210px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-card-img {
+    width: 120px;
+    height: 180px;
+  }
+}
+
 .movie-card-title {
   font-weight: 600;
   margin-top: 0.5rem;

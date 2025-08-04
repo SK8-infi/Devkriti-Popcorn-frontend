@@ -139,7 +139,7 @@ const MovieCard = ({ movie }) => {
               border: 'none',
               boxShadow: 'none',
               pointerEvents: 'auto',
-              color: '#FFD700',
+              color: '#FFD6A0',
               fontWeight: 'bold',
               fontSize: '15px',
               padding: '8px 12px',

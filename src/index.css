@@ -25,6 +25,7 @@
   font-family: 'Montserrat', Arial, sans-serif;
   scrollbar-width: thin;
   scrollbar-color: #787777 #1e1e1e;
+  scroll-behavior: smooth;
 }
 
 body{
@@ -125,4 +126,77 @@ html, body, * {
   justify-content: center;
   align-items: center;
   padding: 1rem;
+}
+
+/* Responsive Utilities */
+.hidden-mobile {
+  display: block;
+}
+
+.hidden-desktop {
+  display: none;
+}
+
+.text-responsive {
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .text-responsive {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none;
+  }
+  
+  .hidden-desktop {
+    display: block;
+  }
+  
+  .text-responsive {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-responsive {
+    font-size: 0.85rem;
+  }
+}
+
+/* Responsive spacing utilities */
+.responsive-padding {
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .responsive-padding {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-padding {
+    padding: 1rem;
+  }
+}
+
+/* Responsive margins */
+.responsive-margin {
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .responsive-margin {
+    margin: 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-margin {
+    margin: 1rem 0;
+  }
 }

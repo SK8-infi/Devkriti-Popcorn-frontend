@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { ClockIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import CircularGallery from './CircularGallery';
+import ResponsiveContainer from './ResponsiveContainer';
+import useResponsive from '../hooks/useResponsive';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
@@ -16,6 +18,7 @@ const HeroSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const [galleryItems, setGalleryItems] = useState([]);
+  const { isTinyMobile, getResponsiveValue } = useResponsive();
 
   const handleActiveIndexChange = useCallback((idx) => {
     setActiveIndex(idx);
@@ -70,6 +73,87 @@ const HeroSection = () => {
     });
   }, [galleryItems]);
 
+  const responsiveTitleSize = getResponsiveValue({
+    xl: '2.2rem',
+    lg: '2rem',
+    md: '1.8rem',
+    sm: '1.6rem',
+    xs: '1.4rem',
+    tiny: '1.2rem',
+  });
+
+  const responsiveLogoTitleSize = getResponsiveValue({
+    xl: '1.8rem',
+    lg: '1.6rem',
+    md: '1.4rem',
+    sm: '1.3rem',
+    xs: '1.2rem',
+    tiny: '1rem',
+  });
+
+  const responsiveInfoSize = getResponsiveValue({
+    xl: '1.05rem',
+    lg: '1rem',
+    md: '0.95rem',
+    sm: '0.9rem',
+    xs: '0.85rem',
+    tiny: '0.8rem',
+  });
+
+  const responsiveOverviewSize = getResponsiveValue({
+    xl: '1.08rem',
+    lg: '1rem',
+    md: '0.95rem',
+    sm: '0.9rem',
+    xs: '0.85rem',
+    tiny: '0.8rem',
+  });
+
+  const responsiveLogoHeight = getResponsiveValue({
+    xl: '80px',
+    lg: '70px',
+    md: '60px',
+    sm: '50px',
+    xs: '40px',
+    tiny: '35px',
+  });
+
+  const responsiveLogoWidth = getResponsiveValue({
+    xl: '300px',
+    lg: '250px',
+    md: '200px',
+    sm: '180px',
+    xs: '150px',
+    tiny: '120px',
+  });
+
+  const responsiveTopPosition = getResponsiveValue({
+    xl: '180px',
+    lg: '160px',
+    md: '140px',
+    sm: '120px',
+    xs: '100px',
+    tiny: '80px',
+  });
+
+  const responsiveLeftPosition = getResponsiveValue({
+    xl: '60px',
+    lg: '40px',
+    md: '30px',
+    sm: '20px',
+    xs: '15px',
+    tiny: '10px',
+  });
+
+  const responsiveGap = getResponsiveValue({
+    xl: '18px',
+    lg: '16px',
+    md: '14px',
+    sm: '12px',
+    xs: '10px',
+    tiny: '8px',
+  });
+
   if (!galleryItems.length) {
     return <div style={{ color: 'white', textAlign: 'center', paddingTop: 100 }}>Loading latest movies...</div>;
   }
@@ -113,66 +197,38 @@ const HeroSection = () => {
       {/* Movie Info Block */}
       <div style={{
         position: 'absolute',
-        top: '180px',
-        left: '60px',
+        top: responsiveTopPosition,
+        left: responsiveLeftPosition,
+        right: isTinyMobile ? '10px' : '20px',
         zIndex: 3,
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        gap: '18px',
-        minWidth: '340px',
+        gap: responsiveGap,
+        minWidth: isTinyMobile ? 'auto' : '340px',
         maxWidth: '600px',
         padding: '0 20px',
-        '@media (max-width: 768px)': {
-          top: '120px',
-          left: '20px',
-          right: '20px',
-          minWidth: 'auto',
-          maxWidth: 'none',
-        },
-        '@media (max-width: 480px)': {
-          top: '100px',
-          left: '15px',
-          right: '15px',
-          gap: '12px',
-        },
       }}>
         {/* Movie Logo or Placeholder */}
         {galleryItems[activeIndex].logo ? (
           <div style={{ 
             marginBottom: '8px', 
-            minHeight: '80px', 
-            minWidth: '300px', 
+            minHeight: responsiveLogoHeight, 
+            minWidth: responsiveLogoWidth, 
             display: 'flex', 
             alignItems: 'center',
-            '@media (max-width: 768px)': {
-              minHeight: '60px',
-              minWidth: '250px',
-            },
-            '@media (max-width: 480px)': {
-              minHeight: '50px',
-              minWidth: '200px',
-            },
           }}>
             <img 
               src={galleryItems[activeIndex].logo}
               alt={`${galleryItems[activeIndex].text} logo`}
               style={{
-                maxHeight: '80px',
-                maxWidth: '300px',
+                maxHeight: responsiveLogoHeight,
+                maxWidth: responsiveLogoWidth,
                 height: 'auto',
                 width: 'auto',
                 filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',
                 objectFit: 'contain',
-                '@media (max-width: 768px)': {
-                  maxHeight: '60px',
-                  maxWidth: '250px',
-                },
-                '@media (max-width: 480px)': {
-                  maxHeight: '50px',
-                  maxWidth: '200px',
-                },
               }}
               onError={(e) => {
                 e.target.style.display = 'none';
@@ -182,49 +238,43 @@ const HeroSection = () => {
         ) : (
           // Placeholder to reserve space for logo
           <div style={{ 
-            minHeight: '80px', 
-            minWidth: '300px', 
+            minHeight: responsiveLogoHeight, 
+            minWidth: responsiveLogoWidth, 
             marginBottom: '8px',
-            '@media (max-width: 768px)': {
-              minHeight: '60px',
-              minWidth: '250px',
-            },
-            '@media (max-width: 480px)': {
-              minHeight: '50px',
-              minWidth: '200px',
-            },
           }} />
         )}
         {/* Movie Title (shown when no logo or as fallback) */}
         <div style={{
-          fontSize: galleryItems[activeIndex].logo ? '1.8rem' : '2.2rem',
+          fontSize: galleryItems[activeIndex].logo ? responsiveLogoTitleSize : responsiveTitleSize,
           fontWeight: 700,
           letterSpacing: '-1px',
           lineHeight: 1.1,
           fontFamily: 'Times New Roman, Times, serif',
           display: galleryItems[activeIndex].logo ? 'none' : 'block',
-          '@media (max-width: 768px)': {
-            fontSize: galleryItems[activeIndex].logo ? '1.5rem' : '1.8rem',
-          },
-          '@media (max-width: 480px)': {
-            fontSize: galleryItems[activeIndex].logo ? '1.3rem' : '1.6rem',
-          },
         }}>
           {galleryItems[activeIndex].text}
         </div>
         <div style={{
           display: 'flex',
-          gap: '12px',
+          gap: isTinyMobile ? '8px' : '12px',
           alignItems: 'center',
-          fontSize: '1.05rem',
-          opacity: 0.85
+          fontSize: responsiveInfoSize,
+          opacity: 0.85,
+          flexWrap: isTinyMobile ? 'wrap' : 'nowrap',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
         }}>
           <span style={{ color: '#FFD6A0', fontWeight: 600 }}>
             {galleryItems[activeIndex].release_date ? new Date(galleryItems[activeIndex].release_date).getFullYear() : ''}
           </span>
           <span style={{ color: '#aaa' }}>|</span>
           {/* Genres */}
-          <span>
+          <span style={{ 
+            maxWidth: isTinyMobile ? '120px' : 'auto',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}>
             {galleryItems[activeIndex].genres && galleryItems[activeIndex].genres.length > 0
               ? galleryItems[activeIndex].genres.map(g =>
                   typeof g === 'string'
@@ -235,11 +285,24 @@ const HeroSection = () => {
           </span>
           <span style={{ color: '#aaa' }}>|</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <ClockIcon size={16} style={{ marginRight: 4, position: 'relative', top: 1 }} />
+            <ClockIcon size={isTinyMobile ? 14 : 16} style={{ marginRight: 4, position: 'relative', top: 1 }} />
             {galleryItems[activeIndex].runtime ? `${Math.floor(galleryItems[activeIndex].runtime / 60)}h ${galleryItems[activeIndex].runtime % 60}m` : '~2h'}
           </span>
         </div>
-        <div style={{ fontSize: '1.08rem', opacity: 0.92, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis', maxHeight: '4.5em' }}>
+        <div style={{ 
+          fontSize: responsiveOverviewSize, 
+          opacity: 0.92, 
+          lineHeight: 1.5, 
+          display: '-webkit-box', 
+          WebkitLineClamp: isTinyMobile ? 4 : 3, 
+          WebkitBoxOrient: 'vertical', 
+          overflow: 'hidden', 
+          textOverflow: 'ellipsis', 
+          maxHeight: isTinyMobile ? '6em' : '4.5em',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
+          hyphens: 'auto',
+        }}>
           {galleryItems[activeIndex].overview}
         </div>
       </div>
@@ -250,11 +313,11 @@ const HeroSection = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-end',
-        height: '300px',
+        height: isTinyMobile ? '250px' : '300px',
         position: 'relative',
         zIndex: 2,
         margin: '5px',
-        marginTop: '60px',
+        marginTop: isTinyMobile ? '40px' : '60px',
       }}>
         <div style={{display: 'none'}}>
           {galleryItems.map((item, idx) => (

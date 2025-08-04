@@ -167,6 +167,12 @@ html, body, * {
   }
 }
 
+@media (max-width: 300px) {
+  .text-responsive {
+    font-size: 0.8rem;
+  }
+}
+
 /* Responsive spacing utilities */
 .responsive-padding {
   padding: 2rem;
@@ -184,6 +190,12 @@ html, body, * {
   }
 }
 
+@media (max-width: 300px) {
+  .responsive-padding {
+    padding: 0.75rem;
+  }
+}
+
 /* Responsive margins */
 .responsive-margin {
   margin: 2rem 0;
@@ -198,5 +210,11 @@ html, body, * {
 @media (max-width: 480px) {
   .responsive-margin {
     margin: 1rem 0;
+  }
+}
+
+@media (max-width: 300px) {
+  .responsive-margin {
+    margin: 0.75rem 0;
   }
 }

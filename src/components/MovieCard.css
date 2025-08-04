@@ -54,6 +54,13 @@
   }
 }
 
+@media (max-width: 300px) {
+  .movie-card-img {
+    width: 100px;
+    height: 150px;
+  }
+}
+
 .movie-card-title {
   font-weight: 600;
   margin-top: 0.5rem;

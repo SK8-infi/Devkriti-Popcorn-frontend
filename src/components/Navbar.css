@@ -283,6 +283,34 @@
   }
 }
 
+@media (max-width: 300px) {
+  .navbar-content {
+    padding: 0 0.2rem;
+  }
+  .navbar-logo {
+    width: 3.5rem;
+  }
+  .navbar-icons {
+    gap: 0.3rem;
+  }
+  .navbar-login-btn {
+    padding: 0.15rem 0.6rem;
+    font-size: 0.75rem;
+  }
+  .navbar-location-btn {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  .navbar-fav-btn {
+    width: 2rem;
+    height: 2rem;
+  }
+  .navbar-menu {
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+  }
+}
+
 .navbar-close-icon {
   position: absolute;
   top: 1.2rem;

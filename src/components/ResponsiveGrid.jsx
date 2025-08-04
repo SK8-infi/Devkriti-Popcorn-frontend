@@ -9,7 +9,8 @@ const ResponsiveGrid = ({
     lg: 4,
     md: 3,
     sm: 2,
-    xs: 1
+    xs: 1,
+    tiny: 1
   }
 }) => {
   const getGridTemplateColumns = () => {
@@ -41,6 +42,10 @@ const ResponsiveGrid = ({
         '@media (max-width: 480px)': {
           gridTemplateColumns: `repeat(${columns.xs}, 1fr)`,
           gap: '0.5rem',
+        },
+        '@media (max-width: 300px)': {
+          gridTemplateColumns: `repeat(${columns.tiny}, 1fr)`,
+          gap: '0.25rem',
         },
       }}
     >

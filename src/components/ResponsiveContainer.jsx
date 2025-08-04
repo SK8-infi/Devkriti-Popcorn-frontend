@@ -22,6 +22,9 @@ const ResponsiveContainer = ({
         '@media (max-width: 480px)': {
           padding: '0 0.5rem',
         },
+        '@media (max-width: 300px)': {
+          padding: '0 0.25rem',
+        },
       }}
     >
       {children}

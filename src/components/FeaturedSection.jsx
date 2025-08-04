@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MovieCard from './MovieCard'
 import { useAppContext } from '../context/AppContext'
+import ResponsiveContainer from './ResponsiveContainer'
+import ResponsiveGrid from './ResponsiveGrid'
+import useResponsive from '../hooks/useResponsive'
 import './FeaturedSection.css'
 
 const FeaturedSection = () => {
@@ -11,6 +14,7 @@ const FeaturedSection = () => {
     const { api } = useAppContext()
     const [shows, setShows] = useState([])
     const [loading, setLoading] = useState(true)
+    const { isTinyMobile, isMobile, getResponsiveValue } = useResponsive()
 
     // Fetch shows data
     useEffect(() => {
@@ -41,50 +45,146 @@ const FeaturedSection = () => {
     }
     const uniqueShows = Array.from(uniqueMoviesMap.values());
 
+    const responsiveTitleSize = getResponsiveValue({
+        xl: '1.6rem',
+        lg: '1.5rem',
+        md: '1.4rem',
+        sm: '1.3rem',
+        xs: '1.2rem',
+        tiny: '1.1rem',
+    });
+
+    const responsiveGap = getResponsiveValue({
+        xl: '2.5rem',
+        lg: '2rem',
+        md: '1.5rem',
+        sm: '1rem',
+        xs: '0.75rem',
+        tiny: '0.5rem',
+    });
+
   if (loading) {
     return (
-      <section className='featured-section' style={{ width: '100%', color: '#ffefcb', padding: '20px 0 80px 0', position: 'relative', marginBottom: '60px', overflow: 'hidden' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+      <ResponsiveContainer>
+        <section className='featured-section' style={{ 
+          width: '100%', 
+          color: '#ffefcb', 
+          padding: '20px 0 80px 0', 
+          position: 'relative', 
+          marginBottom: '60px', 
+          overflow: 'hidden' 
+        }}>
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <div className='featured-header' style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingTop: '2.5rem', paddingBottom: '1.5rem' }}>
-              <p className='featured-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px' }}>NOW SHOWING</p>
+            <div className='featured-header' style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              width: '100%', 
+              paddingTop: '2.5rem', 
+              paddingBottom: '1.5rem',
+              '@media (max-width: 300px)': {
+                flexDirection: 'column',
+                gap: '0.5rem',
+                alignItems: 'flex-start',
+              }
+            }}>
+              <p className='featured-title' style={{ 
+                textAlign: 'left', 
+                margin: 0, 
+                fontFamily: 'Gotham, Arial, sans-serif', 
+                fontSize: responsiveTitleSize, 
+                color: '#ffefcb', 
+                letterSpacing: '1px' 
+              }}>NOW SHOWING</p>
               <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
                   View All 
                   <ArrowRight style={{transition: 'transform 0.2s'}}/>
               </button>
             </div>
-            <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%' }}>
+            <div className='featured-movies' style={{ 
+              display: 'flex', 
+              gap: responsiveGap, 
+              alignItems: 'flex-start', 
+              justifyContent: 'flex-start', 
+              width: '100%',
+              '@media (max-width: 300px)': {
+                justifyContent: 'center',
+              }
+            }}>
               <p style={{ color: '#ffefcb' }}>Loading shows...</p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ResponsiveContainer>
     )
   }
 
   return (
-    <section className='featured-section' style={{ width: '100%', color: '#ffefcb', padding: '20px 0 60px 0', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <div className='featured-header' style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingTop: '2.5rem', paddingBottom: '1.5rem' }}>
-          <p className='featured-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px', fontWeight: 'bold' }}>NOW SHOWING</p>
-          <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
-              View All 
-              <ArrowRight style={{transition: 'transform 0.2s'}}/>
-          </button>
-        </div>
-        <div className='featured-movies' style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%' }}>
+    <ResponsiveContainer>
+      <section className='featured-section' style={{ 
+        width: '100%', 
+        color: '#ffefcb', 
+        padding: '20px 0 60px 0', 
+        position: 'relative', 
+        overflow: 'hidden' 
+      }}>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className='featured-header' style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            width: '100%', 
+            paddingTop: '2.5rem', 
+            paddingBottom: '1.5rem',
+            '@media (max-width: 300px)': {
+              flexDirection: 'column',
+              gap: '0.5rem',
+              alignItems: 'flex-start',
+            }
+          }}>
+            <p className='featured-title' style={{ 
+              textAlign: 'left', 
+              margin: 0, 
+              fontFamily: 'Gotham, Arial, sans-serif', 
+              fontSize: responsiveTitleSize, 
+              color: '#ffefcb', 
+              letterSpacing: '1px', 
+              fontWeight: 'bold' 
+            }}>NOW SHOWING</p>
+            <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
+                View All 
+                <ArrowRight style={{transition: 'transform 0.2s'}}/>
+            </button>
+          </div>
           {uniqueShows.length > 0 ? (
-            uniqueShows.map((show)=>(
+            <ResponsiveGrid
+              columns={{
+                default: 4,
+                lg: 4,
+                md: 3,
+                sm: 2,
+                xs: 1,
+                tiny: 1
+              }}
+              gap={responsiveGap}
+            >
+              {uniqueShows.map((show) => (
                 <MovieCard key={show.movie._id || show.movie.id} movie={{ ...show.movie, id: show.movie.id || show.movie._id }}/>
-            ))
+              ))}
+            </ResponsiveGrid>
           ) : (
-            <p style={{ color: '#ffefcb' }}>No shows available at the moment.</p>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              width: '100%',
+              padding: '2rem 0'
+            }}>
+              <p style={{ color: '#ffefcb' }}>No shows available at the moment.</p>
+            </div>
           )}
         </div>
-      </div>
-    </div>
-    </section>
+      </section>
+    </ResponsiveContainer>
   )
 }
 

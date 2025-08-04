@@ -4,13 +4,14 @@ import ResponsiveGrid from './ResponsiveGrid';
 import useResponsive from '../hooks/useResponsive';
 
 const ResponsiveExample = () => {
-  const { isMobile, isTablet, isDesktop, getResponsiveValue } = useResponsive();
+  const { isTinyMobile, isMobile, isTablet, isDesktop, getResponsiveValue } = useResponsive();
 
   const responsiveText = getResponsiveValue({
     xl: 'Extra Large Text',
     lg: 'Large Text',
     md: 'Medium Text',
     xs: 'Small Text',
+    tiny: 'Tiny Text',
   });
 
   const responsivePadding = getResponsiveValue({
@@ -18,6 +19,7 @@ const ResponsiveExample = () => {
     lg: '2rem',
     md: '1.5rem',
     xs: '1rem',
+    tiny: '0.75rem',
   });
 
   return (
@@ -28,7 +30,7 @@ const ResponsiveExample = () => {
         </h1>
         
         <p style={{ fontSize: responsiveText }}>
-          Current screen size: {isMobile ? 'Mobile' : isTablet ? 'Tablet' : 'Desktop'}
+          Current screen size: {isTinyMobile ? 'Tiny Mobile' : isMobile ? 'Mobile' : isTablet ? 'Tablet' : 'Desktop'}
         </p>
 
         <div style={{ padding: responsivePadding }}>

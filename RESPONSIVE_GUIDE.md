@@ -5,6 +5,7 @@ This guide explains how to make your website responsive using the components and
 ## Breakpoints
 
 We use the following breakpoints:
+- **Tiny (tiny)**: ≤ 300px (Tiny Mobile)
 - **Extra Small (xs)**: ≤ 480px (Mobile)
 - **Small (sm)**: 481px - 640px (Large Mobile)
 - **Medium (md)**: 641px - 768px (Tablet)
@@ -36,7 +37,8 @@ import ResponsiveGrid from './components/ResponsiveGrid';
     lg: 4,       // Large Desktop
     md: 3,       // Tablet
     sm: 2,       // Large Mobile
-    xs: 1        // Mobile
+    xs: 1,       // Mobile
+    tiny: 1      // Tiny Mobile
   }}
   gap="1rem"
 >
@@ -53,13 +55,14 @@ A custom hook that provides responsive utilities.
 import useResponsive from './hooks/useResponsive';
 
 const MyComponent = () => {
-  const { isMobile, isTablet, isDesktop, getResponsiveValue } = useResponsive();
+  const { isTinyMobile, isMobile, isTablet, isDesktop, getResponsiveValue } = useResponsive();
 
   const fontSize = getResponsiveValue({
     xl: '2rem',
     lg: '1.8rem',
     md: '1.5rem',
     xs: '1.2rem',
+    tiny: '1rem',
   });
 
   return (
@@ -174,6 +177,7 @@ const MovieCard = ({ movie }) => {
     lg: '240px',
     md: '200px',
     xs: '160px',
+    tiny: '120px',
   });
 
   return (
@@ -194,6 +198,7 @@ const ResponsiveText = ({ children }) => {
     lg: '1.3rem',
     md: '1.1rem',
     xs: '1rem',
+    tiny: '0.9rem',
   });
 
   return (

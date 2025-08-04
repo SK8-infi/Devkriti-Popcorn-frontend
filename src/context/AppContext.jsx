@@ -42,8 +42,20 @@ export const AppProvider = ({ children }) => {
 
     const getToken = () => localStorage.getItem('authToken');
 
+    // Debug function to check environment variables
+    const debugEnvironment = () => {
+        console.log('🔍 Environment Debug:');
+        console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+        console.log('NODE_ENV:', import.meta.env.NODE_ENV);
+        console.log('MODE:', import.meta.env.MODE);
+        console.log('BASE_URL:', import.meta.env.BASE_URL);
+    };
+
     const login = () => {
+        debugEnvironment(); // Add debug call
         const authUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/auth/google`;
+        console.log('🔗 Login URL:', authUrl);
+        console.log('🔗 VITE_API_URL:', import.meta.env.VITE_API_URL);
         window.location.href = authUrl;
     };
 

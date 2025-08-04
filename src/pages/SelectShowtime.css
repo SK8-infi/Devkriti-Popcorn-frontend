@@ -1,0 +1,617 @@
+/* SelectShowtime.css - Minimalistic Booking Page Styles */
+
+.booking-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 100px 20px 30px;
+  color: white;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.backdrop-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  min-height: 100vh;
+}
+
+.booking-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Error States */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.error-content {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.error-title {
+  font-size: 1.5rem;
+  color: #ff6b6b;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.retry-button {
+  background: linear-gradient(135deg, #FFD6A0, #FFB347);
+  color: #2c2c2c;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.retry-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 214, 160, 0.3);
+}
+
+/* Movie Header Section */
+.movie-header {
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.movie-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.movie-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.movie-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 214, 160, 0.15);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 214, 160, 0.2);
+  font-size: 0.875rem;
+}
+
+.star-icon {
+  color: #FFD6A0;
+  width: 16px;
+  height: 16px;
+}
+
+.movie-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.movie-tag {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Date Selector */
+.date-selector {
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.date-selector-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFD6A0;
+}
+
+.calendar-icon {
+  width: 18px;
+  height: 18px;
+  color: #FFD6A0;
+}
+
+.date-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #FFD6A0 transparent;
+}
+
+.date-list::-webkit-scrollbar {
+  height: 4px;
+}
+
+.date-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.date-list::-webkit-scrollbar-thumb {
+  background: #FFD6A0;
+  border-radius: 2px;
+}
+
+.date-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 214, 160, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  backdrop-filter: blur(8px);
+}
+
+.date-button:hover {
+  border-color: #FFD6A0;
+  background: rgba(255, 214, 160, 0.1);
+  transform: translateY(-1px);
+}
+
+.date-button-active {
+  border-color: #FFD6A0;
+  background: rgba(255, 214, 160, 0.15);
+  color: #FFD6A0;
+  box-shadow: 0 2px 8px rgba(255, 214, 160, 0.2);
+}
+
+.date-day {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.date-month {
+  font-size: 0.625rem;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+
+.date-weekday {
+  font-size: 0.625rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Filter Section */
+.filter-section {
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.filter-header {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFD6A0;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dropdown-container {
+  position: relative;
+  z-index: 10000;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  min-width: 100px;
+}
+
+.filter-button:hover {
+  border-color: #FFD6A0;
+  background: rgba(255, 214, 160, 0.1);
+}
+
+.filter-button-active {
+  border-color: #FFD6A0;
+  background: rgba(255, 214, 160, 0.15);
+  color: #FFD6A0;
+}
+
+.chevron-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-container:hover .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 140px;
+  z-index: 10001;
+  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+  transform-origin: top;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #2c2c2c;
+  font-weight: 500;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 214, 160, 0.2);
+}
+
+.dropdown-item.disabled {
+  color: #999;
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item.clear {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  color: #666;
+  font-style: italic;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Theatre Section */
+.theatre-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.no-shows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+}
+
+.no-shows-icon {
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.theatre-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theatre-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.theatre-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+
+.theatre-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.theatre-logo {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 214, 160, 0.15);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 214, 160, 0.2);
+}
+
+.theatre-details {
+  flex: 1;
+}
+
+.theatre-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 3px 0;
+}
+
+.theatre-formats {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.proceed-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #FFD6A0, #FFB347);
+  color: #2c2c2c;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.proceed-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 214, 160, 0.3);
+}
+
+.proceed-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.showtimes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.showtime-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.showtime-button:hover {
+  border-color: #FFD6A0;
+  background: rgba(255, 214, 160, 0.1);
+  transform: translateY(-1px);
+}
+
+.showtime-button-active {
+  border-color: #FFD6A0;
+  background: rgba(255, 214, 160, 0.15);
+  color: #FFD6A0;
+  box-shadow: 0 2px 8px rgba(255, 214, 160, 0.2);
+}
+
+.showtime-time {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.showtime-format {
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  opacity: 0.8;
+}
+
+.showtime-price {
+  font-size: 0.625rem;
+  font-weight: 400;
+  margin-bottom: 2px;
+  opacity: 0.7;
+}
+
+.showtime-language {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: #4A90E2;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .booking-page {
+    padding: 80px 15px 20px;
+  }
+  
+  .movie-title {
+    font-size: 1.5rem;
+  }
+  
+  .movie-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .theatre-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .proceed-button {
+    align-self: stretch;
+    justify-content: center;
+  }
+  
+  .showtimes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+  
+  .date-list {
+    gap: 8px;
+  }
+  
+  .date-button {
+    min-width: 50px;
+    padding: 8px 10px;
+  }
+  
+  .filter-buttons {
+    flex-direction: column;
+  }
+  
+  .filter-button {
+    min-width: auto;
+  }
+  
+  .dropdown-menu {
+    min-width: 100%;
+    left: 0;
+    right: 0;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    border-radius: 12px 12px 0 0;
+    max-height: 50vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-page {
+    padding: 70px 10px 15px;
+  }
+  
+  .movie-title {
+    font-size: 1.25rem;
+  }
+  
+  .movie-header,
+  .date-selector,
+  .filter-section,
+  .theatre-card {
+    padding: 15px;
+  }
+  
+  .showtimes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 6px;
+  }
+  
+  .showtime-button {
+    padding: 8px 6px;
+  }
+  
+  .showtime-time {
+    font-size: 0.875rem;
+  }
+} 

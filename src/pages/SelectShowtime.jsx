@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { useAppContext } from '../context/AppContext';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Calendar, Clock, MapPin, Star } from 'lucide-react';
+import './SelectShowtime.css';
 
 const TAG_COLORS = [
-  'bg-blue-100 text-blue-800',
-  'bg-green-100 text-green-800',
-  'bg-purple-100 text-purple-800',
-  'bg-pink-100 text-pink-800',
-  'bg-yellow-100 text-yellow-800',
-  'bg-gray-100 text-gray-800',
+  { bg: '#E3F2FD', text: '#1976D2' },
+  { bg: '#E8F5E8', text: '#2E7D32' },
+  { bg: '#F3E5F5', text: '#7B1FA2' },
+  { bg: '#FCE4EC', text: '#C2185B' },
+  { bg: '#FFF3E0', text: '#F57C00' },
+  { bg: '#F5F5F5', text: '#424242' },
 ];
 
 const SelectShowtime = () => {
@@ -40,7 +41,7 @@ const SelectShowtime = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showLanguageDropdown || showFormatDropdown) {
-        const dropdowns = document.querySelectorAll('.relative.z-50');
+        const dropdowns = document.querySelectorAll('.dropdown-container');
         let clickedInside = false;
         
         dropdowns.forEach(dropdown => {
@@ -91,9 +92,11 @@ const SelectShowtime = () => {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <p className="text-2xl text-red-500 font-bold mb-4">{error}</p>
-        <button onClick={() => window.location.reload()} className="px-6 py-2 bg-primary rounded text-white mt-2">Retry</button>
+      <div className="error-container">
+        <div className="error-content">
+          <h2 className="error-title">{error}</h2>
+          <button onClick={() => window.location.reload()} className="retry-button">Retry</button>
+        </div>
       </div>
     );
   }
@@ -164,189 +167,214 @@ const SelectShowtime = () => {
   }
 
   return (
-    <div className="relative px-6 md:px-16 lg:px-40 py-6 mt-20 min-h-screen">
+    <div className="booking-page">
       {/* Backdrop Background */}
       {movie && (
         <div 
-          className="fixed left-0 right-0 top-0 bottom-0 bg-cover bg-center bg-no-repeat -z-10"
+          className="backdrop-overlay"
           style={{
             backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url(${movie.backdrop_url || image_base_url + movie.backdrop_path})`,
-            backgroundPosition: 'center center',
-            backgroundSize: 'cover',
-            zIndex: -1,
-            minHeight: '100vh',
           }}
         />
       )}
-      {/* Movie Title and Tags */}
-      <div className="mb-2">
-        <h1 className="text-4xl font-semibold whitespace-nowrap mb-2 text-white" style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
-        <div className="flex flex-wrap gap-2 mb-2">
-          {tags.map((tag, i) => (
-            <span key={tag} className={`px-3 py-1 rounded-full text-xs font-semibold ${TAG_COLORS[i % TAG_COLORS.length]}`}>{tag}</span>
-          ))}
+      
+      <div className="booking-container">
+        {/* Movie Header Section */}
+        <div className="movie-header">
+          <div className="movie-title-section">
+            <h1 className="movie-title">{movie.title}</h1>
+            <div className="movie-rating">
+              <Star className="star-icon" />
+              <span>{movie.vote_average?.toFixed(1) || 'N/A'}</span>
+            </div>
+          </div>
+          
+          <div className="movie-tags">
+            {tags.slice(0, 3).map((tag, i) => (
+              <span 
+                key={tag} 
+                className="movie-tag"
+                style={{
+                  backgroundColor: TAG_COLORS[i % TAG_COLORS.length].bg,
+                  color: TAG_COLORS[i % TAG_COLORS.length].text
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
-      {/* Date Selector */}
-      <div className="flex gap-2 overflow-x-auto mb-4 pb-2 border-b border-gray-200 text-black">
-        {dateList.map(date => (
-          <button
-            key={date}
-            onClick={() => setSelectedDate(date)}
-            className={`flex flex-col items-center px-4 py-2 rounded-lg border-2 transition-all min-w-[70px] ${selectedDate === date ? 'border-gray-200 bg-white text-gray-800' : 'border-primary bg-primary text-white'}`}
-          >
-            <span className="font-bold text-lg">{new Date(date).toLocaleDateString('en-US', { day: '2-digit' })}</span>
-            <span className="text-xs">{new Date(date).toLocaleString('en-US', { month: 'short' }).toUpperCase()}</span>
-            <span className="text-xs mt-1">{new Date(date).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()}</span>
-          </button>
-        ))}
-      </div>
-      {/* Filter Chips */}
-      <div className="flex flex-wrap gap-2 mb-4 text-black">
-        {/* Language Filter */}
-        <div className="relative z-50">
-          <button
-            className={`flex items-center gap-2 px-4 py-1 rounded-full border border-gray-300 text-sm font-medium bg-white ${selectedLanguage ? 'ring-2 ring-primary' : ''}`}
-            onClick={() => {
-              console.log('🔍 Language dropdown clicked');
-              setShowLanguageDropdown(!showLanguageDropdown);
-            }}
-            tabIndex={0}
-          >
-            {selectedLanguage || 'Language'}
-            <ChevronDown className="w-4 h-4" />
-          </button>
-          {showLanguageDropdown && (
-            <div className="absolute left-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-[9999] min-w-[120px] py-2 px-2 flex flex-col gap-1 text-sm">
-              {allLanguages.length > 0 ? (
-                allLanguages.map(lang => (
+
+        {/* Date Selector */}
+        <div className="date-selector">
+          <div className="date-selector-header">
+            <Calendar className="calendar-icon" />
+            <span>Select Date</span>
+          </div>
+          <div className="date-list">
+            {dateList.map(date => (
+              <button
+                key={date}
+                onClick={() => setSelectedDate(date)}
+                className={`date-button ${selectedDate === date ? 'date-button-active' : ''}`}
+              >
+                <span className="date-day">{new Date(date).toLocaleDateString('en-US', { day: '2-digit' })}</span>
+                <span className="date-month">{new Date(date).toLocaleString('en-US', { month: 'short' }).toUpperCase()}</span>
+                <span className="date-weekday">{new Date(date).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Filter Section */}
+        <div className="filter-section">
+          <div className="filter-header">
+            <span>Filter Options</span>
+          </div>
+          <div className="filter-buttons">
+            {/* Language Filter */}
+            <div className="dropdown-container">
+              <button
+                className={`filter-button ${selectedLanguage ? 'filter-button-active' : ''}`}
+                onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+              >
+                <span>{selectedLanguage || 'Language'}</span>
+                <ChevronDown className="chevron-icon" />
+              </button>
+              {showLanguageDropdown && (
+                <div className="dropdown-menu">
+                  {allLanguages.length > 0 ? (
+                    allLanguages.map(lang => (
+                      <div
+                        key={lang}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setSelectedLanguage(lang);
+                          setShowLanguageDropdown(false);
+                        }}
+                      >
+                        {lang}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="dropdown-item disabled">No languages</div>
+                  )}
                   <div
-                    key={lang}
-                    className="px-3 py-2 cursor-pointer hover:bg-gray-100 rounded-lg text-center transition-colors"
+                    className="dropdown-item clear"
                     onClick={() => {
-                      console.log('🔍 Language selected:', lang);
-                      setSelectedLanguage(lang);
+                      setSelectedLanguage(null);
                       setShowLanguageDropdown(false);
                     }}
                   >
-                    {lang}
+                    Clear
                   </div>
-                ))
-              ) : (
-                <div className="px-3 py-2 text-gray-500 text-center">No languages</div>
+                </div>
               )}
-              <div
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-gray-500 rounded-lg text-center transition-colors border-t border-gray-200 mt-1"
-                onClick={() => {
-                  console.log('🔍 Language cleared');
-                  setSelectedLanguage(null);
-                  setShowLanguageDropdown(false);
-                }}
-              >
-                Clear
-              </div>
             </div>
-          )}
-        </div>
-        {/* Format Filter */}
-        <div className="relative z-50">
-          <button
-            className={`flex items-center gap-2 px-4 py-1 rounded-full border border-gray-300 text-sm font-medium bg-white ${selectedFormat ? 'ring-2 ring-primary' : ''}`}
-            onClick={() => {
-              console.log('🔍 Format dropdown clicked');
-              setShowFormatDropdown(!showFormatDropdown);
-            }}
-            tabIndex={0}
-          >
-            {selectedFormat || 'Format'}
-            <ChevronDown className="w-4 h-4" />
-          </button>
-          {showFormatDropdown && (
-            <div className="absolute left-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-[9999] min-w-[120px] py-2 px-2 flex flex-col gap-1 text-sm">
-              {allFormats.length > 0 ? (
-                allFormats.map(fmt => (
+
+            {/* Format Filter */}
+            <div className="dropdown-container">
+              <button
+                className={`filter-button ${selectedFormat ? 'filter-button-active' : ''}`}
+                onClick={() => setShowFormatDropdown(!showFormatDropdown)}
+              >
+                <span>{selectedFormat || 'Format'}</span>
+                <ChevronDown className="chevron-icon" />
+              </button>
+              {showFormatDropdown && (
+                <div className="dropdown-menu">
+                  {allFormats.length > 0 ? (
+                    allFormats.map(fmt => (
+                      <div
+                        key={fmt}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setSelectedFormat(fmt);
+                          setShowFormatDropdown(false);
+                        }}
+                      >
+                        {fmt}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="dropdown-item disabled">No formats</div>
+                  )}
                   <div
-                    key={fmt}
-                    className="px-3 py-2 cursor-pointer hover:bg-gray-100 rounded-lg text-center transition-colors"
+                    className="dropdown-item clear"
                     onClick={() => {
-                      console.log('🔍 Format selected:', fmt);
-                      setSelectedFormat(fmt);
+                      setSelectedFormat(null);
                       setShowFormatDropdown(false);
                     }}
                   >
-                    {fmt}
+                    Clear
                   </div>
-                ))
-              ) : (
-                <div className="px-3 py-2 text-gray-500 text-center">No formats</div>
+                </div>
               )}
-              <div
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-gray-500 rounded-lg text-center transition-colors border-t border-gray-200 mt-1"
-                onClick={() => {
-                  console.log('🔍 Format cleared');
-                  setSelectedFormat(null);
-                  setShowFormatDropdown(false);
-                }}
-              >
-                Clear
-              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Theatre List */}
+        <div className="theatre-section">
+          {Object.keys(theatreMap).length === 0 && (
+            <div className="no-shows">
+              <Clock className="no-shows-icon" />
+              <span>No shows available for this date.</span>
             </div>
           )}
-        </div>
-      </div>
-      {/* Theatre List */}
-      <div className="flex flex-col gap-6 text-black">
-        {Object.keys(theatreMap).length === 0 && (
-          <div className="text-gray-400 text-center py-8">No shows for this date.</div>
-        )}
-        {Object.entries(theatreMap).map(([theatre, times], idx) => (
-          <div key={theatre} className="bg-white rounded-lg shadow p-4 border border-gray-100 text-black flex flex-col">
-            <div className="flex items-center justify-between gap-2 mb-2 items-stretch">
-              <div className="flex items-center gap-2">
-                {/* Cinema logo or default */}
-                <div className="w-10 h-10 rounded bg-yellow-100 flex items-center justify-center">
-                  {/* Cool popcorn SVG icon */}
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="19" rx="7" ry="2" fill="#FFD600"/><path d="M7 19L6 8h12l-1 11" stroke="#F59E42" strokeWidth="2" strokeLinejoin="round"/><rect x="9" y="8" width="2" height="8" rx="1" fill="#FFD600"/><rect x="13" y="8" width="2" height="8" rx="1" fill="#FFD600"/></svg>
+          
+          {Object.entries(theatreMap).map(([theatre, times], idx) => (
+            <div key={theatre} className="theatre-card">
+              <div className="theatre-header">
+                <div className="theatre-info">
+                  <div className="theatre-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <ellipse cx="12" cy="19" rx="7" ry="2" fill="#FFD600"/>
+                      <path d="M7 19L6 8h12l-1 11" stroke="#F59E42" strokeWidth="2" strokeLinejoin="round"/>
+                      <rect x="9" y="8" width="2" height="8" rx="1" fill="#FFD600"/>
+                      <rect x="13" y="8" width="2" height="8" rx="1" fill="#FFD600"/>
+                    </svg>
+                  </div>
+                  <div className="theatre-details">
+                    <h3 className="theatre-name">{theatre}</h3>
+                    <p className="theatre-formats">
+                      Available formats: {Array.from(new Set(times.map(t => t.format))).join(', ')}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-lg text-black">{theatre}</span>
-                  <span className="text-sm text-gray-500">Available formats: {Array.from(new Set(times.map(t => t.format))).join(', ')}</span>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center">
                 <button
-                  className="ml-auto w-12 h-12 bg-black text-white rounded-lg font-semibold shadow hover:bg-gray-900 transition flex items-center justify-center"
+                  className="proceed-button"
                   onClick={() => {
-                    console.log('🔍 SelectShowtime: Navigating to showId:', selectedShowId);
-                    console.log('🔍 SelectShowtime: Navigation URL:', `/movies/${id}/${selectedShowId}`);
                     selectedShowId && navigate(`/movies/${id}/${selectedShowId}`);
                   }}
                   disabled={!selectedShowId}
-                  style={{minHeight: '48px', minWidth: '48px'}}
                 >
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M6 12h12M12 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span>Continue</span>
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <path d="M6 12h12M12 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
               </div>
+              
+              <div className="showtimes-grid">
+                {times.map((t) => (
+                  <button
+                    key={t.showId}
+                    className={`showtime-button ${selectedShowId === t.showId ? 'showtime-button-active' : ''}`}
+                    onClick={() => setSelectedShowId(t.showId)}
+                  >
+                    <div className="showtime-time">
+                      {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                    <div className="showtime-format">{t.format || 'Normal'}</div>
+                    <div className="showtime-price">₹{t.normalPrice} / ₹{t.vipPrice}</div>
+                    <div className="showtime-language">{t.language || 'Unknown'}</div>
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-3">
-              {times.map((t) => (
-                <button
-                  key={t.showId}
-                  className={`px-4 py-2 rounded border text-sm font-semibold transition-all min-w-[90px] text-black bg-white ${selectedShowId === t.showId ? 'border-primary ring-2 ring-primary' : 'border-gray-300'}`}
-                  onClick={() => {
-                    console.log('🔍 SelectShowtime: Setting selectedShowId to:', t.showId);
-                    setSelectedShowId(t.showId);
-                  }}
-                >
-                  {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  <div className="text-[10px] font-normal uppercase">{t.format || 'Normal'}</div>
-                  <div className="text-[10px] font-normal text-gray-500">₹{t.normalPrice} / ₹{t.vipPrice}</div>
-                  <div className="text-[10px] font-normal text-blue-600">{t.language || 'Unknown'}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -38,19 +38,35 @@
 }
 
 .show-info-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: #FFD6A0;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.show-info-date {
+  margin-bottom: 12px;
+}
+
+.date-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
 }
 
 .show-info-details {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .show-info-item {
@@ -66,8 +82,8 @@
 }
 
 .info-text {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: white;
 }
 
@@ -81,23 +97,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.75rem;
+  gap: 6px;
+  color: #FFD6A0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 214, 160, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 214, 160, 0.2);
 }
 
 .location-icon {
-  width: 12px;
-  height: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  width: 14px;
+  height: 14px;
+  color: #FFD6A0;
 }
 
 .theatre-name-display {
-  font-weight: 500;
+  font-weight: 600;
+  color: #FFD6A0;
 }
 
 .theatre-city {
-  opacity: 0.8;
+  opacity: 0.9;
+  color: rgba(255, 214, 160, 0.8);
 }
 
 /* Seat Layout Card */

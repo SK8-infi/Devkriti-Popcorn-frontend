@@ -25,6 +25,7 @@ export const AppProvider = ({ children }) => {
     const [theatreAddress, setTheatreAddress] = useState(null); // Theatre's address
     const [theatreId, setTheatreId] = useState(null); // Theatre's MongoDB ID
     const [userCity, setUserCity] = useState(null); // User's personal city preference
+    const [allMovies, setAllMovies] = useState([]); // All movies for trailers
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -198,6 +199,18 @@ export const AppProvider = ({ children }) => {
         }
     };
 
+    const fetchAllMovies = async () => {
+        try {
+            const { data } = await api.get('/api/movies/latest');
+            if (data.movies) {
+                setAllMovies(data.movies);
+                console.log('✅ Fetched all movies for trailers:', data.movies.length);
+            }
+        } catch (error) {
+            console.error('Error fetching all movies:', error);
+        }
+    };
+
     const fetchDashboardData = async () => {
         try {
             const { data } = await api.get('/api/admin/dashboard');
@@ -254,6 +267,8 @@ export const AppProvider = ({ children }) => {
         } else {
             setLoading(false);
         }
+        // Fetch all movies for trailers
+        fetchAllMovies();
     }, []);
 
     // OAuth callback handler
@@ -311,7 +326,9 @@ export const AppProvider = ({ children }) => {
         userCity,
         favoriteMovies,
         fetchFavoriteMovies,
-        fetchDashboardData
+        fetchDashboardData,
+        allMovies,
+        fetchAllMovies
     };
 
     return (

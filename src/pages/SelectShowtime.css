@@ -25,7 +25,7 @@
   max-width: 800px;
   margin: 0 auto;
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 /* Error States */
@@ -198,13 +198,12 @@
 .date-button:hover {
   border-color: #FFD6A0;
   background: rgba(255, 214, 160, 0.1);
-  transform: translateY(-1px);
 }
 
 .date-button-active {
   border-color: #FFD6A0;
-  background: rgba(255, 214, 160, 0.15);
-  color: #FFD6A0;
+  background: white;
+  color: black;
   box-shadow: 0 2px 8px rgba(255, 214, 160, 0.2);
 }
 
@@ -235,6 +234,7 @@
   padding: 18px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
+  z-index: 9999;
 }
 
 .filter-header {
@@ -252,7 +252,7 @@
 
 .dropdown-container {
   position: relative;
-  z-index: 10000;
+  z-index: 99999;
 }
 
 .filter-button {
@@ -303,7 +303,7 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   min-width: 140px;
-  z-index: 10001;
+  z-index: 999999;
   overflow: hidden;
   max-height: 200px;
   overflow-y: auto;
@@ -359,6 +359,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: relative;
+  z-index: 1;
 }
 
 .no-shows {
@@ -388,6 +390,8 @@
   padding: 18px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .theatre-card:hover {
@@ -398,7 +402,6 @@
 .theatre-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 15px;
   gap: 15px;
 }
@@ -409,6 +412,8 @@
   gap: 10px;
   flex: 1;
 }
+
+
 
 .theatre-logo {
   width: 32px;
@@ -438,31 +443,7 @@
   margin: 0;
 }
 
-.proceed-button {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #FFD6A0, #FFB347);
-  color: #2c2c2c;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.875rem;
-}
 
-.proceed-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(255, 214, 160, 0.3);
-}
-
-.proceed-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
 
 .showtimes-grid {
   display: grid;

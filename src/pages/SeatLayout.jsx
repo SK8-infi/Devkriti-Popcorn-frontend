@@ -398,7 +398,15 @@ const SeatLayout = () => {
       
       {/* Selected Show Information */}
       <div className='show-info-card'>
-        <h2 className='show-info-title'>Selected Show</h2>
+        <h2 className='show-info-title'>{movie?.title || 'Selected Movie'}</h2>
+        <div className='show-info-date'>
+          <span className='date-text'>{show?.selectedDate ? new Date(show.selectedDate).toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }) : 'Loading...'}</span>
+        </div>
         <div className='show-info-details'>
           <div className='show-info-item'>
             <ClockIcon className='info-icon'/>

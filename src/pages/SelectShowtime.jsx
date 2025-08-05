@@ -24,7 +24,7 @@ const SelectShowtime = () => {
   const [selectedFormat, setSelectedFormat] = useState(null);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
-  const [selectedShowId, setSelectedShowId] = useState(null);
+
   const { axios, image_base_url } = useAppContext();
   const navigate = useNavigate();
 
@@ -342,27 +342,17 @@ const SelectShowtime = () => {
                     </p>
                   </div>
                 </div>
-                <button
-                  className="proceed-button"
-                  onClick={() => {
-                    selectedShowId && navigate(`/movies/${id}/${selectedShowId}`);
-                  }}
-                  disabled={!selectedShowId}
-                >
-                  <span>Continue</span>
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M6 12h12M12 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
               </div>
+              
+              
               
               <div className="showtimes-grid">
                 {times.map((t) => (
-                  <button
-                    key={t.showId}
-                    className={`showtime-button ${selectedShowId === t.showId ? 'showtime-button-active' : ''}`}
-                    onClick={() => setSelectedShowId(t.showId)}
-                  >
+                                   <button
+                   key={t.showId}
+                   className="showtime-button"
+                   onClick={() => navigate(`/movies/${id}/${t.showId}`)}
+                 >
                     <div className="showtime-time">
                       {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>

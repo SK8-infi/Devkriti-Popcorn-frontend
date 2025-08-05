@@ -38,22 +38,11 @@
 }
 
 .show-info-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #FFD6A0;
-  margin: 0 0 8px 0;
-  text-align: center;
-}
-
-.show-info-date {
-  margin-bottom: 12px;
-}
-
-.date-text {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: center;
+  margin: 0 0 12px 0;
+  text-shadow: 0 2px 4px rgba(255, 214, 160, 0.3);
 }
 
 .show-info-details {
@@ -61,7 +50,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
   padding: 8px 12px;
   background: rgba(255, 255, 255, 0.05);
@@ -82,9 +71,10 @@
 }
 
 .info-text {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .show-info-divider {
@@ -93,19 +83,40 @@
   font-size: 0.75rem;
 }
 
+.show-date-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 214, 160, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 214, 160, 0.2);
+}
+
+.calendar-icon {
+  width: 14px;
+  height: 14px;
+  color: #FFD6A0;
+}
+
+.date-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #FFD6A0;
+}
+
 .theatre-info-display {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  color: #FFD6A0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-top: 8px;
   padding: 8px 12px;
-  background: rgba(255, 214, 160, 0.1);
-  border-radius: 6px;
-  border: 1px solid rgba(255, 214, 160, 0.2);
+  background: rgba(255, 214, 160, 0.15);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 214, 160, 0.3);
+  margin-top: 8px;
 }
 
 .location-icon {
@@ -117,11 +128,12 @@
 .theatre-name-display {
   font-weight: 600;
   color: #FFD6A0;
+  font-size: 0.85rem;
 }
 
 .theatre-city {
-  opacity: 0.9;
   color: rgba(255, 214, 160, 0.8);
+  font-size: 0.8rem;
 }
 
 /* Seat Layout Card */

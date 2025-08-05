@@ -347,20 +347,22 @@ const SelectShowtime = () => {
               
               
               <div className="showtimes-grid">
-                {times.map((t) => (
-                                   <button
-                   key={t.showId}
-                   className="showtime-button"
-                   onClick={() => navigate(`/movies/${id}/${t.showId}`)}
-                 >
-                    <div className="showtime-time">
-                      {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </div>
-                    <div className="showtime-format">{t.format || 'Normal'}</div>
-                    <div className="showtime-price">₹{t.normalPrice} / ₹{t.vipPrice}</div>
-                    <div className="showtime-language">{t.language || 'Unknown'}</div>
-                  </button>
-                ))}
+                {times
+                  .sort((a, b) => new Date(a.time) - new Date(b.time))
+                  .map((t) => (
+                    <button
+                      key={t.showId}
+                      className="showtime-button"
+                      onClick={() => navigate(`/movies/${id}/${t.showId}`)}
+                    >
+                      <div className="showtime-time">
+                        {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                      <div className="showtime-format">{t.format || 'Normal'}</div>
+                      <div className="showtime-price">₹{t.normalPrice} / ₹{t.vipPrice}</div>
+                      <div className="showtime-language">{t.language || 'Unknown'}</div>
+                    </button>
+                  ))}
               </div>
             </div>
           ))}

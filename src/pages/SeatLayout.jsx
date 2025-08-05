@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets'
 import Loading from '../components/Loading'
-import { ArrowRightIcon, ClockIcon, MapPinIcon, StarIcon } from 'lucide-react'
+import { ArrowRightIcon, ClockIcon, MapPinIcon, StarIcon, Calendar } from 'lucide-react'
 import isoTimeFormat from '../lib/isoTimeFormat'
 import toast from 'react-hot-toast'
 import { useAppContext } from '../context/AppContext'
@@ -399,14 +399,6 @@ const SeatLayout = () => {
       {/* Selected Show Information */}
       <div className='show-info-card'>
         <h2 className='show-info-title'>{movie?.title || 'Selected Movie'}</h2>
-        <div className='show-info-date'>
-          <span className='date-text'>{show?.selectedDate ? new Date(show.selectedDate).toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          }) : 'Loading...'}</span>
-        </div>
         <div className='show-info-details'>
           <div className='show-info-item'>
             <ClockIcon className='info-icon'/>
@@ -420,6 +412,15 @@ const SeatLayout = () => {
           <div className='show-info-item'>
             <span className='info-text'>{selectedTime?.format || 'Normal'}</span>
           </div>
+        </div>
+        <div className='show-date-info'>
+          <Calendar className='calendar-icon'/>
+          <span className='date-text'>{show?.selectedDate ? new Date(show.selectedDate).toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }) : 'Loading...'}</span>
         </div>
         <div className='theatre-info-display'>
           <MapPinIcon className='location-icon'/>

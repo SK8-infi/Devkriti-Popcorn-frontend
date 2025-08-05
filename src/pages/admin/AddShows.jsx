@@ -53,14 +53,32 @@ const AddShows = () => {
         "Turkmen", "Uzbek", "Azerbaijani", "Georgian", "Armenian", "Kurdish", "Pashto", "Dari"
     ];
 
+    // Get available languages for selected movie
+    const getAvailableLanguages = () => {
+        if (!selectedMovie) return languages.slice(0, 10);
+        
+        const selectedMovieData = nowPlayingMovies.find(movie => movie.id === selectedMovie);
+        if (!selectedMovieData || !selectedMovieData.spoken_languages) return languages.slice(0, 10);
+        
+        // Extract language names from spoken_languages array
+        const availableLanguages = selectedMovieData.spoken_languages.map(lang => lang.english_name || lang.name);
+        
+        // If no spoken languages found, return common languages
+        if (availableLanguages.length === 0) return languages.slice(0, 10);
+        
+        return availableLanguages;
+    };
+
     // Filter languages based on input
     const filterLanguages = (input) => {
+        const availableLanguages = getAvailableLanguages();
+        
         if (!input.trim()) {
-            setFilteredLanguages(languages.slice(0, 10));
+            setFilteredLanguages(availableLanguages.slice(0, 10));
             return;
         }
         
-        const filtered = languages.filter(lang => 
+        const filtered = availableLanguages.filter(lang => 
             lang.toLowerCase().includes(input.toLowerCase())
         );
         setFilteredLanguages(filtered);
@@ -276,6 +294,13 @@ const AddShows = () => {
       }
     }, [existingShows, dateTimeSelection, selectedRoomId]);
 
+    // Reset language selection when movie changes
+    useEffect(() => {
+      setSelectedLanguage('');
+      setLanguageInput('');
+      setFilteredLanguages([]);
+    }, [selectedMovie]);
+
   return nowPlayingMovies.length > 0 ? (
     <>
       {/* Theatre Info Header */}
@@ -347,7 +372,12 @@ const AddShows = () => {
         
         {/* Language Input */}
         <div className="flex-1 min-w-0 flex flex-col justify-center relative">
-          <label className="block text-sm font-semibold mb-3 text-white">Language</label>
+          <label className="block text-sm font-semibold mb-3 text-white">
+            Language
+            {selectedMovie && (
+              <span className="text-xs text-gray-400 ml-2">(Filtered by selected movie)</span>
+            )}
+          </label>
           <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
             <Globe className="w-5 h-5 text-primary" />
             <input 
@@ -360,16 +390,21 @@ const AddShows = () => {
                 setShowLanguageDropdown(true);
                 filterLanguages(languageInput);
               }}
-              placeholder="Enter language (e.g., Hindi, English)" 
+              placeholder={selectedMovie ? "Select from available languages" : "Select a movie first"} 
               className="outline-none w-full bg-transparent text-white text-base font-medium" 
               style={{'::placeholder': {color: 'white'}}} 
+              disabled={!selectedMovie}
             />
           </div>
           
           {/* Language Dropdown */}
           {showLanguageDropdown && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-[9999] max-h-60 overflow-y-auto">
-              {filteredLanguages.length > 0 ? (
+              {!selectedMovie ? (
+                <div className="px-4 py-2 text-gray-500 text-sm">
+                  Please select a movie first
+                </div>
+              ) : filteredLanguages.length > 0 ? (
                 filteredLanguages.map((language, index) => (
                   <div
                     key={index}
@@ -385,7 +420,7 @@ const AddShows = () => {
                 ))
               ) : (
                 <div className="px-4 py-2 text-gray-500 text-sm">
-                  No languages found
+                  No languages available for this movie
                 </div>
               )}
             </div>

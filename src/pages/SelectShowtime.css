@@ -446,9 +446,10 @@
 
 
 .showtimes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  justify-content: flex-start;
 }
 
 .showtime-button {
@@ -464,6 +465,8 @@
   transition: all 0.2s ease;
   backdrop-filter: blur(8px);
   text-align: center;
+  min-width: 90px;
+  flex-shrink: 0;
 }
 
 .showtime-button:hover {
@@ -534,8 +537,8 @@
   }
   
   .showtimes-grid {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 8px;
+    justify-content: center;
   }
   
   .date-list {
@@ -584,8 +587,8 @@
   }
   
   .showtimes-grid {
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
     gap: 6px;
+    justify-content: center;
   }
   
   .showtime-button {

@@ -66,7 +66,7 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
   };
 
   return (
-    <div className="layout-container bg-white/20 border border-white/30 rounded-2xl shadow-lg p-0 backdrop-blur-md animate-fade-in-up">
+            <div className="layout-container bg-white/20 border border-white/30 rounded-2xl shadow-lg p-0 animate-fade-in-up">
       <div className="seat-type-selector flex justify-center">
         <span>Select Seat Type:</span>
         <button
@@ -112,16 +112,16 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
         <table className="layout-table">
           <thead>
             <tr>
-              <th className="bg-white/20 text-black font-bold rounded-tl-xl backdrop-blur-md border border-white/30 px-4 py-2"> </th>
+                              <th className="bg-white/20 text-black font-bold rounded-tl-xl border border-white/30 px-4 py-2"> </th>
               {layout[0].map((_, colIdx) => (
-                <th key={colIdx} className="bg-white/20 text-black font-bold backdrop-blur-md border border-white/30 px-4 py-2 rounded-md">{colIdx + 1}</th>
+                                  <th key={colIdx} className="bg-white/20 text-black font-bold border border-white/30 px-4 py-2 rounded-md">{colIdx + 1}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {layout.map((row, rowIdx) => (
               <tr key={rowIdx}>
-                <th className="bg-white/20 text-black font-bold backdrop-blur-md border border-white/30 px-4 py-2 rounded-md">{getRowLabel(rowIdx)}</th>
+                <th className="bg-white/20 text-black font-bold border border-white/30 px-4 py-2 rounded-md">{getRowLabel(rowIdx)}</th>
                 {row.map((cell, colIdx) => (
                   <td
                     key={colIdx}

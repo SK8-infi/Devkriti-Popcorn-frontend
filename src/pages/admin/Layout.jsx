@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
 import AdminNavbar from '../../components/admin/AdminNavbar'
-import AdminSidebar from '../../components/admin/AdminSidebar'
+import AdminSubNavbar from '../../components/admin/AdminSubNavbar'
 import { Outlet, Navigate } from 'react-router-dom'
 import { useAppContext } from '../../context/AppContext'
 import Loading from '../../components/Loading'
 import { useState } from 'react'
-import DarkVeil from '../../components/DarkVeil';
 
 const Layout = () => {
   const {isAdmin, fetchIsAdmin, theatre, setAdminTheatre, theatreCity, theatreAddress, userCity, fetchUserFromBackend, loading, isAuthenticated, user} = useAppContext()
@@ -60,10 +59,6 @@ const Layout = () => {
 
   return (
     <>
-      {/* Animated background for admin panel */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', width: '100vw', height: '100vh', overflow: 'hidden' }}>
-        <DarkVeil noiseIntensity={0.08} scanlineIntensity={0.12} scanlineFrequency={2.5} warpAmount={0.08} speed={0.4} />
-      </div>
       
       {/* Main Theatre Setup Modal */}
       {modalOpen && (
@@ -234,13 +229,11 @@ const Layout = () => {
         </div>
       )}
 
-      {/* Original Admin Layout */}
+      {/* Admin Layout with SubNavbar */}
       <AdminNavbar />
-      <div className='flex' style={{ position: 'relative', zIndex: 1 }}>
-        <AdminSidebar/>
-        <div className='flex-1 px-4 py-10 md:px-10 h-[calc(100vh-64px)] overflow-y-auto'>
-          <Outlet />
-        </div>
+      <AdminSubNavbar />
+      <div className='flex-1 px-4 py-10 md:px-10 h-[calc(100vh-128px)] overflow-y-auto' style={{ position: 'relative', zIndex: 1 }}>
+        <Outlet />
       </div>
     </>
   )

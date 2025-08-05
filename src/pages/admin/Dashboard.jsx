@@ -6,7 +6,7 @@ import Title from '../../components/admin/Title';
 import { dateFormat } from '../../lib/dateFormat';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import DarkVeil from '../../components/DarkVeil'; // Added DarkVeil import
+
 import { Link } from 'react-router-dom';
 import TheatreSetupModal from '../../components/admin/TheatreSetupModal';
 import TheatreDebug from '../../components/admin/TheatreDebug';
@@ -20,18 +20,37 @@ const Dashboard = () => {
 
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+
+
   // Local fetchDashboardData function as fallback
   const localFetchDashboardData = async () => {
     try {
       console.log('📊 Dashboard: Using local fetchDashboardData');
-      const { data } = await api.get("/api/admin/dashboard");
-      if (data.success) {
-        setDashboardData(data.dashboardData);
-        console.log('✅ Dashboard data fetched:', data.dashboardData);
-      } else {
-        toast.error(data.message);
-        console.error('❌ Dashboard data fetch failed:', data.message);
-      }
+      
+      // Fetch dashboard data
+      console.log('🔍 Fetching dashboard data...');
+      const dashboardResponse = await api.get("/api/admin/dashboard");
+      console.log('🔍 Dashboard response:', dashboardResponse.data);
+      let dashboardData = dashboardResponse.data.success ? dashboardResponse.data.dashboardData : null;
+      console.log('🔍 Dashboard data extracted:', dashboardData);
+      
+      // Fetch active shows from the same source as Listed Shows
+      console.log('🔍 Fetching shows data...');
+      const showsResponse = await api.get("/api/admin/all-shows");
+      console.log('🔍 Shows response:', showsResponse.data);
+      const activeShows = showsResponse.data.success ? showsResponse.data.shows : [];
+      console.log('🔍 Active shows extracted:', activeShows);
+      
+      // Combine the data
+      const combinedData = {
+        ...dashboardData,
+        activeShows: activeShows
+      };
+      
+      setDashboardData(combinedData);
+      console.log('✅ Dashboard data fetched:', combinedData);
+      console.log('✅ Active shows fetched:', activeShows);
+      console.log('✅ Combined data set to state:', combinedData);
     } catch (error) {
       toast.error("Error fetching dashboard data");
       console.error('❌ Dashboard data fetch error:', error);
@@ -41,8 +60,7 @@ const Dashboard = () => {
   const dashboardCards = [
     { title: "Total Bookings", value: dashboardData?.totalBookings || "0", icon: ChartLineIcon },
     { title: "Total Revenue", value: currency + (dashboardData?.totalRevenue || 0), icon: CircleDollarSignIcon },
-    { title: "Active Shows", value: dashboardData?.activeShows?.length || "0", icon: PlayCircleIcon },
-    { title: "Total Users", value: dashboardData?.totalUser || "0", icon: UsersIcon }
+    { title: "Active Shows", value: dashboardData?.activeShows?.length || "0", icon: PlayCircleIcon }
   ]
 
   useEffect(() => {
@@ -50,9 +68,8 @@ const Dashboard = () => {
       console.log('📊 Dashboard: User and admin status confirmed, fetching data...');
       console.log('📊 Dashboard: fetchDashboardData function:', typeof fetchDashboardData);
       
-      // Use context function if available, otherwise use local function
-      const fetchData = typeof fetchDashboardData === 'function' ? fetchDashboardData : localFetchDashboardData;
-      fetchData();
+      // Always use local function to ensure state is set properly
+      localFetchDashboardData();
       
       // Check if theatre setup is needed
       console.log('🔍 Theatre Setup Check:', { theatre, theatreCity, isAdmin });
@@ -108,30 +125,12 @@ const Dashboard = () => {
       {/* Debug Component */}
       {/* <TheatreDebug /> */}
 
-      {/* Theatre Info Header */}
-      {(theatre || theatreCity) && (
-        <div className="w-full flex justify-center mb-6">
-          <div className="flex items-center gap-4 bg-white/10 border border-white/30 rounded-xl px-6 py-4 backdrop-blur-md">
-            {theatre && (
-              <div className="flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-primary" />
-                <span className="text-white font-semibold">{theatre}</span>
-              </div>
-            )}
-            {theatreCity && (
-              <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span className="text-white font-semibold">{theatreCity}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+
       
       {/* Show setup prompt if no theatre info */}
       {(!theatre && !theatreCity) && (
         <div className="w-full flex justify-center mb-6">
-          <div className="flex items-center gap-4 bg-yellow-500/20 border border-yellow-500/30 rounded-xl px-6 py-4 backdrop-blur-md">
+                      <div className="flex items-center gap-4 bg-yellow-500/20 border border-yellow-500/30 rounded-xl px-6 py-4">
             <div className="flex items-center gap-2">
               <span className="text-yellow-400 font-semibold">⚠️ Theatre setup required</span>
             </div>
@@ -147,9 +146,9 @@ const Dashboard = () => {
 
       {/* Centered Info Block: Dashboard Cards */}
       <div className="w-full flex flex-col items-center justify-center mb-4 mt-2">
-        <div className="flex flex-wrap gap-4 items-center justify-center w-full max-w-4xl scale-90">
+        <div className="flex gap-6 items-center justify-center w-full max-w-4xl">
           {dashboardCards.map((card, index) => (
-            <div key={index} className="flex items-center gap-2 px-4 py-3 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md backdrop-blur-md min-w-[135px] max-w-xs w-full transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04] cursor-pointer">
+            <div key={index} className="flex items-center gap-2 px-6 py-4 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md min-w-[200px] transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04] cursor-pointer">
               <card.icon className="w-6 h-6 text-primary flex-shrink-0" />
               <div className="flex flex-col flex-1">
                 <span className="text-xs text-gray-200 font-medium uppercase tracking-wide">{card.title}</span>
@@ -159,6 +158,8 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
+
+
 
       {/* Quick Actions */}
       {hasOwnerAccess && (
@@ -172,43 +173,60 @@ const Dashboard = () => {
           </Link>
         </div>
       )}
-      <p className="mt-10 text-lg font-medium">Active Shows</p>
-      <div className="relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-4 max-w-7xl mx-auto">
-        {uniqueMovies.map(({ movie, shows }) => (
-          <div
-            key={movie._id}
-            className="movie-flip-card w-full max-w-xs mx-auto cursor-pointer"
-            onClick={() => setSelectedMovie({ movie, shows })}
-          >
-            <div className="movie-flip-inner">
-              {/* Front Side */}
-              <div className="movie-flip-front bg-primary/10 border border-[0.5px] border-white/30">
-                <img src={image_base_url + movie.poster_path} alt='' className="w-full h-full object-cover" />
-              </div>
-              {/* Back Side */}
-              <div className="movie-flip-back border border-[0.5px] border-primary">
-                <h3 className="font-semibold text-base mb-2 text-center">{movie.title}</h3>
-                <div className="flex items-center gap-2 text-primary mb-2">
-                  <StarIcon className="w-4 h-4" />
-                  <span>{movie.vote_average?.toFixed(1)}</span>
+      
+      {/* Active Shows Section */}
+      <div className="max-w-7xl mx-auto">
+        <p className="mt-10 text-lg font-medium ml-4">Active Shows</p>
+        <div className="relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-4">
+          {uniqueMovies.map(({ movie, shows }) => (
+            <div
+              key={movie._id}
+              className="flex flex-col items-center"
+            >
+              <div
+                className="movie-flip-card w-full max-w-xs mx-auto cursor-pointer"
+              >
+                <div className="movie-flip-inner">
+                  {/* Front Side */}
+                  <div className="movie-flip-front bg-primary/10 border border-[0.5px] border-white/30">
+                    <img src={image_base_url + movie.poster_path} alt='' className="w-full h-full object-cover" />
+                  </div>
+                  {/* Back Side */}
+                  <div className="movie-flip-back border border-[0.5px] border-primary">
+                    <h3 className="font-semibold text-base mb-2 text-center">{movie.title}</h3>
+                    <div className="flex items-center gap-2 text-primary mb-2">
+                      <StarIcon className="w-4 h-4" />
+                      <span>{movie.vote_average?.toFixed(1)}</span>
+                    </div>
+                    <p className="text-xs text-gray-200 mb-2 text-center" style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{movie.overview}</p>
+                    <p className="text-xs text-gray-300 text-center">
+                      {movie.genres ? movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ") : ''}
+                      {movie.release_date ? ` • ${movie.release_date.split("-")[0]}` : ''}
+                    </p>
+                    {/* More Details Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedMovie({ movie, shows });
+                      }}
+                      className="mt-3 px-4 py-2 bg-white text-black text-xs font-medium rounded-lg hover:bg-gray-100 transition-colors w-full"
+                    >
+                      More Details
+                    </button>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-200 mb-2 text-center" style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{movie.overview}</p>
-                <p className="text-xs text-gray-300 text-center">
-                  {movie.genres ? movie.genres.map(genre => genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name).join(", ") : ''}
-                  {movie.release_date ? ` • ${movie.release_date.split("-")[0]}` : ''}
-                </p>
               </div>
+              {/* Movie Name Below Card */}
+              <p className="text-sm text-white font-medium mt-2 text-center max-w-[200px] truncate">
+                {movie.title}
+              </p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       {/* Modal for movie showtimes */}
       {selectedMovie && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-          {/* Animated background for modal */}
-          <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-            <DarkVeil noiseIntensity={0.03} scanlineIntensity={0.06} scanlineFrequency={1.5} warpAmount={0.03} speed={0.3} />
-          </div>
           <div className="bg-black/70 backdrop-blur-lg rounded-xl shadow-2xl p-8 w-full max-w-2xl flex flex-col items-center relative border-2 border-primary" style={{ zIndex: 1 }}>
             <button
               className="absolute top-3 right-3 text-white hover:text-primary"
@@ -237,7 +255,7 @@ const Dashboard = () => {
             {/* Showtimes List */}
             <div className="w-full mt-6">
               <h3 className="text-lg font-semibold text-white mb-2">Showtimes</h3>
-              <ul className="divide-y divide-gray-700 bg-white/10 backdrop-blur-md rounded-lg p-4 shadow-lg max-h-60 overflow-y-auto animate-fade-in-up scrollbar-thin scrollbar-thumb-primary/60 scrollbar-track-transparent">
+              <ul className="divide-y divide-gray-700 bg-white/10 rounded-lg p-4 shadow-lg max-h-60 overflow-y-auto animate-fade-in-up scrollbar-thin scrollbar-thumb-primary/60 scrollbar-track-transparent">
                 {selectedMovie.shows.map((show) => (
                   <li key={show._id} className="py-2 flex justify-between items-center transition-transform duration-300 hover:scale-[1.03]">
                     <div className="flex flex-col">

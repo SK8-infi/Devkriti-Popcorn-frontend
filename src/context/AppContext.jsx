@@ -213,13 +213,24 @@ export const AppProvider = ({ children }) => {
 
     const fetchDashboardData = async () => {
         try {
-            const { data } = await api.get('/api/admin/dashboard');
-            if (data.success) {
-                return data.dashboardData;
-            } else {
-                toast.error(data.message);
-                return null;
-            }
+            // Fetch dashboard data
+            const dashboardResponse = await api.get('/api/admin/dashboard');
+            let dashboardData = dashboardResponse.data.success ? dashboardResponse.data.dashboardData : null;
+            
+            // Fetch active shows from the same source as Listed Shows
+            const showsResponse = await api.get('/api/admin/all-shows');
+            const activeShows = showsResponse.data.success ? showsResponse.data.shows : [];
+            
+            // Combine the data
+            const combinedData = {
+                ...dashboardData,
+                activeShows: activeShows
+            };
+            
+            console.log('✅ AppContext: Dashboard data fetched:', combinedData);
+            console.log('✅ AppContext: Active shows fetched:', activeShows);
+            
+            return combinedData;
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
             toast.error('Failed to fetch dashboard data');

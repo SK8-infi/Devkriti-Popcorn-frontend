@@ -61,25 +61,6 @@ const ListBookings = () => {
 
     return (
         <div className="p-6">
-            {/* Theatre Info Header */}
-            {(theatre || theatreCity) && (
-                <div className="w-full flex justify-center mb-6">
-                    <div className="flex items-center gap-4 bg-white/10 border border-white/30 rounded-xl px-6 py-4 backdrop-blur-md">
-                        {theatre && (
-                            <div className="flex items-center gap-2">
-                                <Building2 className="w-5 h-5 text-primary" />
-                                <span className="text-white font-semibold">{theatre}</span>
-                            </div>
-                        )}
-                        {theatreCity && (
-                            <div className="flex items-center gap-2">
-                                <MapPin className="w-5 h-5 text-primary" />
-                                <span className="text-white font-semibold">{theatreCity}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
 
             <Title title="All Bookings" />
 
@@ -92,7 +73,7 @@ const ListBookings = () => {
             ) : (
                 <div className="grid gap-4 mt-6">
                     {bookings.map((booking) => (
-                        <div key={booking._id} className="bg-white/10 border border-white/20 rounded-lg p-4 backdrop-blur-md">
+                        <div key={booking._id} className="bg-white/10 border border-white/20 rounded-lg p-4">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">

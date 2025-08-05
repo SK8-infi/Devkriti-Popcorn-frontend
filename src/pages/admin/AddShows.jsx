@@ -303,25 +303,7 @@ const AddShows = () => {
 
   return nowPlayingMovies.length > 0 ? (
     <>
-      {/* Theatre Info Header */}
-      {(theatre || theatreCity) && (
-        <div className="w-full flex justify-center mb-6">
-          <div className="flex items-center gap-4 bg-white/10 border border-white/30 rounded-xl px-6 py-4 backdrop-blur-md">
-            {theatre && (
-              <div className="flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-primary" />
-                <span className="text-white font-semibold">{theatre}</span>
-              </div>
-            )}
-            {theatreCity && (
-              <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span className="text-white font-semibold">{theatreCity}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+
 
       <p className="mt-4 text-lg font-medium">Now Playing Movies</p>
       <div className="overflow-x-auto pb-4">
@@ -571,7 +553,7 @@ const AddShows = () => {
         <button
           onClick={handleSubmit}
           disabled={addingShow}
-          className="px-8 py-3 bg-white/20 text-white rounded-xl font-semibold shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/40 hover:text-primary hover:scale-105 focus:outline-none border-none"
+          className="px-8 py-3 bg-white/20 text-white rounded-xl font-semibold shadow-md transition-all duration-200 hover:bg-white/40 hover:text-primary hover:scale-105 focus:outline-none border-none"
           style={{ border: 'none' }}
         >
           {addingShow ? 'Adding...' : 'Add Show'}

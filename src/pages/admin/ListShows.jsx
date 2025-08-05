@@ -39,7 +39,7 @@ const ListShows = () => {
     <>
       {/* Removed section title, now handled by navbar */}
       <div className="w-full mt-6 animate-fade-in-up">
-        <div className="w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-0 overflow-x-auto">
+        <div className="w-full bg-white/10 rounded-2xl shadow-lg p-0 overflow-x-auto">
           <table className="w-full border-collapse rounded-2xl overflow-hidden text-nowrap">
              <thead>
               <tr className="bg-white text-left text-black">

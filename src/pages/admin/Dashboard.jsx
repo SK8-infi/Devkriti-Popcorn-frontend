@@ -1,4 +1,4 @@
-import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon, MapPin, Building2, XIcon, Settings } from 'lucide-react';
+import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon, MapPin, Building2, XIcon, Settings, IndianRupee } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { dummyDashboardData } from '../../assets/assets';
 import Loading from '../../components/Loading';
@@ -59,7 +59,7 @@ const Dashboard = () => {
 
   const dashboardCards = [
     { title: "Total Bookings", value: dashboardData?.totalBookings || "0", icon: ChartLineIcon },
-    { title: "Total Revenue", value: currency + (dashboardData?.totalRevenue || 0), icon: CircleDollarSignIcon },
+    { title: "Total Revenue", value: currency + (dashboardData?.totalRevenue || 0), icon: IndianRupee },
     { title: "Active Shows", value: dashboardData?.activeShows?.length || "0", icon: PlayCircleIcon }
   ]
 

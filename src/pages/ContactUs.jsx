@@ -225,7 +225,7 @@ const ContactUs = () => {
             </div>
             <div className="faq-item">
               <h3>Are there any booking fees?</h3>
-              <p>We charge a small convenience fee of $2.50 per ticket to cover processing and service costs.</p>
+              <p>We charge a small convenience fee of ₹2.50 per ticket to cover processing and service costs.</p>
             </div>
             <div className="faq-item">
               <h3>How do I change my location?</h3>

@@ -105,23 +105,23 @@ const ManageUsers = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
             {/* Header */}
-            <div className="bg-white shadow-sm border-b">
+            <div className="bg-white/10 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4">
                         <div className="flex items-center space-x-4">
                             <Link 
                                 to="/admin" 
-                                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                                className="flex items-center text-gray-300 hover:text-white transition-colors"
                             >
                                 <ArrowLeft className="w-5 h-5 mr-2" />
                                 Back to Admin Panel
                             </Link>
-                            <div className="h-6 w-px bg-gray-300"></div>
+                            <div className="h-6 w-px bg-gray-400"></div>
                             <Link 
                                 to="/" 
-                                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                                className="flex items-center text-gray-300 hover:text-white transition-colors"
                             >
                                 <Home className="w-5 h-5 mr-2" />
                                 Home
@@ -140,8 +140,8 @@ const ManageUsers = () => {
                 <div className="mb-8">
                     <div className="flex justify-between items-center mb-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Users</h1>
-                            <p className="text-gray-600">Manage user roles and permissions</p>
+                            <h1 className="text-3xl font-bold text-white mb-2">Manage Users</h1>
+                            <p className="text-gray-300">Manage user roles and permissions</p>
                         </div>
                         <button
                             onClick={fetchUsers}
@@ -170,7 +170,7 @@ const ManageUsers = () => {
                             <select
                                 value={filterRole}
                                 onChange={(e) => setFilterRole(e.target.value)}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-black text-white"
                             >
                                 <option value="all">All Roles</option>
                                 <option value="owner">Owners Only</option>
@@ -182,13 +182,13 @@ const ManageUsers = () => {
                 </div>
 
                 {/* Users List */}
-                <div className="bg-white rounded-lg shadow-md">
-                    <div className="px-6 py-4 border-b border-gray-200">
+                <div className="bg-white/10 rounded-lg shadow-md border border-white/20">
+                    <div className="px-6 py-4 border-b border-white/20">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-white">
                                 Users ({filteredUsers.length} of {users.length})
                             </h3>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-gray-400">
                                 {users.filter(u => u.role === 'owner').length} owners, {users.filter(u => u.role === 'admin').length} admins, {users.filter(u => u.role === 'user').length} users
                             </div>
                         </div>
@@ -199,34 +199,34 @@ const ManageUsers = () => {
                             <Loading />
                         </div>
                     ) : filteredUsers.length === 0 ? (
-                        <div className="p-8 text-center text-gray-500">
+                        <div className="p-8 text-center text-gray-400">
                             {searchTerm || filterRole !== 'all' ? 'No users match your search criteria' : 'No users found'}
                         </div>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                                <thead className="bg-white/20">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                                             User
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                                             Email
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                                             Role
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                                             Joined
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-white/5 divide-y divide-white/20">
                                     {filteredUsers.map((user) => (
-                                        <tr key={user._id} className="hover:bg-gray-50">
+                                        <tr key={user._id} className="hover:bg-white/10">
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 h-10 w-10">
@@ -263,13 +263,13 @@ const ManageUsers = () => {
                                                         })()}
                                                     </div>
                                                     <div className="ml-4">
-                                                        <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                                                        <div className="text-sm text-gray-500">ID: {user._id}</div>
+                                                        <div className="text-sm font-medium text-white">{user.name}</div>
+                                                        <div className="text-sm text-gray-400">ID: {user._id}</div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">{user.email}</div>
+                                                <div className="text-sm text-white">{user.email}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -282,7 +282,7 @@ const ManageUsers = () => {
                                                     {user.role}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                                                 {new Date(user.createdAt).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -313,9 +313,9 @@ const ManageUsers = () => {
                 </div>
 
                 {/* Quick Actions */}
-                <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-blue-900 mb-2">Quick Actions</h4>
-                    <div className="text-sm text-blue-700 space-y-1">
+                <div className="mt-6 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                    <h4 className="text-sm font-medium text-blue-200 mb-2">Quick Actions</h4>
+                    <div className="text-sm text-blue-300 space-y-1">
                         <p>• Click "Make Admin" to promote a user to admin status</p>
                         <p>• Click "Remove Admin" to demote an admin to user status</p>
                         <p>• <strong>Owners cannot be modified</strong> - they have permanent access</p>

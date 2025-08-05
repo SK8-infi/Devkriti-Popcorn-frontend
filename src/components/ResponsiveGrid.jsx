@@ -29,23 +29,23 @@ const ResponsiveGrid = ({
         width: '100%',
         '@media (max-width: 1024px)': {
           gridTemplateColumns: `repeat(${columns.lg}, 1fr)`,
-          gap: '1.25rem',
+          gap: gap,
         },
         '@media (max-width: 768px)': {
           gridTemplateColumns: `repeat(${columns.md}, 1fr)`,
-          gap: '1rem',
+          gap: gap,
         },
         '@media (max-width: 640px)': {
           gridTemplateColumns: `repeat(${columns.sm}, 1fr)`,
-          gap: '0.75rem',
+          gap: gap,
         },
         '@media (max-width: 480px)': {
           gridTemplateColumns: `repeat(${columns.xs}, 1fr)`,
-          gap: '0.5rem',
+          gap: gap,
         },
         '@media (max-width: 300px)': {
           gridTemplateColumns: `repeat(${columns.tiny}, 1fr)`,
-          gap: '0.25rem',
+          gap: gap,
         },
       }}
     >

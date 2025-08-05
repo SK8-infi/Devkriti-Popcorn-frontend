@@ -5,6 +5,7 @@ import { Outlet, Navigate } from 'react-router-dom'
 import { useAppContext } from '../../context/AppContext'
 import Loading from '../../components/Loading'
 import { useState } from 'react'
+import DarkVeil from '../../components/DarkVeil';
 
 const Layout = () => {
   const {isAdmin, fetchIsAdmin, theatre, setAdminTheatre, theatreCity, theatreAddress, userCity, fetchUserFromBackend, loading, isAuthenticated, user} = useAppContext()
@@ -59,6 +60,10 @@ const Layout = () => {
 
   return (
     <>
+      {/* Animated background for admin panel */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+        <DarkVeil noiseIntensity={0.08} scanlineIntensity={0.12} scanlineFrequency={2.5} warpAmount={0.08} speed={0.4} />
+      </div>
       
       {/* Main Theatre Setup Modal */}
       {modalOpen && (

@@ -55,12 +55,12 @@ const FeaturedSection = () => {
     });
 
     const responsiveGap = getResponsiveValue({
-        xl: '2.5rem',
-        lg: '2rem',
-        md: '1.5rem',
-        sm: '1rem',
-        xs: '0.75rem',
-        tiny: '0.5rem',
+        xl: '1.5rem',
+        lg: '1.25rem',
+        md: '1rem',
+        sm: '0.75rem',
+        xs: '0.5rem',
+        tiny: '0.25rem',
     });
 
   if (loading) {

@@ -38,7 +38,7 @@ const TheatreSettingsModal = ({ isOpen, onClose }) => {
         return;
       }
       
-      console.log('💾 Saving theatre settings:', { theatreName, cityName, addressName });
+
       
       const res = await setAdminTheatre(theatreName, cityName, addressName);
       

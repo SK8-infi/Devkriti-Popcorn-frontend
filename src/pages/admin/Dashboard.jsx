@@ -25,21 +25,15 @@ const Dashboard = () => {
   // Local fetchDashboardData function as fallback
   const localFetchDashboardData = async () => {
     try {
-      console.log('📊 Dashboard: Using local fetchDashboardData');
+
       
       // Fetch dashboard data
-      console.log('🔍 Fetching dashboard data...');
       const dashboardResponse = await api.get("/api/admin/dashboard");
-      console.log('🔍 Dashboard response:', dashboardResponse.data);
       let dashboardData = dashboardResponse.data.success ? dashboardResponse.data.dashboardData : null;
-      console.log('🔍 Dashboard data extracted:', dashboardData);
       
       // Fetch active shows from the same source as Listed Shows
-      console.log('🔍 Fetching shows data...');
       const showsResponse = await api.get("/api/admin/all-shows");
-      console.log('🔍 Shows response:', showsResponse.data);
       const activeShows = showsResponse.data.success ? showsResponse.data.shows : [];
-      console.log('🔍 Active shows extracted:', activeShows);
       
       // Combine the data
       const combinedData = {
@@ -48,12 +42,10 @@ const Dashboard = () => {
       };
       
       setDashboardData(combinedData);
-      console.log('✅ Dashboard data fetched:', combinedData);
-      console.log('✅ Active shows fetched:', activeShows);
-      console.log('✅ Combined data set to state:', combinedData);
+      
     } catch (error) {
       toast.error("Error fetching dashboard data");
-      console.error('❌ Dashboard data fetch error:', error);
+              console.error('Dashboard data fetch error:', error);
     }
   };
 
@@ -65,42 +57,40 @@ const Dashboard = () => {
 
   useEffect(() => {
     if(user && isAdmin){
-      console.log('📊 Dashboard: User and admin status confirmed, fetching data...');
-      console.log('📊 Dashboard: fetchDashboardData function:', typeof fetchDashboardData);
+
       
       // Always use local function to ensure state is set properly
       localFetchDashboardData();
       
       // Check if theatre setup is needed
-      console.log('🔍 Theatre Setup Check:', { theatre, theatreCity, isAdmin });
+      
       
       if (typeof theatre !== 'undefined' && typeof theatreCity !== 'undefined') {
         const needsSetup = !theatre || !theatreCity;
-        console.log('🎭 Setup needed:', needsSetup, 'Theatre:', theatre, 'Theatre City:', theatreCity);
+        
         
         if (needsSetup) {
-          console.log('📋 Showing setup modal');
+          
           setShowSetupModal(true);
         } else {
-          console.log('✅ Theatre setup complete');
+          
           setShowSetupModal(false);
         }
       } else {
-        console.log('⏳ Waiting for theatre/city data to load...');
+
       }
     }   
   }, [user, isAdmin, theatre, theatreCity]);
 
   // Group shows by movie._id
   const movieMap = {};
-  console.log('🔍 Dashboard: activeShows data:', dashboardData?.activeShows);
-  console.log('🔍 Dashboard: activeShows length:', dashboardData?.activeShows?.length);
+  
   
   dashboardData?.activeShows?.forEach(show => {
-    console.log('🔍 Dashboard: Processing show:', show);
+    
     const movieId = show.movie?._id;
     if (!movieId) {
-      console.warn('⚠️ Dashboard: Show has no movie._id:', show);
+              console.warn('Dashboard: Show has no movie._id:', show);
       return;
     }
     if (!movieMap[movieId]) {
@@ -112,7 +102,7 @@ const Dashboard = () => {
     movieMap[movieId].shows.push(show);
   });
   const uniqueMovies = Object.values(movieMap);
-  console.log('🔍 Dashboard: Unique movies:', uniqueMovies);
+  
 
   return !loading ? (
     <>
@@ -132,7 +122,7 @@ const Dashboard = () => {
         <div className="w-full flex justify-center mb-6">
                       <div className="flex items-center gap-4 bg-yellow-500/20 border border-yellow-500/30 rounded-xl px-6 py-4">
             <div className="flex items-center gap-2">
-              <span className="text-yellow-400 font-semibold">⚠️ Theatre setup required</span>
+                              <span className="text-yellow-400 font-semibold">Theatre setup required</span>
             </div>
             <button
               onClick={() => setShowSetupModal(true)}

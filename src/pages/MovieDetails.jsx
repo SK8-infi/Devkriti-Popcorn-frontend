@@ -68,7 +68,6 @@ const MovieDetails = () => {
       }
     } catch (error) {
       setError('Failed to load movie details.')
-      console.log(error)
     }
   }
 
@@ -99,7 +98,6 @@ const MovieDetails = () => {
       }
     } catch (error) {
       setIsFavorited(!!favoriteMovies.find(movie => movie._id === id)); // Revert if error
-      console.log(error)
     }
   }
   
@@ -116,7 +114,7 @@ const MovieDetails = () => {
     }
   }
 
-  console.log("SHOW STATE:", show);
+
 
   if (error) {
     return (

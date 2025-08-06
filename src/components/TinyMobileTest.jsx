@@ -40,7 +40,7 @@ const TinyMobileTest = () => {
           textAlign: 'center',
           marginBottom: '2rem'
         }}>
-          {isTinyMobile ? '🎯 Tiny Mobile Test (≤300px)' : 'Responsive Design Test'}
+          {isTinyMobile ? 'Tiny Mobile Test (≤300px)' : 'Responsive Design Test'}
         </h1>
 
         <div style={{
@@ -128,7 +128,7 @@ const TinyMobileTest = () => {
             marginTop: '1rem',
             fontSize: '0.9rem'
           }}>
-            <h3>🎯 Tiny Mobile Features:</h3>
+            <h3>Tiny Mobile Features:</h3>
             <ul style={{ textAlign: 'left', margin: '0.5rem 0' }}>
               <li>Reduced padding and margins</li>
               <li>Smaller font sizes</li>

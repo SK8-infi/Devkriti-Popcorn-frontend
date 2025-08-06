@@ -30,11 +30,7 @@ const SelectShowtime = () => {
 
   // Monitor filter changes
   useEffect(() => {
-    console.log('🔍 Filter state changed:', {
-      selectedLanguage,
-      selectedFormat,
-      selectedDate
-    });
+    // Filter state changed
   }, [selectedLanguage, selectedFormat, selectedDate]);
 
   // Handle clicking outside dropdowns
@@ -84,7 +80,6 @@ const SelectShowtime = () => {
         }
       } catch (error) {
         setError('Failed to load movie details.');
-        console.log(error);
       }
     };
     getShow();
@@ -128,31 +123,24 @@ const SelectShowtime = () => {
       .filter(Boolean)
   ));
 
-  console.log('🔍 SelectShowtime: Available languages:', allLanguages);
-  console.log('🔍 SelectShowtime: Available formats:', allFormats);
-  console.log('🔍 SelectShowtime: Selected date:', selectedDate);
-  console.log('🔍 SelectShowtime: Selected language:', selectedLanguage);
-  console.log('🔍 SelectShowtime: Selected format:', selectedFormat);
+
 
   // Group shows by theatre for the selected date, filtered by language/format
   let theatreMap = {};
   if (selectedDate && show.dateTime[selectedDate]) {
-    console.log('🔍 Filtering shows for date:', selectedDate);
-    console.log('🔍 Available shows before filtering:', show.dateTime[selectedDate].length);
+
     
     for (const showObj of show.dateTime[selectedDate]) {
-      console.log('🔍 Processing show:', showObj);
+      
       
       // Apply language filter
       if (selectedLanguage && showObj.language !== selectedLanguage) {
-        console.log('🔍 Skipping - language mismatch:', showObj.language, 'vs', selectedLanguage);
-        continue;
+                  continue;
       }
       
       // Apply format filter
       if (selectedFormat && showObj.format !== selectedFormat) {
-        console.log('🔍 Skipping - format mismatch:', showObj.format, 'vs', selectedFormat);
-        continue;
+                  continue;
       }
       
       const theatreKey = `${showObj.theatreName} - ${showObj.theatreCity}`;
@@ -160,10 +148,10 @@ const SelectShowtime = () => {
         theatreMap[theatreKey] = [];
       }
       theatreMap[theatreKey].push(showObj);
-      console.log('🔍 Added show to theatre:', theatreKey);
+      
     }
     
-    console.log('🔍 Final theatre map:', Object.keys(theatreMap));
+
   }
 
   return (

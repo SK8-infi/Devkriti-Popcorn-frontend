@@ -218,7 +218,7 @@ const Footer = () => {
             justifyContent: 'center', 
             color: '#fff', 
             fontSize: isTinyMobile ? '14px' : '16px' 
-          }}>📷</div>
+          }}></div>
           <div style={{ 
             width: responsiveSocialSize, 
             height: responsiveSocialSize, 

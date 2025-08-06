@@ -50,7 +50,7 @@ const DebugAccess = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">🔍 Access Debug Information</h1>
+        <h1 className="text-3xl font-bold mb-8">Access Debug Information</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Frontend State */}
@@ -75,13 +75,13 @@ const DebugAccess = () => {
           <h2 className="text-xl font-semibold mb-4">Access Analysis</h2>
           <div className="space-y-2">
             <div className={`p-3 rounded ${isAdmin ? 'bg-green-600' : 'bg-red-600'}`}>
-              <strong>Admin Access:</strong> {isAdmin ? '✅ Granted' : '❌ Denied'}
+                              <strong>Admin Access:</strong> {isAdmin ? 'Granted' : 'Denied'}
             </div>
             <div className={`p-3 rounded ${hasOwnerAccess ? 'bg-green-600' : 'bg-red-600'}`}>
-              <strong>Owner Access:</strong> {hasOwnerAccess ? '✅ Granted' : '❌ Denied'}
+                              <strong>Owner Access:</strong> {hasOwnerAccess ? 'Granted' : 'Denied'}
             </div>
             <div className={`p-3 rounded ${user ? 'bg-green-600' : 'bg-red-600'}`}>
-              <strong>User Authenticated:</strong> {user ? '✅ Yes' : '❌ No'}
+                              <strong>User Authenticated:</strong> {user ? 'Yes' : 'No'}
             </div>
             {user && (
               <div className="p-3 rounded bg-blue-600">

@@ -6,7 +6,7 @@ const TheatreDebug = () => {
 
   return (
     <div className="fixed bottom-4 right-4 bg-black/80 text-white p-4 rounded-lg text-xs font-mono z-50">
-      <h4 className="font-bold mb-2">🔍 Theatre Debug</h4>
+              <h4 className="font-bold mb-2">Theatre Debug</h4>
       <div className="space-y-1">
         <div>User: {user?.name || 'N/A'}</div>
         <div>User Role: {user?.role || 'N/A'}</div>

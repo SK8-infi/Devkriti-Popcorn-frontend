@@ -15,12 +15,10 @@ const TrailersSection = () => {
 
   // Extract trailers from movies when allMovies changes
   useEffect(() => {
-    console.log('🔍 TrailersSection: allMovies received:', allMovies?.length || 0);
     if (allMovies && allMovies.length > 0) {
       const movieTrailers = [];
       allMovies.forEach(movie => {
         if (movie.trailers && movie.trailers.length > 0) {
-          console.log('✅ TrailersSection: Found trailer for movie:', movie.title);
           // Add the first trailer of each movie with movie info
           movieTrailers.push({
             ...movie.trailers[0],
@@ -28,15 +26,11 @@ const TrailersSection = () => {
             movieId: movie.id,
             image: movie.trailers[0].thumbnail_url
           });
-        } else {
-          console.log('⚠️ TrailersSection: No trailers for movie:', movie.title);
         }
       });
-      console.log('🎬 TrailersSection: Total movie trailers found:', movieTrailers.length);
       setTrailers(movieTrailers.slice(0, 6)); // Limit to 6 trailers
       setCenterIdx(Math.min(2, Math.floor(movieTrailers.length / 2))); // Start in middle or beginning
     } else {
-      console.log('⚠️ TrailersSection: No allMovies available, using dummy trailers');
       // Fallback to dummy trailers if no real trailers available
       setTrailers(dummyTrailers);
       setCenterIdx(2);

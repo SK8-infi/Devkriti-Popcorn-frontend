@@ -59,7 +59,7 @@ const TestOwnerAccess = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">🧪 Owner Access Test</h1>
+        <h1 className="text-3xl font-bold mb-8">Owner Access Test</h1>
 
         {/* Test Results */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -67,16 +67,16 @@ const TestOwnerAccess = () => {
             <h2 className="text-xl font-semibold mb-4">Test Results</h2>
             <div className="space-y-2">
               <div className={`p-2 rounded ${testResults.authenticated ? 'bg-green-600' : 'bg-red-600'}`}>
-                <strong>Authenticated:</strong> {testResults.authenticated ? '✅ Yes' : '❌ No'}
+                <strong>Authenticated:</strong> {testResults.authenticated ? 'Yes' : 'No'}
               </div>
               <div className="p-2 rounded bg-blue-600">
                 <strong>User Role:</strong> {testResults.userRole}
               </div>
               <div className={`p-2 rounded ${testResults.frontendState?.isAdmin ? 'bg-green-600' : 'bg-red-600'}`}>
-                <strong>Frontend Admin:</strong> {testResults.frontendState?.isAdmin ? '✅ Yes' : '❌ No'}
+                <strong>Frontend Admin:</strong> {testResults.frontendState?.isAdmin ? 'Yes' : 'No'}
               </div>
               <div className={`p-2 rounded ${testResults.frontendState?.hasOwnerAccess ? 'bg-green-600' : 'bg-red-600'}`}>
-                <strong>Frontend Owner:</strong> {testResults.frontendState?.hasOwnerAccess ? '✅ Yes' : '❌ No'}
+                <strong>Frontend Owner:</strong> {testResults.frontendState?.hasOwnerAccess ? 'Yes' : 'No'}
               </div>
             </div>
           </div>

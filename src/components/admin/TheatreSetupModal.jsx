@@ -27,7 +27,7 @@ const TheatreSetupModal = ({ isOpen, onClose }) => {
       const cityName = cityInput || theatreCity || "";
       const addressName = addressInput.trim() || theatreAddress || "";
       
-      console.log('💾 Saving theatre data:', { theatreName, cityName, addressName });
+
       
       const res = await setAdminTheatre(theatreName, cityName, addressName);
       

@@ -64,15 +64,14 @@ const MyBookings = () => {
       })
       
       if (data.success) {
-        console.log('🔍 MyBookings: Received bookings data:', data.bookings);
+
         setBookings(data.bookings)
       } else {
         toast.error(data.message || 'Failed to fetch bookings')
       }
-    } catch (error) {
-      console.log('❌ MyBookings: Error fetching bookings:', error)
-      toast.error('Failed to load bookings')
-    } finally {
+          } catch (error) {
+        toast.error('Failed to load bookings')
+      } finally {
       setLoading(false)
     }
   }
@@ -82,10 +81,9 @@ const MyBookings = () => {
       setRefreshing(true)
       await fetchBookings()
       toast.success('Bookings refreshed')
-    } catch (error) {
-      console.log('❌ MyBookings: Error refreshing bookings:', error)
-      toast.error('Failed to refresh bookings')
-    } finally {
+          } catch (error) {
+        toast.error('Failed to refresh bookings')
+      } finally {
       setRefreshing(false)
     }
   }
@@ -105,10 +103,9 @@ const MyBookings = () => {
       } else {
         toast.error(data.message || 'Failed to retry payment')
       }
-    } catch (error) {
-      console.log('❌ MyBookings: Error retrying payment:', error)
-      toast.error('Failed to retry payment')
-    } finally {
+          } catch (error) {
+        toast.error('Failed to retry payment')
+      } finally {
       setRetryingPayment(null)
     }
   }
@@ -244,28 +241,28 @@ const MyBookings = () => {
                 {/* Payment Status */}
                 {booking.isPaid ? (
                   <div className='text-green-400 text-sm mb-4'>
-                    ✅ Payment completed on {booking.paymentDate ? formatDate(booking.paymentDate) : 'N/A'}
+                    Payment completed on {booking.paymentDate ? formatDate(booking.paymentDate) : 'N/A'}
                   </div>
                 ) : (
                   <div className='mb-4'>
                     {booking.status === 'pending' && !isPendingExpired(booking.createdAt) && (
                       <div className='text-yellow-400 text-sm mb-2'>
-                        ⏰ Time remaining: {timeRemaining[booking._id] || 'Calculating...'}
+                        Time remaining: {timeRemaining[booking._id] || 'Calculating...'}
                       </div>
                     )}
                     {booking.status === 'payment_failed' && !isExpired(booking.createdAt) && (
                       <div className='text-orange-400 text-sm mb-2'>
-                        ⏰ Continue payment within: {timeRemaining[booking._id] || 'Calculating...'}
+                        Continue payment within: {timeRemaining[booking._id] || 'Calculating...'}
                       </div>
                     )}
                     {booking.status === 'payment_failed' && isExpired(booking.createdAt) && (
                       <div className='text-red-400 text-sm mb-2'>
-                        ❌ Payment session expired (10 min limit)
+                        Payment session expired (10 min limit)
                       </div>
                     )}
                     {booking.status === 'pending' && isPendingExpired(booking.createdAt) && (
                       <div className='text-red-400 text-sm mb-2'>
-                        ⏰ Payment session expired (30 min limit)
+                        Payment session expired (30 min limit)
                       </div>
                     )}
                   </div>
@@ -314,11 +311,7 @@ const MyBookings = () => {
                       ) : (
                         <button
                           onClick={() => {
-                            console.log('🔍 MyBookings: Book Again clicked for booking:', {
-                              bookingId: booking._id,
-                              movieId: booking.show?.movie?._id,
-                              movieTitle: booking.show?.movie?.title
-                            });
+
                             if (booking.show?.movie?._id) {
                               navigate(`/movies/${booking.show.movie._id}`);
                             } else {

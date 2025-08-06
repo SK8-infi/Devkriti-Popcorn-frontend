@@ -80,23 +80,23 @@ const App = () => {
         <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path='/payment-success' element={<LoadingPage />} />
 
-        {/* 🔐 Admin-only route for managing users */}
+        {/* Admin-only route for managing users */}
         <Route path='/manage-users' element={
           <ProtectedRoute requireAdmin={true} requireOwnerAccess={true}>
             <ManageUsers />
           </ProtectedRoute>
         } />
 
-        {/* 🔍 Debug route for troubleshooting access issues */}
+        {/* Debug route for troubleshooting access issues */}
         <Route path='/debug-access' element={<DebugAccess />} />
         
-        {/* 🖼️ Debug route for user image issues */}
+        {/* Debug route for user image issues */}
         <Route path='/debug-user-image' element={<UserImageDebug />} />
 
         {/* 🧪 Test route for owner access debugging */}
         <Route path='/test-owner-access' element={<TestOwnerAccess />} />
 
-        {/* 🔐 Admin layout and nested routes */}
+        {/* Admin layout and nested routes */}
         <Route path='/admin/*' element={
           <ProtectedRoute requireAuth={true} requireAdmin={true}>
             <Layout />

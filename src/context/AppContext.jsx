@@ -45,18 +45,13 @@ export const AppProvider = ({ children }) => {
 
     // Debug function to check environment variables
     const debugEnvironment = () => {
-        console.log('🔍 Environment Debug:');
-        console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
-        console.log('NODE_ENV:', import.meta.env.NODE_ENV);
-        console.log('MODE:', import.meta.env.MODE);
-        console.log('BASE_URL:', import.meta.env.BASE_URL);
+        
     };
 
     const login = () => {
         debugEnvironment(); // Add debug call
         const authUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/auth/google`;
-        console.log('🔗 Login URL:', authUrl);
-        console.log('🔗 VITE_API_URL:', import.meta.env.VITE_API_URL);
+
         window.location.href = authUrl;
     };
 
@@ -86,45 +81,44 @@ export const AppProvider = ({ children }) => {
 
     const fetchUser = async () => {
         try {
-            console.log('🔍 Fetching user data...');
+    
             const response = await api.get('/api/auth/me');
             if (response.data.success) {
                 const fetchedUser = response.data.user;
-                console.log('✅ User fetched:', fetchedUser);
+
                 setUser(fetchedUser);
                 setIsAuthenticated(true);
                 setUserCity(fetchedUser.city); // Set user's personal city preference
                 
                 // Fetch theatre data if user is admin or owner
                 if (fetchedUser.role === 'admin' || fetchedUser.role === 'owner') {
-                    console.log('🎭 User is admin/owner, fetching theatre data...');
+    
                     try {
                         const theatreResponse = await api.get('/api/admin/my-theatre');
-                        console.log('🎭 Theatre response:', theatreResponse.data);
+                        
                         if (theatreResponse.data.success) {
                             setTheatre(theatreResponse.data.theatre.name);
                             setTheatreCity(theatreResponse.data.city);
                             setTheatreAddress(theatreResponse.data.address);
                             setTheatreId(theatreResponse.data.theatre._id); // Set theatreId
-                            console.log('✅ Theatre data set:', theatreResponse.data.theatre.name, theatreResponse.data.city);
+
                         } else {
                             // Theatre not found for this admin/owner
-                            console.log('⚠️ Theatre not found for admin/owner');
+
                             setTheatre(null);
                             setTheatreCity(null);
                             setTheatreAddress(null);
                             setTheatreId(null);
                         }
                     } catch (theatreError) {
-                        console.error('❌ Error fetching theatre:', theatreError);
-                        console.error('❌ Theatre error response:', theatreError.response?.data);
+                        console.error('Error fetching theatre:', theatreError);
+                        console.error('Theatre error response:', theatreError.response?.data);
                         setTheatre(null);
                         setTheatreCity(null);
                         setTheatreAddress(null);
                         setTheatreId(null);
                     }
                 } else {
-                    console.log('👤 User is not admin/owner');
                     setTheatre(null);
                     setTheatreCity(null);
                     setTheatreAddress(null);
@@ -140,8 +134,8 @@ export const AppProvider = ({ children }) => {
 
             }
         } catch (error) {
-            console.error('❌ Error fetching user:', error);
-            console.error('❌ Error response:', error.response?.data);
+            console.error('Error fetching user:', error);
+            console.error('Error response:', error.response?.data);
             if (error.response?.status === 401) {
                 logout();
             } else if (user && location.pathname.startsWith('/admin')) {
@@ -204,7 +198,6 @@ export const AppProvider = ({ children }) => {
             const { data } = await api.get('/api/movies/latest');
             if (data.movies) {
                 setAllMovies(data.movies);
-                console.log('✅ Fetched all movies for trailers:', data.movies.length);
             }
         } catch (error) {
             console.error('Error fetching all movies:', error);
@@ -227,8 +220,7 @@ export const AppProvider = ({ children }) => {
                 activeShows: activeShows
             };
             
-            console.log('✅ AppContext: Dashboard data fetched:', combinedData);
-            console.log('✅ AppContext: Active shows fetched:', activeShows);
+
             
             return combinedData;
         } catch (error) {
@@ -240,14 +232,11 @@ export const AppProvider = ({ children }) => {
 
     const setAdminTheatre = async (theatreName, cityName, addressName) => {
         try {
-            console.log('🔧 Setting admin theatre:', { theatreName, cityName, addressName });
             const response = await api.post('/api/admin/set-theatre', {
                 theatre: theatreName,
                 city: cityName,
                 address: addressName
             });
-
-            console.log('🔧 Theatre setup response:', response.data);
 
             if (response.data.success) {
                 // Update local state with new theatre data
@@ -255,14 +244,12 @@ export const AppProvider = ({ children }) => {
                 setTheatreCity(cityName);
                 setTheatreAddress(addressName);
                 setTheatreId(response.data.theatreId); // Update theatreId with theatre ID
-                console.log('✅ Theatre setup successful:', { theatreName, cityName, theatreId: response.data.theatreId });
                 return { success: true };
             } else {
-                console.log('❌ Theatre setup failed:', response.data.message);
                 return { success: false, message: response.data.message };
             }
         } catch (error) {
-            console.error('❌ Error setting admin theatre:', error);
+            console.error('Error setting admin theatre:', error);
             return {
                 success: false,
                 message: error.response?.data?.message || 'Failed to set theatre'

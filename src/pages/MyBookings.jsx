@@ -167,6 +167,24 @@ const MyBookings = () => {
     return (created.getTime() + (30 * 60 * 1000)) <= now.getTime() // 30 minutes for pending payments
   }
 
+  // Filter bookings to show only successful ones or those within 30-minute buffer
+  const shouldShowBooking = (booking) => {
+    // Show successful bookings
+    if (booking.isPaid) return true
+    
+    // Show pending bookings within 30-minute buffer
+    if (booking.status === 'pending' && !isPendingExpired(booking.createdAt)) return true
+    
+    // Show failed bookings within 10-minute buffer (for continue payment option)
+    if (booking.status === 'payment_failed' && !isExpired(booking.createdAt)) return true
+    
+    // Don't show expired or cancelled bookings
+    return false
+  }
+
+  // Filter the bookings array
+  const filteredBookings = bookings.filter(shouldShowBooking)
+
   if (loading) return <Loading />
 
   return (
@@ -175,6 +193,16 @@ const MyBookings = () => {
         <div className='text-center mb-10'>
           <h1 className='text-4xl font-bold text-primary mb-4'>My Bookings</h1>
           <p className='text-gray-300'>View and manage your movie ticket bookings</p>
+          
+          {/* Booking Count Info */}
+          {bookings.length > 0 && (
+            <div className='mt-2 text-sm text-gray-400'>
+              Showing {filteredBookings.length} of {bookings.length} bookings 
+              {bookings.length !== filteredBookings.length && (
+                <span className='text-yellow-400'> (expired bookings hidden)</span>
+              )}
+            </div>
+          )}
           
           {/* Refresh Button */}
           <button
@@ -187,9 +215,17 @@ const MyBookings = () => {
           </button>
         </div>
 
-        {bookings.length === 0 ? (
+        {filteredBookings.length === 0 ? (
           <div className='text-center py-20'>
-            <div className='text-gray-400 text-xl mb-4'>No bookings found</div>
+            <div className='text-gray-400 text-xl mb-4'>
+              {bookings.length === 0 ? 'No bookings found' : 'No active bookings found'}
+            </div>
+            <p className='text-gray-500 mb-4'>
+              {bookings.length === 0 
+                ? 'Start booking your movie tickets!' 
+                : 'Only successful bookings and those within payment buffer time are shown here.'
+              }
+            </p>
             <button 
               onClick={() => navigate('/')}
               className='bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/80 transition'
@@ -199,7 +235,7 @@ const MyBookings = () => {
           </div>
         ) : (
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-            {bookings.map((booking) => (
+            {filteredBookings.map((booking) => (
               <div key={booking._id} className='bg-white/10 border border-primary/20 rounded-xl p-6 hover:shadow-lg transition'>
                 {/* Booking Header */}
                 <div className='flex items-center justify-between mb-4'>

@@ -25,10 +25,14 @@ import ManageRooms from './pages/admin/ManageRooms'
 import ManageUsers from './pages/admin/ManageUsers'
 import ContactUs from './pages/ContactUs'
 import SelectShowtime from './pages/SelectShowtime'
+import TheatreDetails from './pages/TheatreDetails'
+import UserReviews from './pages/UserReviews'
 // SignIn component removed - redirecting non-admin users to home instead
 import DebugAccess from './pages/admin/DebugAccess'
 import UserImageDebug from './components/UserImageDebug'
 import TestOwnerAccess from './pages/admin/TestOwnerAccess'
+import ReviewAnalyticsPage from './pages/admin/ReviewAnalytics'
+import TheatreAnalyticsPage from './pages/admin/TheatreAnalytics'
 
 const ProtectedRoute = ({ children, requireAuth = true, requireAdmin = false, requireOwnerAccess = false }) => {
   const { user, isAuthenticated, isAdmin, hasOwnerAccess, loading } = useAppContext();
@@ -76,6 +80,12 @@ const App = () => {
         } />
         <Route path='/theatres' element={<Theatres />} />
         <Route path='/theatres/:theatreId' element={<Theatre />} />
+        <Route path='/theatre/:theatreId' element={<TheatreDetails />} />
+        <Route path='/my-reviews' element={
+          <ProtectedRoute>
+            <UserReviews />
+          </ProtectedRoute>
+        } />
         <Route path='/contact' element={<ContactUs />} />
         <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path='/payment-success' element={<LoadingPage />} />
@@ -107,6 +117,8 @@ const App = () => {
           <Route path="list-shows" element={<ListShows />} />
           <Route path="list-bookings" element={<ListBookings />} />
           <Route path="manage-rooms" element={<ManageRooms />} />
+          <Route path="theatre-analytics" element={<TheatreAnalyticsPage />} />
+          <Route path="review-analytics" element={<ReviewAnalyticsPage />} />
           {/* Add more nested admin routes here as needed */}
         </Route>
       </Routes>

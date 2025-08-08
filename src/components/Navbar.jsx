@@ -93,8 +93,8 @@ const handleSaveCity = async () => {
     setUserCity(selectedCity);
 
     try {
-      await fetch('/api/user/update-city-public', {
-     method: 'POST',
+      await fetch('/api/user/city/public', {
+     method: 'PUT',
      headers: {
        'Content-Type': 'application/json',
      },
@@ -112,8 +112,8 @@ const handleSaveCity = async () => {
 
   // Authenticated user: update via secured API
   try {
-    const response = await fetch('/api/user/update-city', {
-      method: 'POST',
+    const response = await fetch('/api/user/city', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('authToken')}`

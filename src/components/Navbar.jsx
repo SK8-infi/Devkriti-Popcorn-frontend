@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { MenuIcon, SearchIcon, TicketPlus, XIcon, MapPin, Heart, User, LogOut } from 'lucide-react'
+import { MenuIcon, SearchIcon, TicketPlus, XIcon, MapPin, Heart, User, LogOut, Star } from 'lucide-react'
 import { useAppContext } from '../context/AppContext'
 import './Navbar.css'
 import Dock from './Dock';
@@ -375,6 +375,24 @@ const handleSaveCity = async () => {
                         >
                           <Heart size={16} />
                           Favorites
+                        </button>
+                        <button
+                          onClick={() => { navigate('/my-reviews'); setShowUserDropdown(false); }}
+                          style={{
+                            width: '100%',
+                            padding: '8px 16px',
+                            background: 'none',
+                            border: 'none',
+                            color: '#fff',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <Star size={16} />
+                          My Reviews
                         </button>
                         <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid #333' }} />
                         <button

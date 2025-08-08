@@ -138,7 +138,7 @@ const Dashboard = () => {
       <div className="w-full flex flex-col items-center justify-center mb-4 mt-2">
         <div className="flex gap-6 items-center justify-center w-full max-w-4xl">
           {dashboardCards.map((card, index) => (
-            <div key={index} className="flex items-center gap-2 px-6 py-4 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md min-w-[200px] transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04] cursor-pointer">
+            <div key={index} className="flex items-center gap-2 px-6 py-4 bg-white/10 border border-[0.5px] border-white/30 rounded-xl shadow-md min-w-[200px] transition-all duration-200 hover:border-primary hover:shadow-xl hover:scale-[1.04]">
               <card.icon className="w-6 h-6 text-primary flex-shrink-0" />
               <div className="flex flex-col flex-1">
                 <span className="text-xs text-gray-200 font-medium uppercase tracking-wide">{card.title}</span>

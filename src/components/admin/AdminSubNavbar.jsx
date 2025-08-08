@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon } from 'lucide-react'
+import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, BarChart3, TrendingUp } from 'lucide-react'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAppContext } from '../../context/AppContext'
@@ -21,6 +21,8 @@ const AdminSubNavbar = () => {
         { name: 'Listed Shows', path: '/admin/list-shows', icon: ListIcon },
         { name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon },
         { name: 'Manage Rooms', path: '/admin/manage-rooms', icon: ListCollapseIcon },
+        { name: 'Theatre Analytics', path: '/admin/theatre-analytics', icon: TrendingUp },
+        { name: 'Review Analytics', path: '/admin/review-analytics', icon: BarChart3 },
     ]
 
   return (

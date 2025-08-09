@@ -15,6 +15,8 @@
     "framer-motion": "^12.23.3",
     "lucide-react": "^0.511.0",
     "ogl": "^1.0.11",
+    "qrcode": "^1.5.4",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",

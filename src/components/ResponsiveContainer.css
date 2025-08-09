@@ -1,0 +1,29 @@
+.responsive-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.responsive-container.no-center {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .responsive-container {
+    padding: 0 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-container {
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .responsive-container {
+    padding: 0 0.25rem;
+  }
+}

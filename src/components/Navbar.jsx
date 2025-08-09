@@ -14,6 +14,7 @@ import logo from '../assets/logo.png';
 import { getUserImage } from '../utils/imageUtils';
 
 const allowedCities = ["Delhi", "Mumbai", "Gwalior", "Indore", "Pune", "Chennai"];
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const Navbar = () => {
 
@@ -96,7 +97,7 @@ const handleSaveCity = async () => {
     setContextUserCity(selectedCity); // Update context
 
     try {
-      await fetch('/api/user/city/public', {
+      await fetch(`${API_URL}/api/user/city/public`, {
      method: 'PUT',
      headers: {
        'Content-Type': 'application/json',
@@ -118,7 +119,7 @@ const handleSaveCity = async () => {
 
   // Authenticated user: update via secured API
   try {
-    const response = await fetch('/api/user/city', {
+    const response = await fetch(`${API_URL}/api/user/city`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

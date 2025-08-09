@@ -1,10 +1,17 @@
+/* My Bookings Page Styles */
+body {
+  background-color: #000000 !important;
+}
+
 .mybookings-container {
   position: relative;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 7.5rem;
-  min-height: 80vh;
+  min-height: 100vh;
+  background-color: #000000;
 }
+
 @media (min-width: 768px) {
   .mybookings-container {
     padding-left: 4rem;
@@ -12,6 +19,7 @@
     padding-top: 10rem;
   }
 }
+
 @media (min-width: 1024px) {
   .mybookings-container {
     padding-left: 10rem;
@@ -25,17 +33,26 @@
   margin-bottom: 1rem;
 }
 
+/* Enhanced Booking Card Styles */
 .mybookings-card {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  background: rgba(243, 206, 19, 0.08);
-  border: 1px solid rgba(243, 206, 19, 0.2);
+  background: rgba(31, 41, 55, 0.5);
+  border: 1px solid rgba(243, 206, 19, 0.3);
   border-radius: 0.75rem;
   max-width: 48rem;
-  padding: 0.5rem;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
+
+.mybookings-card:hover {
+  border-color: rgba(243, 206, 19, 0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
 @media (min-width: 768px) {
   .mybookings-card {
     flex-direction: row;
@@ -116,4 +133,52 @@
 
 .mybookings-tickets span {
   color: #9ca3af;
+}
+
+/* Status Badge Styles */
+.status-confirmed {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.status-pending {
+  background-color: rgba(234, 179, 8, 0.2);
+  color: #eab308;
+}
+
+.status-failed {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* Animation for loading states */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(243, 206, 19, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(243, 206, 19, 0.6);
+  }
+}
+
+.processing-animation {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Empty state styles */
+.empty-state-icon {
+  background: radial-gradient(circle, rgba(243, 206, 19, 0.1) 0%, transparent 70%);
+}
+
+/* Responsive grid improvements */
+@media (max-width: 768px) {
+  .mybookings-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Ensure consistent black background */
+.min-h-screen {
+  background-color: #000000 !important;
 } 

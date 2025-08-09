@@ -3,26 +3,26 @@
 }
 
 .featured-section {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   overflow: hidden;
 }
 @media (min-width: 768px) {
   .featured-section {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 @media (min-width: 1024px) {
   .featured-section {
-    padding-left: 6rem;
-    padding-right: 6rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 @media (min-width: 1280px) {
   .featured-section {
-    padding-left: 11rem;
-    padding-right: 11rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }
 @media (max-width: 300px) {

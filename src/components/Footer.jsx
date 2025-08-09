@@ -60,10 +60,7 @@ const Footer = () => {
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center', 
-          marginTop: '60px',
-          '@media (max-width: 300px)': {
-            marginTop: '40px',
-          }
+          marginTop: isTinyMobile ? '40px' : '60px'
         }}>
           <div style={{ 
             flex: 1, 
@@ -107,19 +104,15 @@ const Footer = () => {
           gap: isTinyMobile ? '15px' : '25px',
           width: responsivePartnerWidth,
           maxWidth: '600px',
-          '@media (max-width: 300px)': {
-            flexDirection: 'column',
-            textAlign: 'center',
-          }
+          flexDirection: isTinyMobile ? 'column' : 'row',
+          textAlign: isTinyMobile ? 'center' : 'left'
         }}>
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
             flex: 1, 
             minWidth: isTinyMobile ? '150px' : '200px',
-            '@media (max-width: 300px)': {
-              justifyContent: 'center',
-            }
+            justifyContent: isTinyMobile ? 'center' : 'flex-start'
           }}>
             <div style={{ color: '#fff' }}>
               <div style={{ 

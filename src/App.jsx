@@ -27,6 +27,7 @@ import ContactUs from './pages/ContactUs'
 import SelectShowtime from './pages/SelectShowtime'
 import TheatreDetails from './pages/TheatreDetails'
 import UserReviews from './pages/UserReviews'
+import AskAI from './pages/AskAI'
 // SignIn component removed - redirecting non-admin users to home instead
 import DebugAccess from './pages/admin/DebugAccess'
 import UserImageDebug from './components/UserImageDebug'
@@ -87,6 +88,7 @@ const App = () => {
           </ProtectedRoute>
         } />
         <Route path='/contact' element={<ContactUs />} />
+        <Route path='/ask-ai' element={<AskAI />} />
         <Route path='/loading/:nextUrl' element={<Loading />} />
         <Route path='/payment-success' element={<LoadingPage />} />
 

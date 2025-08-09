@@ -243,9 +243,22 @@ const Movies = () => {
       setAllMovies(moviesData.movies || []);
       setLoading(false);
 
-      // Search logic
+      // Handle URL parameters
       const params = new URLSearchParams(location.search);
       const search = params.get('search');
+      const shouldShowFilters = params.get('showFilters') === 'true';
+      
+      // Auto-open filters if showFilters param is present
+      if (shouldShowFilters) {
+        setShowFilters(true);
+        // Remove the showFilters param from URL after processing
+        const newParams = new URLSearchParams(location.search);
+        newParams.delete('showFilters');
+        const newUrl = newParams.toString() ? `${location.pathname}?${newParams.toString()}` : location.pathname;
+        navigate(newUrl, { replace: true });
+      }
+      
+      // Search logic
       if (search) {
         const found = filteredMovies.find(movie => movie.title.toLowerCase().includes(search.toLowerCase()));
         if (found) {

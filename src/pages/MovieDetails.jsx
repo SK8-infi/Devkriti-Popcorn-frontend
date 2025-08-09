@@ -103,6 +103,8 @@ const MovieDetails = () => {
   useEffect(() => {
     if (favoriteMovies && favoriteMovies.length > 0) {
       setIsFavorited(!!favoriteMovies.find(movie => movie._id === id));
+    } else {
+      setIsFavorited(false); // Reset to false when no favorites or empty array
     }
   }, [favoriteMovies, id]);
 
@@ -119,14 +121,24 @@ const MovieDetails = () => {
   const handleFavorite = async ()=>{
     try {
       if(!user) return toast.error("Please login to proceed");
+      
       setIsFavorited(prev => !prev); // Optimistically update UI
+      
       const { data } = await api.post('/api/user/update-favorite', {movieId: id})
+      
       if(data.success){
         await fetchFavoriteMovies()
         toast.success(data.message)
+      } else {
+        // Revert UI if backend returned an error
+        setIsFavorited(!!favoriteMovies.find(movie => movie._id === id));
+        toast.error(data.message || 'Failed to update favorites');
       }
     } catch (error) {
-      setIsFavorited(!!favoriteMovies.find(movie => movie._id === id)); // Revert if error
+      console.error('Error updating favorites:', error);
+      // Revert UI if request failed
+      setIsFavorited(!!favoriteMovies.find(movie => movie._id === id));
+      toast.error('Failed to update favorites. Please try again.');
     }
   }
   

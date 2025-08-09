@@ -1,3 +1,33 @@
+/* Location Modal Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .navbar, .navbar-menu, .navbar-link, .navbar-login-btn {
   font-family: 'Gotham', Arial, sans-serif;
   text-transform: uppercase;
@@ -358,4 +388,26 @@
 .navbar-dropdown-item:hover {
   background: #FFD6A0;
   color: #232323;
+}
+
+/* Location Modal Select Dropdown Styling */
+.location-modal select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.location-modal select option {
+  background: #000000 !important;
+  color: #F9FAFB !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  margin: 2px 0 !important;
+}
+
+.location-modal select option:hover,
+.location-modal select option:focus,
+.location-modal select option:checked {
+  background: #1a1a1a !important;
+  color: #FFD6A0 !important;
 }

@@ -185,7 +185,7 @@ export const AppProvider = ({ children }) => {
         try {
             const { data } = await api.get('/api/user/favorites');
             if (data.success) {
-                setFavoriteMovies(data.movies);
+                setFavoriteMovies(data.favorites || []); // Use 'favorites' field from backend
             } else if (user) {
                 toast.error(data.message);
             }

@@ -75,12 +75,12 @@ const FeaturedSection = () => {
     });
 
     const responsiveGap = getResponsiveValue({
-        xl: '1.5rem',
-        lg: '1.25rem',
-        md: '1rem',
-        sm: '0.75rem',
-        xs: '0.5rem',
-        tiny: '0.25rem',
+        xl: '2.5rem',
+        lg: '2.5rem',
+        md: '2.5rem',
+        sm: '2.5rem',
+        xs: '2.5rem',
+        tiny: '2.5rem',
     });
 
   if (loading) {
@@ -146,7 +146,7 @@ const FeaturedSection = () => {
         color: '#ffefcb', 
         padding: '20px 0 60px 0', 
         position: 'relative', 
-        overflow: 'hidden' 
+        overflow: 'hidden'
       }}>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div className='featured-header' style={{ 

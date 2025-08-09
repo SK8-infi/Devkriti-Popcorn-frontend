@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
-import { ClockIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon, RefreshCwIcon, Download, Mail, QrCode } from 'lucide-react'
+import { ClockIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon, RefreshCwIcon, Download, Mail, QrCode, CalendarIcon, MapPinIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Loading from '../components/Loading'
 import isoTimeFormat from '../lib/isoTimeFormat'
 import TicketQRModal from '../components/TicketQRModal'
+import './MyBookings.css'
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([])
@@ -256,10 +257,10 @@ const MyBookings = () => {
   if (loading) return <Loading />
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-[#181818] to-[#232323] py-10 px-4'>
-      <div className='max-w-6xl mx-auto'>
+    <div className='min-h-screen bg-black pt-20 py-10 px-4'>
+      <div className='max-w-7xl mx-auto'>
         <div className='text-center mb-10'>
-          <h1 className='text-4xl font-bold text-primary mb-4'>My Bookings</h1>
+          <h1 className='text-4xl font-bold text-primary mb-4' style={{ fontFamily: 'Times New Roman, Times, serif' }}>My Bookings</h1>
           <p className='text-gray-300'>View and manage your movie ticket bookings</p>
           
           {/* Booking Count Info */}
@@ -276,7 +277,7 @@ const MyBookings = () => {
           <button
             onClick={refreshBookings}
             disabled={refreshing}
-            className='mt-4 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/80 transition disabled:opacity-50 flex items-center gap-2 mx-auto'
+            className='mt-4 bg-primary text-black px-6 py-3 rounded-lg hover:bg-primary/80 transition disabled:opacity-50 flex items-center gap-2 mx-auto font-medium'
           >
             <RefreshCwIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
             {refreshing ? 'Refreshing...' : 'Refresh Bookings'}
@@ -285,62 +286,100 @@ const MyBookings = () => {
 
         {filteredBookings.length === 0 ? (
           <div className='text-center py-20'>
-            <div className='text-gray-400 text-xl mb-4'>
-              {bookings.length === 0 ? 'No bookings found' : 'No active bookings found'}
+            <div className='mb-6'>
+              <div className='w-20 h-20 mx-auto mb-4 rounded-full bg-gray-800 flex items-center justify-center'>
+                <CalendarIcon className='w-10 h-10 text-gray-500' />
+              </div>
+              <div className='text-gray-400 text-xl mb-4'>
+                {bookings.length === 0 ? 'No bookings found' : 'No active bookings found'}
+              </div>
+              <p className='text-gray-500 mb-6'>
+                {bookings.length === 0 
+                  ? 'Start booking your movie tickets!' 
+                  : 'Only successful bookings and those within payment buffer time are shown here.'
+                }
+              </p>
             </div>
-            <p className='text-gray-500 mb-4'>
-              {bookings.length === 0 
-                ? 'Start booking your movie tickets!' 
-                : 'Only successful bookings and those within payment buffer time are shown here.'
-              }
-            </p>
             <button 
-              onClick={() => navigate('/')}
-              className='bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/80 transition'
+              onClick={() => navigate('/movies')}
+              className='bg-primary text-black px-8 py-3 rounded-lg hover:bg-primary/80 transition font-medium'
             >
               Browse Movies
             </button>
           </div>
         ) : (
-          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
             {filteredBookings.map((booking) => (
-              <div key={booking._id} className='bg-white/10 border border-primary/20 rounded-xl p-6 hover:shadow-lg transition'>
+              <div 
+                key={booking._id} 
+                className='border border-primary/30 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-xl'
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                }}
+              >
                 {/* Booking Header */}
-                <div className='flex items-center justify-between mb-4'>
-                  <div className='flex items-center gap-2'>
-                    {getStatusIcon(booking.status, booking.isPaid)}
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status, booking.isPaid)}`}>
-                      {getStatusText(booking.status, booking.isPaid)}
-                    </span>
+                <div 
+                  className='p-4 border-b border-gray-700/50'
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                  }}
+                >
+                  <div className='flex items-center justify-between mb-2'>
+                    <div className='flex items-center gap-2'>
+                      {getStatusIcon(booking.status, booking.isPaid)}
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status, booking.isPaid)}`}>
+                        {getStatusText(booking.status, booking.isPaid)}
+                      </span>
+                    </div>
+                    <div className='text-xs text-gray-400'>
+                      {formatDate(booking.createdAt)}
+                    </div>
                   </div>
-                  <div className='text-sm text-gray-400'>
-                    {formatDate(booking.createdAt)}
-                  </div>
-                </div>
-
-                {/* Movie Info */}
-                <div className='mb-4'>
-                  <h3 className='text-lg font-semibold text-white mb-2'>
+                  <h3 className='text-lg font-semibold text-white mb-1'>
                     {booking.show?.movie?.title || 'Movie Title'}
                   </h3>
-                  <div className='text-sm text-gray-300 space-y-1'>
-                    <div>Show: {booking.show?.time ? isoTimeFormat(booking.show.time) : 'N/A'}</div>
-                    <div>Language: {booking.show?.language || 'N/A'}</div>
-                    <div>Format: {booking.show?.format || 'N/A'}</div>
-                    <div>Theatre: {booking.show?.theatreName || 'N/A'}</div>
-                    {booking.show?.theatreCity && <div>City: {booking.show.theatreCity}</div>}
-                  </div>
                 </div>
 
-                {/* Seats Info */}
-                <div className='mb-4'>
-                  <div className='text-sm text-gray-300 mb-2'>
-                    Seats: {booking.bookedSeats.join(', ')}
+                {/* Movie & Show Info */}
+                <div className='p-4'>
+                  <div 
+                    className='rounded-lg p-3 mb-4'
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                      border: '1px solid rgba(75, 85, 99, 0.3)'
+                    }}
+                  >
+                    <div className='text-sm text-gray-300 space-y-2'>
+                      <div className='flex items-center gap-2'>
+                        <CalendarIcon className='w-4 h-4 text-primary' />
+                        <span>{booking.show?.time ? isoTimeFormat(booking.show.time) : 'N/A'}</span>
+                      </div>
+                      <div className='flex items-center gap-2'>
+                        <MapPinIcon className='w-4 h-4 text-primary' />
+                        <span>{booking.show?.theatreName || 'N/A'}</span>
+                        {booking.show?.theatreCity && <span className='text-gray-400'>• {booking.show.theatreCity}</span>}
+                      </div>
+                      <div className='text-xs text-gray-400'>
+                        {booking.show?.language || 'N/A'} • {booking.show?.format || 'N/A'}
+                      </div>
+                    </div>
                   </div>
-                  <div className='text-lg font-bold text-primary'>
-                    ₹{booking.amount}
+
+                  {/* Seats & Amount */}
+                  <div className='flex justify-between items-center mb-4'>
+                    <div>
+                      <div className='text-xs text-gray-400 mb-1'>Seats</div>
+                      <div className='text-sm font-medium text-white'>
+                        {booking.bookedSeats.join(', ')}
+                      </div>
+                    </div>
+                    <div className='text-right'>
+                      <div className='text-xs text-gray-400 mb-1'>Total</div>
+                      <div className='text-xl font-bold text-primary'>
+                        ₹{booking.amount}
+                      </div>
+                    </div>
                   </div>
-                </div>
 
                 {/* Payment Status */}
                 {booking.isPaid ? (
@@ -372,90 +411,90 @@ const MyBookings = () => {
                   </div>
                 )}
 
-                {/* Action Buttons */}
-                <div className='flex gap-2'>
-                  {!booking.isPaid && booking.status !== 'cancelled' && (
-                    <>
-                      {booking.status === 'pending' && !isPendingExpired(booking.createdAt) ? (
-                        <button
-                          onClick={() => retryPayment(booking._id)}
-                          disabled={retryingPayment === booking._id}
-                          className='flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/80 transition disabled:opacity-50 flex items-center justify-center gap-2'
+                  {/* Action Buttons */}
+                  <div className='space-y-2'>
+                    {!booking.isPaid && booking.status !== 'cancelled' && (
+                      <>
+                        {booking.status === 'pending' && !isPendingExpired(booking.createdAt) ? (
+                          <button
+                            onClick={() => retryPayment(booking._id)}
+                            disabled={retryingPayment === booking._id}
+                            className='w-full bg-primary text-white px-4 py-3 rounded-lg hover:bg-primary/80 transition disabled:opacity-50 flex items-center justify-center gap-2 font-medium'
+                          >
+                            {retryingPayment === booking._id ? (
+                              <>
+                                <RefreshCwIcon className="w-4 h-4 animate-spin text-white" />
+                                Processing...
+                              </>
+                            ) : (
+                              <>
+                                <RefreshCwIcon className="w-4 h-4 text-white" />
+                                Complete Payment
+                              </>
+                            )}
+                          </button>
+                        ) : booking.status === 'payment_failed' && !isExpired(booking.createdAt) ? (
+                          <button
+                            onClick={() => retryPayment(booking._id)}
+                            disabled={retryingPayment === booking._id}
+                            className='w-full bg-orange-500 text-white px-4 py-3 rounded-lg hover:bg-orange-400 transition disabled:opacity-50 flex items-center justify-center gap-2 font-medium'
+                          >
+                            {retryingPayment === booking._id ? (
+                              <>
+                                <RefreshCwIcon className="w-4 h-4 animate-spin" />
+                                Processing...
+                              </>
+                            ) : (
+                              <>
+                                <RefreshCwIcon className="w-4 h-4" />
+                                Continue Payment
+                              </>
+                            )}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              if (booking.show?.movie?._id) {
+                                navigate(`/movies/${booking.show.movie._id}`);
+                              } else {
+                                toast.error('Movie information not available. Redirecting to movies list.');
+                                navigate('/movies');
+                              }
+                            }}
+                            className='w-full bg-gray-600 text-white px-4 py-3 rounded-lg hover:bg-gray-500 transition font-medium'
+                          >
+                            Book Again
+                          </button>
+                        )}
+                      </>
+                    )}
+                    
+                    {booking.isPaid && (
+                      <div className='grid grid-cols-3 gap-2'>
+                        <button 
+                          onClick={() => downloadTicket(booking._id)}
+                          className='bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-500 transition flex items-center justify-center gap-1 text-sm font-medium'
                         >
-                          {retryingPayment === booking._id ? (
-                            <>
-                              <RefreshCwIcon className="w-4 h-4 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <RefreshCwIcon className="w-4 h-4" />
-                              Retry Payment
-                            </>
-                          )}
+                          <Download className="w-4 h-4" />
+                          Download
                         </button>
-                      ) : booking.status === 'payment_failed' && !isExpired(booking.createdAt) ? (
-                        <button
-                          onClick={() => retryPayment(booking._id)}
-                          disabled={retryingPayment === booking._id}
-                          className='flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-400 transition disabled:opacity-50 flex items-center justify-center gap-2'
+                        <button 
+                          onClick={() => resendTicketEmail(booking._id)}
+                          className='bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition flex items-center justify-center gap-1 text-sm font-medium'
                         >
-                          {retryingPayment === booking._id ? (
-                            <>
-                              <RefreshCwIcon className="w-4 h-4 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <RefreshCwIcon className="w-4 h-4" />
-                              Continue Payment
-                            </>
-                          )}
+                          <Mail className="w-4 h-4" />
+                          Email
                         </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-
-                            if (booking.show?.movie?._id) {
-                              navigate(`/movies/${booking.show.movie._id}`);
-                            } else {
-                              toast.error('Movie information not available. Redirecting to movies list.');
-                              navigate('/movies');
-                            }
-                          }}
-                          className='flex-1 bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-400 transition'
+                        <button 
+                          onClick={() => viewTicketQR(booking._id)}
+                          className='bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-500 transition flex items-center justify-center gap-1 text-sm font-medium'
                         >
-                          Book Again
+                          <QrCode className="w-4 h-4" />
+                          QR
                         </button>
-                      )}
-                    </>
-                  )}
-                  
-                  {booking.isPaid && (
-                    <div className='flex gap-2'>
-                      <button 
-                        onClick={() => downloadTicket(booking._id)}
-                        className='flex-1 bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-400 transition flex items-center justify-center gap-1 text-sm'
-                      >
-                        <Download className="w-4 h-4" />
-                        Download
-                      </button>
-                      <button 
-                        onClick={() => resendTicketEmail(booking._id)}
-                        className='flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-400 transition flex items-center justify-center gap-1 text-sm'
-                      >
-                        <Mail className="w-4 h-4" />
-                        Resend
-                      </button>
-                      <button 
-                        onClick={() => viewTicketQR(booking._id)}
-                        className='flex-1 bg-purple-500 text-white px-3 py-2 rounded-lg hover:bg-purple-400 transition flex items-center justify-center gap-1 text-sm'
-                      >
-                        <QrCode className="w-4 h-4" />
-                        QR Code
-                      </button>
-                    </div>
-                  )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

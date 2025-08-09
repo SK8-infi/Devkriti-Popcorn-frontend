@@ -1,143 +1,17 @@
-.theatres-container {
-  max-width: 900px;
-  margin: 40px auto 0 auto;
-  padding: 36px 20px 48px 20px;
-  background: linear-gradient(135deg, #181818 80%, #232323 100%);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  position: relative;
-  overflow: hidden;
-}
+/* Theatres Page - Updated to match website design system */
 
-.theatres-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23FFD6A0" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.theatres-title {
-  font-size: 2.8rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 24px;
-  text-align: center;
-  padding-bottom: 12px;
-  position: relative;
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.theatres-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%);
-  border-radius: 1px;
-}
-
-.theatres-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  width: 100%;
-  position: relative;
-  z-index: 2;
-}
-
-.theatre-card {
-  background: linear-gradient(90deg, rgba(35, 35, 35, 0.9) 80%, rgba(35, 35, 35, 0.8) 100%);
-  border-radius: 14px;
-  box-shadow: 0 3px 16px rgba(0,0,0,0.12);
-  padding: 20px 28px;
-  min-width: 260px;
-  width: 100%;
-  max-width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 214, 160, 0.2);
-  position: relative;
-  backdrop-filter: blur(10px);
-}
-
-.theatre-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 3px 12px rgba(255, 214, 160, 0.3);
-  background: linear-gradient(90deg, rgba(35, 35, 35, 0.95) 60%, rgba(44, 44, 44, 0.9) 100%);
-  border-color: rgba(255, 214, 160, 0.5);
-}
-
-.theatre-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.2px;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  margin-right: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theatre-meta {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.theatre-admin {
-  font-size: 0.95rem;
-  color: #FFD6A0;
-  background: rgba(35, 35, 35, 0.8);
-  padding: 4px 12px;
-  border-radius: 10px;
-  font-weight: 600;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
-  border: 1px solid rgba(255, 214, 160, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theatres-loading, .theatres-error {
-  color: #fff;
-  text-align: center;
-  font-size: 1.3rem;
-  margin-top: 80px;
-} 
-
+/* Keep existing theatre detail styles for backward compatibility */
 .theatre-detail-container {
   max-width: 650px;
   margin: 40px auto 0 auto;
   padding: 36px 24px 48px 24px;
-  background: linear-gradient(135deg, #181818 80%, #232323 100%);
+  background: #000000;
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   min-height: 420px;
   position: relative;
   overflow: hidden;
-}
-
-.theatre-detail-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23FFD6A0" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-  opacity: 0.3;
-  pointer-events: none;
+  border: 1px solid rgba(75, 85, 99, 0.3);
 }
 
 .theatre-detail-header {
@@ -173,16 +47,17 @@
   margin: 0 0 6px 0;
   letter-spacing: -0.3px;
   position: relative;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .theatre-detail-admin {
   font-size: 1.1rem;
   color: #fff;
-  background: #232323;
+  background: #374151;
   padding: 4px 14px;
   border-radius: 8px;
   font-weight: 500;
-  box-shadow: 0 1px 4px #0002;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   display: inline-block;
 }
 
@@ -204,11 +79,12 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: #191919;
+  background: #1F2937;
   border-radius: 8px;
   padding: 12px 0 12px 0;
-  box-shadow: 0 1px 8px #0002;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.2);
   align-items: center;
+  border: 1px solid rgba(75, 85, 99, 0.3);
 }
 
 .theatre-detail-layout-row {
@@ -219,7 +95,7 @@
 .theatre-detail-layout-seat {
   font-size: 1.35rem;
   margin: 0 3px;
-  filter: drop-shadow(0 1px 2px #0006);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
   transition: transform 0.12s;
 }
 
@@ -240,7 +116,7 @@
 }
 
 .theatre-detail-no-shows {
-  color: #bbb;
+  color: #9CA3AF;
   font-size: 1.08rem;
   margin-top: 8px;
 }
@@ -252,15 +128,16 @@
 
 .theatre-detail-show-item {
   margin-bottom: 12px;
-  background: #232323;
+  background: #374151;
   border-radius: 8px;
   padding: 12px 20px;
   color: #fff;
-  box-shadow: 0 1px 6px #0002;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 1.08rem;
+  border: 1px solid rgba(75, 85, 99, 0.3);
 }
 
 .theatre-detail-show-time {
@@ -269,7 +146,66 @@
   font-size: 0.98rem;
 }
 
-/* Animations */
+/* Enhanced card hover effects */
+.theatre-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theatre-card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255, 214, 160, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .theatre-detail-title {
+    font-size: 1.8rem;
+  }
+  
+  .theatre-detail-container {
+    margin: 20px;
+    padding: 24px 16px 32px 16px;
+  }
+  
+  .theatre-detail-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theatre-detail-title {
+    font-size: 1.6rem;
+  }
+  
+  .theatre-detail-container {
+    margin: 10px;
+    padding: 20px 12px 28px 12px;
+  }
+  
+  .theatre-detail-image {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Loading and error states with consistent styling */
+.theatres-loading,
+.theatres-error {
+  color: #fff;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 80px;
+  background: #000000;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Animation for smooth transitions */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -281,48 +217,7 @@
   }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .theatres-title {
-    font-size: 2.2rem;
-  }
-  
-  .theatre-detail-title {
-    font-size: 1.8rem;
-  }
-  
-  .theatre-card {
-    padding: 18px 24px;
-  }
-  
-  .theatre-name {
-    font-size: 1.1rem;
-  }
-  
-  .theatre-admin {
-    font-size: 0.9rem;
-    padding: 3px 10px;
-  }
+/* Card animation */
+.theatre-card-animate {
+  animation: fadeInUp 0.6s ease-out forwards;
 }
-
-@media (max-width: 480px) {
-  .theatres-title {
-    font-size: 1.8rem;
-  }
-  
-  .theatre-detail-title {
-    font-size: 1.6rem;
-  }
-  
-  .theatre-card {
-    padding: 16px 20px;
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-  
-  .theatre-name {
-    font-size: 1rem;
-    margin-right: 0;
-  }
-} 

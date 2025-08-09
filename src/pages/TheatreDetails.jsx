@@ -136,73 +136,90 @@ const TheatreDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Theatre Header */}
-      <div className="bg-gray-900 py-8">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{theatre.name}</h1>
-              <div className="flex items-center gap-4 text-gray-400">
-                <div className="flex items-center gap-1">
-                  <MapPin size={16} />
-                  <span>{theatre.city}</span>
-                </div>
-                {theatre.address && (
-                  <span>{theatre.address}</span>
-                )}
-              </div>
+    <div className="min-h-screen bg-black pt-20 py-10 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Theatre Header */}
+        <div className="text-center mb-10 mt-8">
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>
+            {theatre.name}
+          </h1>
+          <div className="flex items-center justify-center gap-4 text-gray-300 mb-6">
+            <div className="flex items-center gap-2">
+              <MapPin size={20} className="text-primary" />
+              <span>{theatre.city}</span>
             </div>
-            
-            {/* Rating Display */}
-            <div className="text-center">
-              <div className="flex items-center gap-1 mb-1">
+            {theatre.address && (
+              <>
+                <span className="text-gray-500">•</span>
+                <span>{theatre.address}</span>
+              </>
+            )}
+          </div>
+          
+          {/* Rating Display */}
+          {theatre.averageRating !== undefined && (
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map(star => (
                   <Star
                     key={star}
-                    className={`w-5 h-5 ${
+                    className={`w-6 h-6 ${
                       star <= theatre.averageRating 
-                        ? 'text-yellow-400 fill-current' 
-                        : 'text-gray-400'
+                        ? 'text-primary fill-current' 
+                        : 'text-gray-600'
                     }`}
                   />
                 ))}
               </div>
-              <div className="text-sm text-gray-400">
+              <span className="text-gray-300 font-medium">
                 {theatre.averageRating.toFixed(1)} ({theatre.reviewCount} reviews)
-              </div>
+              </span>
             </div>
-          </div>
+          )}
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4">
-            {isAuthenticated && !userReview && (
-              <button
-                onClick={() => setShowReviewForm(true)}
-                className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-6 py-3 rounded-md transition-colors"
-              >
-                <Plus size={16} />
-                Write a Review
-              </button>
-            )}
-            
-            {userReview && (
-              <button
-                onClick={() => setShowReviewForm(true)}
-                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold px-6 py-3 rounded-md transition-colors"
-              >
-                <MessageSquare size={16} />
-                Edit Your Review
-              </button>
-            )}
-          </div>
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4 mb-6">
+          {isAuthenticated && !userReview && (
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="flex items-center gap-2 bg-primary hover:bg-primary/80 text-black font-bold px-6 py-3 rounded-lg transition duration-300"
+              style={{
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+            >
+              <Plus size={18} />
+              Write a Review
+            </button>
+          )}
+          
+          {userReview && (
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="flex items-center gap-2 border border-gray-600 hover:border-primary/50 text-white font-bold px-6 py-3 rounded-lg transition duration-300"
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+            >
+              <MessageSquare size={18} />
+              Edit Your Review
+            </button>
+          )}
         </div>
       </div>
 
       {/* Review Form Modal */}
       {showReviewForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-black rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div 
+            className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}
+          >
             <TheatreReviewForm
               theatreId={theatreId}
               onSubmit={handleSubmitReview}
@@ -215,7 +232,12 @@ const TheatreDetails = () => {
       {/* Theatre Response Form Modal */}
       {showResponseForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-black rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div 
+            className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}
+          >
             <TheatreResponseForm
               reviewId={showResponseForm}
               onResponse={handleTheatreResponse}
@@ -225,11 +247,18 @@ const TheatreDetails = () => {
         </div>
       )}
 
-      {/* User Review Section */}
-      {userReview && (
-        <div className="container mx-auto px-6 py-8">
-          <h2 className="text-2xl font-bold mb-6">Your Review</h2>
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
+      {/* Content Sections */}
+      <div className="space-y-6 px-8">
+        {/* User Review Section */}
+        {userReview && (
+          <div 
+            className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}
+          >
+            <h2 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>Your Review</h2>
+            <div className="p-6 rounded-lg bg-black/30 border border-gray-700/50">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
@@ -278,22 +307,32 @@ const TheatreDetails = () => {
         </div>
       )}
 
-      {/* All Reviews Section */}
-      <div className="container mx-auto px-6 pb-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">All Reviews</h2>
-          {canRespondToReviews() && (
-            <button
-              onClick={() => setShowResponseForm('some-review-id')}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md transition-colors"
-            >
-              <MessageSquare size={16} />
-              Respond to Reviews
-            </button>
-          )}
+        {/* All Reviews Section */}
+        <div 
+          className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+          }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold" style={{ color: '#FFD6A0' }}>All Reviews</h2>
+            {canRespondToReviews() && (
+              <button
+                onClick={() => setShowResponseForm('some-review-id')}
+                className="flex items-center gap-2 bg-primary hover:bg-primary/80 text-black font-bold px-4 py-2 rounded-lg transition duration-300"
+                style={{
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}
+              >
+                <MessageSquare size={16} />
+                Respond to Reviews
+              </button>
+            )}
+          </div>
+          
+          <TheatreReviews theatreId={theatreId} />
         </div>
-        
-        <TheatreReviews theatreId={theatreId} />
       </div>
     </div>
   );

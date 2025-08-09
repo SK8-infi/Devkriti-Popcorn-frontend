@@ -19,7 +19,6 @@ const Theatre = () => {
   const { user, isAuthenticated } = useAppContext();
   const [theatre, setTheatre] = useState(null);
   const [admin, setAdmin] = useState(null);
-  const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -39,11 +38,6 @@ const Theatre = () => {
         if (found && found.admin) {
           setAdmin(found.admin);
         }
-        // Fetch shows for this theatre
-        const sRes = await fetch(`${API_URL}/api/show/all`);
-        const sData = await sRes.json();
-        const filteredShows = sData.shows.filter(show => show.theatre === found?._id);
-        setShows(filteredShows);
         
         // Check if user has reviewed this theatre
         if (isAuthenticated && found?._id) {
@@ -140,55 +134,58 @@ const Theatre = () => {
   if (error || !theatre) return <div className="theatres-error">{error || 'Theatre not found.'}</div>;
 
   return (
-    <div className="theatre-detail-container">
-      <div className="theatre-detail-header">
-        <img className="theatre-detail-image" src={admin?.image || getPlaceholderImg(admin?.name)} alt="Theatre" />
-        <div className="theatre-detail-header-info">
-          <h1 className="theatre-detail-title">{theatre.name}</h1>
-          <div className="theatre-detail-admin">Admin: {admin?.name || (theatre.admin.slice(0,8)+'...')}</div>
+    <div className="min-h-screen bg-black pt-20 py-10 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Theatre Header */}
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-6">
+            <img 
+              className="w-24 h-24 rounded-full border-4 border-primary/50" 
+              src={admin?.image || getPlaceholderImg(admin?.name)} 
+              alt="Theatre Admin" 
+            />
+          </div>
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>
+            {theatre.name}
+          </h1>
+          <p className="text-gray-300 mb-6">
+            Admin: {admin?.name || (theatre.admin.slice(0,8)+'...')}
+          </p>
           
           {/* Rating Display */}
           {theatre.averageRating !== undefined && (
-            <div className="theatre-rating" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map(star => (
                   <Star
                     key={star}
-                    size={16}
+                    size={20}
                     className={star <= theatre.averageRating ? 'star-filled' : 'star-empty'}
                     style={{ 
-                      color: star <= theatre.averageRating ? '#FFD700' : '#DDD',
-                      fill: star <= theatre.averageRating ? '#FFD700' : 'none'
+                      color: star <= theatre.averageRating ? '#FFD6A0' : '#666',
+                      fill: star <= theatre.averageRating ? '#FFD6A0' : 'none'
                     }}
                   />
                 ))}
               </div>
-              <span style={{ fontSize: '14px', color: '#666' }}>
+              <span className="text-gray-300 font-medium">
                 {theatre.averageRating.toFixed(1)} ({theatre.reviewCount || 0} reviews)
               </span>
             </div>
           )}
           
           {/* Review Action Buttons */}
-          <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+          <div className="flex justify-center gap-4 mb-6">
             {isAuthenticated && !userReview && (
               <button
                 onClick={() => setShowReviewForm(true)}
+                className="flex items-center gap-2 bg-primary hover:bg-primary/80 text-black font-bold px-6 py-3 rounded-lg transition duration-300"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#FFD700',
-                  color: '#000',
-                  border: 'none',
-                  padding: '8px 16px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
                 }}
               >
-                <Plus size={16} />
+                <Plus size={18} />
                 Write a Review
               </button>
             )}
@@ -196,21 +193,14 @@ const Theatre = () => {
             {userReview && (
               <button
                 onClick={() => setShowReviewForm(true)}
+                className="flex items-center gap-2 border border-gray-600 hover:border-primary/50 text-white font-bold px-6 py-3 rounded-lg transition duration-300"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#666',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '8px 16px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
                 }}
               >
-                <MessageSquare size={16} />
+                <MessageSquare size={18} />
                 Edit Your Review
               </button>
             )}
@@ -218,10 +208,17 @@ const Theatre = () => {
         </div>
       </div>
 
-      {/* User's Review Section */}
-      {userReview && (
-        <div style={{ margin: '20px 0', padding: '16px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-          <h3 style={{ margin: '0 0 12px 0', fontSize: '18px', fontWeight: '600' }}>Your Review</h3>
+      {/* Content Sections */}
+      <div className="space-y-8 px-8">
+        {/* User's Review Section */}
+        {userReview && (
+          <div 
+            className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}
+          >
+            <h3 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>Your Review</h3>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
               {[1, 2, 3, 4, 5].map(star => (
@@ -264,46 +261,26 @@ const Theatre = () => {
               </ul>
             </div>
           )}
-        </div>
-      )}
+          </div>
+        )}
 
-      <div className="theatre-detail-layout-block">
-        <div className="theatre-detail-layout-label">Layout</div>
-        <div className="theatre-detail-layout-grid">
-          {theatre.layout && theatre.layout.map((row, i) => (
-            <div className="theatre-detail-layout-row" key={i}>
-              {row.map((seat, j) => (
-                <span className={`theatre-detail-layout-seat${seat ? '' : ' theatre-detail-layout-seat-empty'}`} key={j}>{seat ? '🟩' : '⬜'}</span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <div className="theatre-detail-shows-block">
-        <h2 className="theatre-detail-shows-title">Currently Airing Shows</h2>
-        {shows.length === 0 ? (
-          <div className="theatre-detail-no-shows">No shows currently airing in this theatre.</div>
-        ) : (
-          <ul className="theatre-detail-shows-list">
-            {shows.map(show => (
-              <li className="theatre-detail-show-item" key={show._id}>
-                <b>{show.movie?.title || 'Untitled Movie'}</b> <span className="theatre-detail-show-time">{new Date(show.showDateTime).toLocaleString()}</span>
-              </li>
-            ))}
-          </ul>
+
+
+        {/* All Reviews Section */}
+        {theatre._id && (
+          <div 
+            className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}
+          >
+            <h2 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>
+              All Reviews
+            </h2>
+            <TheatreReviews theatreId={theatre._id} />
+          </div>
         )}
       </div>
-
-      {/* All Reviews Section */}
-      {theatre._id && (
-        <div style={{ margin: '40px 0' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px', color: '#000' }}>
-            All Reviews
-          </h2>
-          <TheatreReviews theatreId={theatre._id} />
-        </div>
-      )}
 
       {/* Review Form Modal */}
       {showReviewForm && (

@@ -143,11 +143,7 @@ const Theatres = () => {
                   )}
                   
                   {/* Theatre Stats */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-600">
-                    <div className="flex items-center gap-1">
-                      <StarIcon className="w-4 h-4 text-yellow-400" />
-                      <span className="text-sm text-gray-300">Premium</span>
-                    </div>
+                  <div className="flex items-center justify-start pt-3 border-t border-gray-600">
                     <span className="text-xs text-gray-500 bg-black px-2 py-1 rounded">
                       Click to explore
                     </span>

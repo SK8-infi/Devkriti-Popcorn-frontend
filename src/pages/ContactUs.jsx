@@ -37,320 +37,242 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="contact-container">
-      {/* Hero Section */}
-      <div className="contact-hero">
-        <div className="contact-hero-content">
-          <h1 className="contact-hero-title">Get in Touch</h1>
-          <p className="contact-hero-subtitle">
+    <div className="min-h-screen bg-black pt-20 py-10 px-4 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header Section */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>
+            Contact Us
+          </h1>
+          <p className="text-gray-300 mb-6">
             We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
-      </div>
 
-      <div className="contact-main">
-        <div className="contact-content">
-          {/* Contact Information */}
-          <div className="contact-info-section">
-            <h2 className="contact-section-title">Contact Information</h2>
-            <div className="contact-info-grid">
-              <div className="contact-info-card">
-                <div className="contact-info-icon">
-                  <Mail size={24} />
-                </div>
-                <div className="contact-info-content">
-                  <h3>Email</h3>
-                  <p>support@popcorn.com</p>
-                  <p>info@popcorn.com</p>
-                </div>
-              </div>
-
-              <div className="contact-info-card">
-                <div className="contact-info-icon">
-                  <Phone size={24} />
-                </div>
-                <div className="contact-info-content">
-                  <h3>Phone</h3>
-                  <p>+91 62629 51712</p>
-                  <p>+91 83184 07289</p>
-                  <p>+91 78934 55768</p>
-                </div>
-              </div>
-
-              <div className="contact-info-card">
-                <div className="contact-info-icon">
-                  <MapPin size={24} />
-                </div>
-                <div className="contact-info-content">
-                  <h3>Address</h3>
-                  <p>ABV-IIITM GWALIOR</p>
-                  <p>Morena Link Road, 474015</p>
-                  <p>Madhya Pradesh, India</p>
-                </div>
-              </div>
-
-              <div className="contact-info-card">
-                <div className="contact-info-icon">
-                  <Clock size={24} />
-                </div>
-                <div className="contact-info-content">
-                  <h3>Business Hours</h3>
-                  <p>Monday - Friday: 9:00 AM - 8:00 PM</p>
-                  <p>Saturday - Sunday: 10:00 AM - 10:00 PM</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="contact-form-section">
-            <h2 className="contact-section-title">Send us a Message</h2>
-            <form onSubmit={handleSubmit} className="contact-form">
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="name">Full Name *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email Address *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Enter your email address"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="subject">Subject *</label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="What is this about?"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Message *</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows="6"
-                  placeholder="Tell us more about your inquiry..."
-                />
-              </div>
-
-              <GlareHover
-                width="100%"
-                height="auto"
-                background="linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)"
-                borderRadius="10px"
-                borderColor="transparent"
-                glareColor="#ffffff"
-                glareOpacity={0.3}
-                glareAngle={-30}
-                glareSize={300}
-                transitionDuration={800}
-                playOnce={false}
-                style={{ display: 'block' }}
+        {/* Main Content Grid */}
+        <div className="grid xl:grid-cols-3 gap-8 mb-16">
+          {/* Contact Information - Takes 1 column */}
+          <div className="xl:col-span-1">
+            <h2 className="text-2xl font-bold mb-6" style={{ 
+              color: '#FFD6A0'
+            }}>
+              Get in Touch
+            </h2>
+            <div className="space-y-6">
+              <div 
+                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                }}
               >
-                <button 
-                  type="submit" 
-                  className="submit-btn"
-                  disabled={isSubmitting}
-                  style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="loading-spinner"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send size={20} />
-                      Send Message
-                    </>
-                  )}
-                </button>
-              </GlareHover>
-
-              {submitStatus === 'success' && (
-                <div className="success-message">
-                  <MessageCircle size={20} />
-                  Thank you! Your message has been sent successfully.
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
+                    <Mail size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-2">Email</h3>
+                    <p className="text-gray-300">support@popcorn.com</p>
+                    <p className="text-gray-300">info@popcorn.com</p>
+                  </div>
                 </div>
-              )}
-            </form>
-          </div>
-        </div>
+              </div>
 
-        {/* FAQ Section */}
-        <div className="faq-section">
-          <h2 className="contact-section-title">Frequently Asked Questions</h2>
-          <div className="faq-grid">
-            <div className="faq-item">
-              <h3>How do I book tickets?</h3>
-              <p>Browse our movies, select your preferred showtime, choose your seats, and complete the payment process. You'll need to create an account to book tickets.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Can I cancel my booking?</h3>
-              <p>Yes, you can cancel your booking up to 2 hours before the showtime. Please contact our support team for assistance.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Do you offer refunds?</h3>
-              <p>We offer full refunds for cancellations made at least 2 hours before the showtime. Refunds are processed within 3-5 business days.</p>
-            </div>
-            <div className="faq-item">
-              <h3>What payment methods do you accept?</h3>
-              <p>We accept all major credit cards, debit cards, and digital wallets including PayPal, Apple Pay, and Google Pay.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Are there any booking fees?</h3>
-              <p>We charge a small convenience fee of ₹2.50 per ticket to cover processing and service costs.</p>
-            </div>
-            <div className="faq-item">
-              <h3>How do I change my location?</h3>
-              <p>Click on the location icon in the navigation bar to select your preferred city. This will show you movies and theatres in your area.</p>
-            </div>
-          </div>
-        </div>
+              <div 
+                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-2">Phone</h3>
+                    <p className="text-gray-300">+91 62629 51712</p>
+                    <p className="text-gray-300">+91 83184 07289</p>
+                    <p className="text-gray-300">+91 78934 55768</p>
+                  </div>
+                </div>
+              </div>
 
-        {/* Social Media & Newsletter */}
-        <div className="social-section">
-          <div className="social-content">
-            <div className="social-info">
-              <h2>Stay Connected</h2>
-              <p>Follow us on social media for the latest movie updates, exclusive offers, and behind-the-scenes content.</p>
-              <div className="social-links">
-                <GlareHover
-                  width="auto"
-                  height="auto"
-                  background="rgba(255, 214, 160, 0.1)"
-                  borderRadius="25px"
-                  borderColor="rgba(255, 214, 160, 0.3)"
-                  glareColor="#ffffff"
-                  glareOpacity={0.3}
-                  glareAngle={-30}
-                  glareSize={300}
-                  transitionDuration={800}
-                  playOnce={false}
-                  style={{ display: 'inline-block' }}
-                >
-                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
-                    <Star size={20} />
-                    <span>Facebook</span>
-                  </a>
-                </GlareHover>
-                <GlareHover
-                  width="auto"
-                  height="auto"
-                  background="rgba(255, 214, 160, 0.1)"
-                  borderRadius="25px"
-                  borderColor="rgba(255, 214, 160, 0.3)"
-                  glareColor="#ffffff"
-                  glareOpacity={0.3}
-                  glareAngle={-30}
-                  glareSize={300}
-                  transitionDuration={800}
-                  playOnce={false}
-                  style={{ display: 'inline-block' }}
-                >
-                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
-                    <Star size={20} />
-                    <span>Twitter</span>
-                  </a>
-                </GlareHover>
-                <GlareHover
-                  width="auto"
-                  height="auto"
-                  background="rgba(255, 214, 160, 0.1)"
-                  borderRadius="25px"
-                  borderColor="rgba(255, 214, 160, 0.3)"
-                  glareColor="#ffffff"
-                  glareOpacity={0.3}
-                  glareAngle={-30}
-                  glareSize={300}
-                  transitionDuration={800}
-                  playOnce={false}
-                  style={{ display: 'inline-block' }}
-                >
-                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
-                    <Star size={20} />
-                    <span>Instagram</span>
-                  </a>
-                </GlareHover>
-                <GlareHover
-                  width="auto"
-                  height="auto"
-                  background="rgba(255, 214, 160, 0.1)"
-                  borderRadius="25px"
-                  borderColor="rgba(255, 214, 160, 0.3)"
-                  glareColor="#ffffff"
-                  glareOpacity={0.3}
-                  glareAngle={-30}
-                  glareSize={300}
-                  transitionDuration={800}
-                  playOnce={false}
-                  style={{ display: 'inline-block' }}
-                >
-                  <a href="#" className="social-link" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
-                    <Star size={20} />
-                    <span>LinkedIn</span>
-                  </a>
-                </GlareHover>
+              <div 
+                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-2">Address</h3>
+                    <p className="text-gray-300">ABV-IIITM GWALIOR</p>
+                    <p className="text-gray-300">Morena Link Road, 474015</p>
+                    <p className="text-gray-300">Madhya Pradesh, India</p>
+                  </div>
+                </div>
+              </div>
+
+              <div 
+                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
+                    <Clock size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-2">Business Hours</h3>
+                    <p className="text-gray-300">Monday - Friday: 9:00 AM - 8:00 PM</p>
+                    <p className="text-gray-300">Saturday - Sunday: 10:00 AM - 10:00 PM</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="newsletter-signup">
-              <h3>Newsletter</h3>
-              <p>Subscribe to our newsletter for movie updates and exclusive offers.</p>
-              <div className="newsletter-form">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address"
-                  className="newsletter-input"
-                />
-                <GlareHover
-                  width="auto"
-                  height="auto"
-                  background="linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)"
-                  borderRadius="10px"
-                  borderColor="transparent"
-                  glareColor="#ffffff"
-                  glareOpacity={0.3}
-                  glareAngle={-30}
-                  glareSize={300}
-                  transitionDuration={800}
-                  playOnce={false}
-                  style={{ display: 'inline-block' }}
-                >
-                  <button className="newsletter-btn" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
-                    <Heart size={16} />
-                    Subscribe
+          </div>
+
+          {/* Contact Form - Takes 2 columns */}
+          <div className="xl:col-span-2">
+            <div 
+              className="p-6 rounded-xl border border-gray-600/50 backdrop-blur-sm relative overflow-hidden max-w-2xl mx-auto mt-12"
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              }}
+            >
+              {/* Form Background Accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl"></div>
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-3xl"></div>
+
+              <div className="relative z-10">
+                <h2 className="text-2xl font-bold mb-6" style={{ 
+                  color: '#FFD6A0'
+                }}>
+                  Send us a Message
+                </h2>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <label htmlFor="name" className="block text-gray-300 text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Enter your full name"
+                        className="w-full bg-black border border-gray-600 text-white px-4 py-3 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                      />
+                    </div>
+                    <div className="group">
+                      <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Enter your email address"
+                        className="w-full bg-black border border-gray-600 text-white px-4 py-3 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="group">
+                    <label htmlFor="subject" className="block text-gray-300 text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                      Subject *
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="What is this about?"
+                      className="w-full bg-black border border-gray-600 text-white px-4 py-3 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="group">
+                    <label htmlFor="message" className="block text-gray-300 text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                      Message *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows="5"
+                      placeholder="Tell us more about your inquiry..."
+                      className="w-full bg-black border border-gray-600 text-white px-4 py-3 rounded-lg focus:border-primary focus:outline-none transition-colors resize-none"
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full text-black font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                    style={{
+                      backgroundColor: '#FFD6A0',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSubmitting) {
+                        e.target.style.backgroundColor = '#E6C090';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSubmitting) {
+                        e.target.style.backgroundColor = '#FFD6A0';
+                      }
+                    }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={20} />
+                        Send Message
+                      </>
+                    )}
                   </button>
-                </GlareHover>
+
+                  {submitStatus === 'success' && (
+                    <div className="bg-green-900/20 border border-green-600/50 text-green-400 p-4 rounded-lg flex items-center gap-2">
+                      <MessageCircle size={20} />
+                      Thank you! Your message has been sent successfully.
+                    </div>
+                  )}
+                </form>
               </div>
             </div>
           </div>
         </div>
+
+
       </div>
     </div>
   );

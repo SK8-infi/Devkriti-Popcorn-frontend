@@ -146,17 +146,15 @@ const TheatreReviews = ({ theatreId }) => {
   }
 
   return (
-    <div className="theatre-reviews bg-black text-white p-6">
-      <div className="reviews-header mb-6">
-        <h3 className="text-2xl font-bold mb-4">Reviews</h3>
-        
+    <div className="theatre-reviews text-white">
+      <div className="reviews-header mb-6">        
         {/* Filters and Sort */}
         <div className="flex flex-wrap gap-4 mb-6">
           {/* Sort */}
           <select 
             value={sortBy} 
             onChange={(e) => handleSortChange(e.target.value)}
-            className="px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:border-yellow-400 text-white"
+            className="px-3 py-2 bg-black border border-gray-600 rounded-md focus:outline-none focus:border-yellow-400 text-white"
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
@@ -168,7 +166,7 @@ const TheatreReviews = ({ theatreId }) => {
           <select 
             value={filters.rating} 
             onChange={(e) => handleFilterChange('rating', e.target.value)}
-            className="px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:border-yellow-400 text-white"
+            className="px-3 py-2 bg-black border border-gray-600 rounded-md focus:outline-none focus:border-yellow-400 text-white"
           >
             <option value="">All Ratings</option>
             <option value="5">5 Stars</option>
@@ -182,7 +180,7 @@ const TheatreReviews = ({ theatreId }) => {
           <select 
             value={filters.badge} 
             onChange={(e) => handleFilterChange('badge', e.target.value)}
-            className="px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:border-yellow-400 text-white"
+            className="px-3 py-2 bg-black border border-gray-600 rounded-md focus:outline-none focus:border-yellow-400 text-white"
           >
             <option value="all">All Reviewers</option>
             <option value="verified">Verified Reviewers</option>
@@ -196,7 +194,7 @@ const TheatreReviews = ({ theatreId }) => {
               type="checkbox"
               checked={filters.verified}
               onChange={(e) => handleFilterChange('verified', e.target.checked)}
-              className="w-4 h-4 text-yellow-400 bg-gray-800 border-gray-600 rounded focus:ring-yellow-400"
+              className="w-4 h-4 text-yellow-400 bg-black border-gray-600 rounded focus:ring-yellow-400"
             />
             <span className="text-sm">Verified Only</span>
           </label>
@@ -214,7 +212,7 @@ const TheatreReviews = ({ theatreId }) => {
           {reviews.map(review => (
             <div 
               key={review._id} 
-              className="review-card bg-gray-800 p-4 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+              className="review-card bg-black p-4 rounded-md cursor-pointer hover:bg-gray-900 transition-colors border border-gray-700"
               onClick={() => handleViewReview(review)}
             >
               <div className="flex items-center justify-between mb-2">
@@ -259,7 +257,11 @@ const TheatreReviews = ({ theatreId }) => {
         <div className="text-center mt-8">
           <button
             onClick={() => setPage(page + 1)}
-            className="load-more-btn bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-8 rounded-md transition-colors"
+            className="load-more-btn bg-primary hover:bg-primary/80 text-black font-bold py-3 px-8 rounded-lg transition duration-300"
+            style={{
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}
           >
             Load More Reviews
           </button>
@@ -269,7 +271,12 @@ const TheatreReviews = ({ theatreId }) => {
       {/* Review Detail Modal */}
       {selectedReview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div 
+            className="rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}
+          >
             <div className="p-6">
               {/* Modal Header */}
               <div className="flex items-center justify-between mb-6">
@@ -321,7 +328,11 @@ const TheatreReviews = ({ theatreId }) => {
                     {!selectedReview.theatreResponse && (
                       <button
                         onClick={() => setShowResponseForm(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/80 text-black font-bold rounded-lg transition duration-300"
+                        style={{
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}
                       >
                         <MessageSquare size={16} />
                         Reply
@@ -363,9 +374,12 @@ const TheatreReviews = ({ theatreId }) => {
 
                 {/* Theatre Response */}
                 {selectedReview.theatreResponse && (
-                  <div className="bg-gray-800 p-4 rounded-md border-l-4 border-yellow-400">
+                  <div className="bg-black p-4 rounded-lg border border-gray-600"
+                    style={{
+                      borderLeft: '4px solid #FFD6A0'
+                    }}>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-sm font-medium text-yellow-400">Theatre Response</span>
+                      <span className="text-sm font-medium" style={{ color: '#FFD6A0' }}>Theatre Response</span>
                       <span className="text-xs text-gray-400">
                         {new Date(selectedReview.theatreResponse.respondedAt).toLocaleDateString()}
                       </span>
@@ -378,7 +392,7 @@ const TheatreReviews = ({ theatreId }) => {
                 <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                   <button
                     onClick={() => handleHelpful(selectedReview._id)}
-                    className="helpful-btn flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-sm"
+                    className="helpful-btn flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-900 rounded-lg transition-colors text-sm border border-gray-600"
                   >
                     <ThumbsUp size={14} />
                     Helpful ({selectedReview.helpful?.length || 0})
@@ -396,7 +410,11 @@ const TheatreReviews = ({ theatreId }) => {
       {/* Response Form Modal */}
       {showResponseForm && selectedReview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-black rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div 
+            className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            }}>
             <TheatreResponseForm
               reviewId={selectedReview._id}
               onResponse={handleTheatreResponse}

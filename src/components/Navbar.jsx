@@ -50,7 +50,7 @@ const [showUserDropdown, setShowUserDropdown] = useState(false);
   if (user && user._id) {
     setLoadingCity(true);
 
-    fetch(`/api/user/by-id/${user._id}`)
+    fetch(`${API_URL}/api/user/by-id/${user._id}`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

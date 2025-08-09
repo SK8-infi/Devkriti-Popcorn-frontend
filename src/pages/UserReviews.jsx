@@ -3,6 +3,8 @@ import { Star, Edit, Trash2, Calendar, MapPin } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import TheatreReviewForm from '../components/TheatreReviewForm';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const UserReviews = () => {
   const { user, isAuthenticated } = useAppContext();
   const [reviews, setReviews] = useState([]);
@@ -18,7 +20,7 @@ const UserReviews = () => {
 
   const fetchUserReviews = async () => {
     try {
-      const response = await fetch('/api/reviews/user', {
+      const response = await fetch(`${API_URL}/api/reviews/user`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -37,7 +39,7 @@ const UserReviews = () => {
 
   const handleEditReview = async (reviewData) => {
     try {
-      const response = await fetch(`/api/reviews/${editingReview._id}`, {
+      const response = await fetch(`${API_URL}/api/reviews/${editingReview._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ const UserReviews = () => {
     }
 
     try {
-      const response = await fetch(`/api/reviews/${reviewId}`, {
+      const response = await fetch(`${API_URL}/api/reviews/${reviewId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`

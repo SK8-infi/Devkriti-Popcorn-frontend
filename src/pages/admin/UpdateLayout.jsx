@@ -7,17 +7,20 @@ import './UpdateLayout.css';
 
 const SEAT_AVAILABLE = 1;
 const SEAT_UNAVAILABLE = 0;
-const SEAT_VIP = 2;
+const SEAT_GOLD = 2;
+const SEAT_PREMIUM = 3;
 
 const cellClass = (val) => {
   if (val === SEAT_AVAILABLE) return 'bg-green-500 hover:bg-green-600';
-  if (val === SEAT_VIP) return 'bg-yellow-400 hover:bg-yellow-500';
+  if (val === SEAT_GOLD) return 'bg-yellow-400 hover:bg-yellow-500';
+  if (val === SEAT_PREMIUM) return 'bg-orange-500 hover:bg-orange-600';
   return 'bg-gray-300 hover:bg-gray-400';
 };
 
 const cellLabel = (val) => {
   if (val === SEAT_AVAILABLE) return '';
-  if (val === SEAT_VIP) return '';
+  if (val === SEAT_GOLD) return '';
+  if (val === SEAT_PREMIUM) return '';
   return '';
 };
 
@@ -114,19 +117,25 @@ const UpdateLayout = () => {
       <div className="seat-type-selector flex justify-center">
         <span>Select Seat Type:</span>
         <button
-          className={`seat-btn ${selectedType === SEAT_AVAILABLE ? 'active available' : ''}`}
+          className={`seat-btn available ${selectedType === SEAT_AVAILABLE ? 'active' : ''}`}
           onClick={() => setSelectedType(SEAT_AVAILABLE)}
         >
-          Regular
+          Silver
         </button>
         <button
-          className={`seat-btn ${selectedType === SEAT_VIP ? 'active vip' : ''}`}
-          onClick={() => setSelectedType(SEAT_VIP)}
+          className={`seat-btn gold ${selectedType === SEAT_GOLD ? 'active' : ''}`}
+          onClick={() => setSelectedType(SEAT_GOLD)}
         >
-          VIP
+          Gold
         </button>
         <button
-          className={`seat-btn ${selectedType === SEAT_UNAVAILABLE ? 'active unavailable' : ''}`}
+          className={`seat-btn premium ${selectedType === SEAT_PREMIUM ? 'active' : ''}`}
+          onClick={() => setSelectedType(SEAT_PREMIUM)}
+        >
+          Premium
+        </button>
+        <button
+          className={`seat-btn unavailable ${selectedType === SEAT_UNAVAILABLE ? 'active' : ''}`}
           onClick={() => setSelectedType(SEAT_UNAVAILABLE)}
         >
           No Seat
@@ -134,8 +143,9 @@ const UpdateLayout = () => {
       </div>
 
       <div className="legend flex justify-center">
-        <span className="seat-cell available"></span> Regular
-        <span className="seat-cell vip"></span> VIP
+        <span className="seat-cell available"></span> Silver
+        <span className="seat-cell gold"></span> Gold
+        <span className="seat-cell premium"></span> Premium
         <span className="seat-cell unavailable"></span> No Seat
       </div>
 
@@ -163,7 +173,7 @@ const UpdateLayout = () => {
                 {row.map((cell, colIdx) => (
                   <td
                     key={colIdx}
-                    className={`seat-cell ${cell === SEAT_AVAILABLE ? 'available' : cell === SEAT_VIP ? 'vip' : 'unavailable'}`}
+                    className={`seat-cell ${cell === SEAT_AVAILABLE ? 'available' : cell === SEAT_GOLD ? 'gold' : cell === SEAT_PREMIUM ? 'premium' : 'unavailable'}`}
                     onMouseDown={() => handleCellMouseDown(rowIdx, colIdx)}
                     onMouseEnter={() => handleCellMouseEnter(rowIdx, colIdx)}
                     // onClick={() => setSeatType(rowIdx, colIdx)} // replaced by drag logic

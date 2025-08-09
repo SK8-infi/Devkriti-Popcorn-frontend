@@ -358,9 +358,10 @@
 .theatre-section {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
   position: relative;
   z-index: 1;
+  margin-bottom: 30px;
 }
 
 .no-shows {
@@ -383,7 +384,46 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-.theatre-card {
+/* External Theatre Header (above the container) */
+.theatre-header-external {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background: #000000;
+  border-radius: 8px;
+  border: 1px dashed #FFD6A0;
+}
+
+.theatre-header-external .theatre-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theatre-header-external .theatre-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.theatre-header-external .theatre-address {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  margin: 3px 0 2px 0;
+  font-weight: 400;
+}
+
+.theatre-header-external .theatre-formats {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  margin: 2px 0 0 0;
+  font-style: italic;
+}
+
+/* Showtimes Container */
+.showtimes-container {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
   border-radius: 12px;
@@ -394,26 +434,10 @@
   z-index: 1;
 }
 
-.theatre-card:hover {
+.showtimes-container:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
-
-.theatre-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  gap: 15px;
-}
-
-.theatre-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-}
-
-
 
 .theatre-logo {
   width: 32px;
@@ -430,25 +454,12 @@
   flex: 1;
 }
 
-.theatre-name {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: white;
-  margin: 0 0 3px 0;
-}
-
-.theatre-formats {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.75rem;
-  margin: 0;
-}
-
 
 
 .showtimes-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-start;
 }
 
@@ -456,23 +467,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 8px;
-  border-radius: 8px;
+  padding: 16px 12px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.08);
   color: white;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   backdrop-filter: blur(8px);
   text-align: center;
-  min-width: 90px;
+  min-height: 140px;
+  min-width: 170px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .showtime-button:hover {
   border-color: #FFD6A0;
-  background: rgba(255, 214, 160, 0.1);
-  transform: translateY(-1px);
+  background: rgba(255, 214, 160, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 214, 160, 0.2);
+}
+
+.showtime-button:hover .price-tier.silver {
+  background: rgba(192, 192, 192, 0.3);
+  border-color: rgba(192, 192, 192, 0.5);
+}
+
+.showtime-button:hover .price-tier.gold {
+  background: rgba(255, 214, 0, 0.3);
+  border-color: rgba(255, 214, 0, 0.5);
+}
+
+.showtime-button:hover .price-tier.premium {
+  background: rgba(255, 107, 53, 0.3);
+  border-color: rgba(255, 107, 53, 0.5);
 }
 
 .showtime-button-active {
@@ -483,31 +513,72 @@
 }
 
 .showtime-time {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 3px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #FFD6A0;
 }
 
 .showtime-format {
-  font-size: 0.625rem;
+  font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
   opacity: 0.8;
+  padding: 2px 6px;
+  background: rgba(255, 214, 160, 0.1);
+  border-radius: 4px;
 }
 
-.showtime-price {
-  font-size: 0.625rem;
-  font-weight: 400;
-  margin-bottom: 2px;
-  opacity: 0.7;
+.showtime-prices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.price-tier {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.price-tier.silver {
+  background: rgba(192, 192, 192, 0.2);
+  border: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+.price-tier.gold {
+  background: rgba(255, 214, 0, 0.2);
+  border: 1px solid rgba(255, 214, 0, 0.3);
+}
+
+.price-tier.premium {
+  background: rgba(255, 107, 53, 0.2);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
+.price-label {
+  font-size: 0.65rem;
+  opacity: 0.9;
+}
+
+.price-value {
+  font-weight: 600;
 }
 
 .showtime-language {
-  font-size: 0.625rem;
+  font-size: 0.65rem;
   font-weight: 500;
   color: #4A90E2;
   text-decoration: underline;
+  margin-top: auto;
 }
 
 /* Responsive Design */
@@ -537,8 +608,11 @@
   }
   
   .showtimes-grid {
-    gap: 8px;
-    justify-content: center;
+    gap: 10px;
+  }
+  
+  .showtime-button {
+    min-width: 150px;
   }
   
   .date-list {
@@ -587,12 +661,13 @@
   }
   
   .showtimes-grid {
-    gap: 6px;
-    justify-content: center;
+    gap: 8px;
   }
   
   .showtime-button {
-    padding: 8px 6px;
+    padding: 12px 8px;
+    min-height: 120px;
+    min-width: 130px;
   }
   
   .showtime-time {

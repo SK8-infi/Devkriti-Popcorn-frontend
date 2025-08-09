@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { MenuIcon, SearchIcon, TicketPlus, XIcon, MapPin, Heart, User, LogOut, Star } from 'lucide-react'
 import { useAppContext } from '../context/AppContext'
@@ -23,6 +23,8 @@ const Navbar = () => {
  const { user, isAuthenticated, login, logout, setUserCity: setContextUserCity } = useAppContext()
 
  const navigate = useNavigate()
+ const location = useLocation()
+ const isHomePage = location.pathname === '/'
 
  const [menuOpen, setMenuOpen] = useState(false);
 
@@ -108,6 +110,9 @@ const handleSaveCity = async () => {
     setShowLocationModal(false);
     setCityError("");
     setSavingCity(false);
+    
+    // Refresh page to update content
+    window.location.reload();
     return;
   }
 
@@ -130,6 +135,9 @@ const handleSaveCity = async () => {
          localStorage.setItem('userCity', selectedCity);
          setShowLocationModal(false);
          setCityError("");
+         
+         // Refresh page to update content
+         window.location.reload();
        } else {
          setCityError(data.message || "Failed to update city.");
        }
@@ -192,10 +200,37 @@ const handleSaveCity = async () => {
           </div>
         )}
         <div className='navbar-icons'>
-          <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Select Location' onClick={() => setShowLocationModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <MapPin size={20}/>
-            {userCity && <span style={{ marginLeft: 6, fontSize: 14, display: 'flex', alignItems: 'center', height: 20 }}>{userCity}</span>}
-          </motion.button>
+          {isHomePage && (
+            <motion.button 
+              whileHover={{ scale: 1.05 }} 
+              whileFocus={{ scale: 1.05 }} 
+              className='navbar-location-btn-new' 
+              title='Select Location' 
+              onClick={() => setShowLocationModal(true)} 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 6,
+                background: 'linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)',
+                border: 'none',
+                borderRadius: '20px',
+                padding: '6px 12px',
+                color: '#000',
+                fontWeight: '600',
+                fontSize: '12px',
+                boxShadow: '0 2px 6px rgba(255, 214, 160, 0.3)',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                minWidth: 'fit-content',
+                whiteSpace: 'nowrap',
+                width: 'auto',
+                height: 'auto'
+              }}
+            >
+              <MapPin size={16} color="#000"/>
+              <span>{userCity || 'Select City'}</span>
+            </motion.button>
+          )}
           <motion.button whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} className='navbar-location-btn' title='Search' onClick={() => {
             setShowSearch((prev) => !prev);
             setTimeout(() => { if (searchInputRef.current) searchInputRef.current.focus(); }, 100);
@@ -442,43 +477,153 @@ const handleSaveCity = async () => {
           <div
             className="location-modal"
             style={{
-              background: '#000',
-              borderRadius: 12,
-              padding: 32,
-              minWidth: 320,
-              boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
-              position: 'relative'
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
+              borderRadius: 20,
+              padding: 40,
+              minWidth: 400,
+              maxWidth: 500,
+              boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+              position: 'relative',
+              border: '1px solid rgba(255, 214, 160, 0.2)'
             }}
           >
             <button
               onClick={() => setShowLocationModal(false)}
               style={{
                 position: 'absolute',
-                top: 12,
-                right: 12,
-                background: '#000',
+                top: 16,
+                right: 16,
+                background: 'rgba(255, 255, 255, 0.1)',
                 border: 'none',
-                fontSize: 20,
-                cursor: 'pointer'
+                borderRadius: '50%',
+                width: 32,
+                height: 32,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#FFD6A0',
+                transition: 'all 0.3s ease'
               }}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(255, 214, 160, 0.2)'}
+              onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
             >
-              <XIcon />
+              <XIcon size={16} />
             </button>
-            <h2 style={{ marginBottom: 16 }}>Select Your City</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+              <div style={{
+                background: 'linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)',
+                borderRadius: '50%',
+                padding: 8,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <MapPin size={20} color="#000" />
+              </div>
+              <h2 style={{ 
+                margin: 0, 
+                color: '#FFD6A0', 
+                fontSize: 20, 
+                fontWeight: '600' 
+              }}>Select Your City</h2>
+            </div>
             {loadingCity ? (
               <div>Loading...</div>
             ) : (
               <>
-                <select value={selectedCity} onChange={e => { setSelectedCity(e.target.value); setCityError(""); }} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #ccc', fontSize: 16, marginBottom: 16, background: '#000', color: '#fff' }}>
-                  <option value="" style={{ background: '#000', color: '#fff' }}>-- Select City --</option>
+                <select 
+                  value={selectedCity} 
+                  onChange={e => { setSelectedCity(e.target.value); setCityError(""); }} 
+                  style={{ 
+                    width: '100%', 
+                    padding: '14px 16px', 
+                    borderRadius: 12, 
+                    border: '2px solid rgba(255, 214, 160, 0.3)', 
+                    fontSize: 16, 
+                    marginBottom: 20, 
+                    background: 'rgba(255, 255, 255, 0.05)', 
+                    color: '#fff',
+                    outline: 'none',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#FFD6A0'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(255, 214, 160, 0.3)'}
+                >
+                  <option value="" style={{ background: '#1a1a1a', color: '#fff' }}>-- Select City --</option>
                   {allowedCities.map(city => (
-                    <option key={city} value={city} style={{ background: '#000', color: '#fff' }}>{city}</option>
+                    <option key={city} value={city} style={{ background: '#1a1a1a', color: '#fff' }}>{city}</option>
                   ))}
                 </select>
-                {cityError && <div style={{ color: 'red', marginBottom: 8 }}>{cityError}</div>}
-                                 <button onClick={handleSaveCity} disabled={savingCity} style={{ background: '#FFD6A0', color: '#222', border: 'none', borderRadius: 6, padding: '8px 20px', fontSize: 16, cursor: 'pointer', fontWeight: 600 }}>
-                  {savingCity ? 'Saving...' : 'Save'}
-                </button>
+                {cityError && (
+                  <div style={{ 
+                    color: '#ff6b6b', 
+                    marginBottom: 16, 
+                    fontSize: 14, 
+                    padding: '8px 12px',
+                    background: 'rgba(255, 107, 107, 0.1)',
+                    borderRadius: 8,
+                    border: '1px solid rgba(255, 107, 107, 0.3)'
+                  }}>{cityError}</div>
+                )}
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+                  <button 
+                    onClick={() => setShowLocationModal(false)} 
+                    style={{ 
+                      background: 'rgba(255, 255, 255, 0.1)', 
+                      color: '#fff', 
+                      border: '2px solid rgba(255, 255, 255, 0.2)', 
+                      borderRadius: 12, 
+                      padding: '12px 24px', 
+                      fontSize: 16, 
+                      cursor: 'pointer', 
+                      fontWeight: '600',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleSaveCity} 
+                    disabled={savingCity} 
+                    style={{ 
+                      background: savingCity ? 'rgba(255, 214, 160, 0.6)' : 'linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)', 
+                      color: '#000', 
+                      border: 'none', 
+                      borderRadius: 12, 
+                      padding: '12px 24px', 
+                      fontSize: 16, 
+                      cursor: savingCity ? 'not-allowed' : 'pointer', 
+                      fontWeight: '600',
+                      transition: 'all 0.3s ease',
+                      boxShadow: savingCity ? 'none' : '0 4px 15px rgba(255, 214, 160, 0.4)',
+                      transform: savingCity ? 'none' : 'scale(1)',
+                      opacity: savingCity ? 0.7 : 1
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!savingCity) {
+                        e.target.style.transform = 'scale(1.05)';
+                        e.target.style.boxShadow = '0 6px 20px rgba(255, 214, 160, 0.6)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!savingCity) {
+                        e.target.style.transform = 'scale(1)';
+                        e.target.style.boxShadow = '0 4px 15px rgba(255, 214, 160, 0.4)';
+                      }
+                    }}
+                  >
+                    {savingCity ? 'Saving...' : 'Save Location'}
+                  </button>
+                </div>
               </>
             )}
           </div>

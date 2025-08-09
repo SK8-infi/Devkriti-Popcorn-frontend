@@ -57,7 +57,7 @@ const ListShows = () => {
                         <td className="p-2">{dateFormat(show.showDateTime)}</td>
                         <td className="p-2">{show.language || 'N/A'}</td>
                         <td className="p-2">{Object.keys(show.occupiedSeats).length}</td>
-                        <td className="p-2">{currency} {Object.keys(show.occupiedSeats).length * (show.normalPrice || show.vipPrice || 0)}</td>
+                        <td className="p-2">{currency} {Object.keys(show.occupiedSeats).length * (show.silverPrice || show.goldPrice || show.premiumPrice || 0)}</td>
                     </tr>
                 ))}
             </tbody>

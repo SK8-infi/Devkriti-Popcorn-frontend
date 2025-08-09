@@ -103,7 +103,7 @@ const ListBookings = () => {
                                             <span>{booking.seats?.length || 0} seats</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <span className="font-semibold">₹{booking.show?.normalPrice || booking.show?.vipPrice || 0}</span>
+                                            <span className="font-semibold">₹{booking.show?.silverPrice || booking.show?.goldPrice || booking.show?.premiumPrice || 0}</span>
                                         </div>
                                     </div>
                                 </div>

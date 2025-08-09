@@ -3,7 +3,8 @@ import '../../pages/admin/UpdateLayout.css';
 
 const SEAT_AVAILABLE = 1;
 const SEAT_UNAVAILABLE = 0;
-const SEAT_VIP = 2;
+const SEAT_GOLD = 2;
+const SEAT_PREMIUM = 3;
 
 const getRowLabel = (idx) => String.fromCharCode(65 + idx);
 
@@ -71,23 +72,31 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
         <span>Select Seat Type:</span>
         <button
           type="button"
-          className={`seat-btn ${selectedType === SEAT_AVAILABLE ? 'active available' : ''}`}
+          className={`seat-btn available ${selectedType === SEAT_AVAILABLE ? 'active' : ''}`}
           onClick={() => setSelectedType(SEAT_AVAILABLE)}
           disabled={disabled}
         >
-          Regular
+          Silver
         </button>
         <button
           type="button"
-          className={`seat-btn ${selectedType === SEAT_VIP ? 'active vip' : ''}`}
-          onClick={() => setSelectedType(SEAT_VIP)}
+          className={`seat-btn gold ${selectedType === SEAT_GOLD ? 'active' : ''}`}
+          onClick={() => setSelectedType(SEAT_GOLD)}
           disabled={disabled}
         >
-          VIP
+          Gold
         </button>
         <button
           type="button"
-          className={`seat-btn ${selectedType === SEAT_UNAVAILABLE ? 'active unavailable' : ''}`}
+          className={`seat-btn premium ${selectedType === SEAT_PREMIUM ? 'active' : ''}`}
+          onClick={() => setSelectedType(SEAT_PREMIUM)}
+          disabled={disabled}
+        >
+          Premium
+        </button>
+        <button
+          type="button"
+          className={`seat-btn unavailable ${selectedType === SEAT_UNAVAILABLE ? 'active' : ''}`}
           onClick={() => setSelectedType(SEAT_UNAVAILABLE)}
           disabled={disabled}
         >
@@ -96,8 +105,9 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
       </div>
 
       <div className="legend flex justify-center">
-        <span className="seat-cell available"></span> Regular
-        <span className="seat-cell vip"></span> VIP
+        <span className="seat-cell available"></span> Silver
+        <span className="seat-cell gold"></span> Gold
+        <span className="seat-cell premium"></span> Premium
         <span className="seat-cell unavailable"></span> No Seat
       </div>
 
@@ -125,7 +135,7 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
                 {row.map((cell, colIdx) => (
                   <td
                     key={colIdx}
-                    className={`seat-cell ${cell === SEAT_AVAILABLE ? 'available' : cell === SEAT_VIP ? 'vip' : 'unavailable'}`}
+                    className={`seat-cell ${cell === SEAT_AVAILABLE ? 'available' : cell === SEAT_GOLD ? 'gold' : cell === SEAT_PREMIUM ? 'premium' : 'unavailable'}`}
                     onMouseDown={e => handleCellMouseDown(rowIdx, colIdx, e)}
                     onMouseEnter={e => handleCellMouseEnter(rowIdx, colIdx, e)}
                     title={`Row ${getRowLabel(rowIdx)}, Seat ${colIdx + 1}`}

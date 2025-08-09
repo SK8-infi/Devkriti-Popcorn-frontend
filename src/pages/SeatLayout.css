@@ -195,12 +195,16 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.legend-seat.regular {
-  background: #4CAF50;
+.legend-seat.silver {
+  background: #C0C0C0;
 }
 
-.legend-seat.vip {
+.legend-seat.gold {
   background: #FFD600;
+}
+
+.legend-seat.premium {
+  background: #FF6B35;
 }
 
 .legend-seat.unavailable {
@@ -293,9 +297,16 @@
   transform: scale(1.05);
 }
 
-.seat-button.seat-vip {
+.seat-button.seat-gold {
   background: rgba(255, 214, 0, 0.2);
   border-color: #FFD600;
+  color: #2c2c2c;
+  font-weight: 600;
+}
+
+.seat-button.seat-premium {
+  background: rgba(255, 107, 53, 0.2);
+  border-color: #FF6B35;
   color: #2c2c2c;
   font-weight: 600;
 }

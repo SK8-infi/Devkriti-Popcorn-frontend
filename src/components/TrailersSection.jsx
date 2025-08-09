@@ -67,13 +67,51 @@ const TrailersSection = () => {
     fetchCityFilteredMovies();
   }, [allMovies, currentUserCity, cityChangeCounter]);
 
-  // Extract trailers from city-filtered movies
+  // Extract trailers from city-filtered movies and fill with popular movies if needed
   useEffect(() => {
+    const movieTrailers = [];
+    const usedMovieIds = new Set();
+    
+    // First, add trailers from movies with shows in user's city
     if (cityFilteredMovies && cityFilteredMovies.length > 0) {
-      const movieTrailers = [];
       cityFilteredMovies.forEach(movie => {
-        if (movie.trailers && movie.trailers.length > 0) {
-          // Add the first trailer of each movie with movie info
+        if (movie.trailers && movie.trailers.length > 0 && movieTrailers.length < 6) {
+          movieTrailers.push({
+            ...movie.trailers[0],
+            movieTitle: movie.title,
+            movieId: movie.id,
+            image: movie.trailers[0].thumbnail_url
+          });
+          usedMovieIds.add(String(movie.id));
+        }
+      });
+    }
+    
+    // If we have fewer than 6 trailers, fill remaining slots with popular movies
+    if (movieTrailers.length < 6 && allMovies && allMovies.length > 0) {
+      // Sort movies by popularity/rating and filter out already used ones
+      const availableMovies = allMovies
+        .filter(movie => 
+          !usedMovieIds.has(String(movie.id)) && 
+          movie.trailers && 
+          movie.trailers.length > 0
+        )
+        .sort((a, b) => {
+          // Sort by vote_average descending, then by popularity if available
+          const ratingA = a.vote_average || 0;
+          const ratingB = b.vote_average || 0;
+          if (ratingB !== ratingA) {
+            return ratingB - ratingA;
+          }
+          // Secondary sort by popularity or vote_count
+          const popularityA = a.popularity || a.vote_count || 0;
+          const popularityB = b.popularity || b.vote_count || 0;
+          return popularityB - popularityA;
+        });
+      
+      // Add trailers from popular movies to fill remaining slots
+      availableMovies.forEach(movie => {
+        if (movieTrailers.length < 6) {
           movieTrailers.push({
             ...movie.trailers[0],
             movieTitle: movie.title,
@@ -82,14 +120,18 @@ const TrailersSection = () => {
           });
         }
       });
-      setTrailers(movieTrailers.slice(0, 6)); // Limit to 6 trailers
+    }
+    
+    // Set trailers or fallback to dummy trailers if still empty
+    if (movieTrailers.length > 0) {
+      setTrailers(movieTrailers);
       setCenterIdx(Math.min(2, Math.floor(movieTrailers.length / 2))); // Start in middle or beginning
     } else {
       // Fallback to dummy trailers if no real trailers available
       setTrailers(dummyTrailers);
       setCenterIdx(2);
     }
-  }, [cityFilteredMovies]);
+  }, [cityFilteredMovies, allMovies]);
 
   const handleLeft = () => {
     if (centerIdx > 0) {

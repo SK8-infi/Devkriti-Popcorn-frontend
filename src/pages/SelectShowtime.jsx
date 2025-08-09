@@ -161,11 +161,16 @@ const SelectShowtime = () => {
                   continue;
       }
       
-      const theatreKey = `${showObj.theatreName} - ${showObj.theatreCity}`;
+      const theatreKey = showObj.theatreName;
       if (!theatreMap[theatreKey]) {
-        theatreMap[theatreKey] = [];
+        theatreMap[theatreKey] = {
+          name: showObj.theatreName,
+          city: showObj.theatreCity,
+          address: showObj.theatreAddress,
+          shows: []
+        };
       }
-      theatreMap[theatreKey].push(showObj);
+      theatreMap[theatreKey].shows.push(showObj);
       
     }
     
@@ -329,9 +334,10 @@ const SelectShowtime = () => {
             </div>
           )}
           
-          {Object.entries(theatreMap).map(([theatre, times], idx) => (
-            <div key={theatre} className="theatre-card">
-              <div className="theatre-header">
+          {Object.entries(theatreMap).map(([theatreKey, theatreData], idx) => (
+            <div key={theatreKey} className="theatre-section">
+              {/* Theatre Header - Outside and above the showtimes container */}
+              <div className="theatre-header-external">
                 <div className="theatre-info">
                   <div className="theatre-logo">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -342,18 +348,21 @@ const SelectShowtime = () => {
                     </svg>
                   </div>
                   <div className="theatre-details">
-                    <h3 className="theatre-name">{theatre}</h3>
+                    <h3 className="theatre-name">{theatreData.name}</h3>
+                    <p className="theatre-address">
+                      {theatreData.address ? `${theatreData.address}, ${theatreData.city}` : theatreData.city}
+                    </p>
                     <p className="theatre-formats">
-                      Available formats: {Array.from(new Set(times.map(t => t.format))).join(', ')}
+                      Available formats: {Array.from(new Set(theatreData.shows.map(t => t.format))).join(', ')}
                     </p>
                   </div>
                 </div>
               </div>
               
-              
-              
-              <div className="showtimes-grid">
-                {times
+              {/* Showtimes Container */}
+              <div className="showtimes-container">
+                <div className="showtimes-grid">
+                {theatreData.shows
                   .sort((a, b) => new Date(a.time) - new Date(b.time))
                   .map((t) => (
                     <button
@@ -365,10 +374,24 @@ const SelectShowtime = () => {
                         {new Date(t.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </div>
                       <div className="showtime-format">{t.format || 'Normal'}</div>
-                      <div className="showtime-price">₹{t.normalPrice} / ₹{t.vipPrice}</div>
+                      <div className="showtime-prices">
+                        <div className="price-tier silver">
+                          <span className="price-label">Silver</span>
+                          <span className="price-value">₹{t.silverPrice}</span>
+                        </div>
+                        <div className="price-tier gold">
+                          <span className="price-label">Gold</span>
+                          <span className="price-value">₹{t.goldPrice}</span>
+                        </div>
+                        <div className="price-tier premium">
+                          <span className="price-label">Premium</span>
+                          <span className="price-value">₹{t.premiumPrice}</span>
+                        </div>
+                      </div>
                       <div className="showtime-language">{t.language || 'Unknown'}</div>
                     </button>
                   ))}
+                </div>
               </div>
             </div>
           ))}

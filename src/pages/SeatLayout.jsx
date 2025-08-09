@@ -218,12 +218,27 @@ const SeatLayout = () => {
         const rowIdx = seatId.charCodeAt(0) - 65;
         const colIdx = parseInt(seatId.slice(1), 10) - 1;
         const seatType = theatreLayout?.[rowIdx]?.[colIdx];
-        if (seatType === 2) {
-          totalAmount += selectedTime.vipPrice;
+        
+        // Ensure prices exist and are valid numbers
+        const silverPrice = Number(selectedTime.silverPrice) || 100;
+        const goldPrice = Number(selectedTime.goldPrice) || 150;
+        const premiumPrice = Number(selectedTime.premiumPrice) || 200;
+        
+        if (seatType === 3) {
+          totalAmount += premiumPrice;
+        } else if (seatType === 2) {
+          totalAmount += goldPrice;
         } else {
-          totalAmount += selectedTime.normalPrice;
+          totalAmount += silverPrice;
         }
       });
+      
+      // Validate total amount
+      if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
+        toast.error('Error calculating ticket price. Please try again.');
+        setIsBooking(false);
+        return;
+      }
 
       const token = await getToken();
 
@@ -295,7 +310,8 @@ const SeatLayout = () => {
             {row.map((cell, colIdx) => {
               const seatId = `${String.fromCharCode(65 + rowIdx)}${colIdx + 1}`;
               let seatClass = 'seat-button';
-              if (cell === 2) seatClass += ' seat-vip'; // VIP
+              if (cell === 3) seatClass += ' seat-premium'; // Premium
+              if (cell === 2) seatClass += ' seat-gold'; // Gold
               if (cell === 0) seatClass += ' seat-unavailable'; // Unavailable
               if (selectedSeats.includes(seatId)) seatClass += ' seat-selected';
               if (occupiedSeats.includes(seatId)) seatClass += ' seat-occupied';
@@ -305,7 +321,7 @@ const SeatLayout = () => {
                   onClick={() => cell !== 0 && !occupiedSeats.includes(seatId) ? handleSeatClick(seatId) : null}
                   className={seatClass}
                   disabled={cell === 0 || occupiedSeats.includes(seatId)}
-                  title={cell === 2 ? 'VIP' : cell === 0 ? 'Unavailable' : 'Regular'}
+                  title={cell === 3 ? 'Premium' : cell === 2 ? 'Gold' : cell === 0 ? 'Unavailable' : 'Silver'}
                 >
                   {seatId}
                 </button>
@@ -320,9 +336,10 @@ const SeatLayout = () => {
 
 
   // Calculate seat price tally using show data prices
-  let normalCount = 0, vipCount = 0;
-  let seatPrice = selectedTime?.normalPrice || 100; // Use show's normal price
-  let vipSeatPrice = selectedTime?.vipPrice || 150; // Use show's VIP price
+  let silverCount = 0, goldCount = 0, premiumCount = 0;
+  let silverPrice = selectedTime?.silverPrice || 100; // Use show's silver price
+  let goldPrice = selectedTime?.goldPrice || 150; // Use show's gold price
+  let premiumPrice = selectedTime?.premiumPrice || 200; // Use show's premium price
   let totalPrice = 0;
   
 
@@ -333,12 +350,15 @@ const SeatLayout = () => {
       const rowIdx = seatId.charCodeAt(0) - 65;
       const colIdx = parseInt(seatId.slice(1), 10) - 1;
       const seatType = theatreLayout?.[rowIdx]?.[colIdx];
-      if (seatType === 2) {
-        vipCount++;
-        totalPrice += vipSeatPrice;
+      if (seatType === 3) {
+        premiumCount++;
+        totalPrice += premiumPrice;
+      } else if (seatType === 2) {
+        goldCount++;
+        totalPrice += goldPrice;
       } else {
-        normalCount++;
-        totalPrice += seatPrice;
+        silverCount++;
+        totalPrice += silverPrice;
       }
     });
     
@@ -401,12 +421,16 @@ const SeatLayout = () => {
         {/* Seat Legend */}
         <div className='seat-legend'>
           <div className='legend-item'>
-            <span className='legend-seat regular'></span>
-            <span className='legend-text'>Regular</span>
+            <span className='legend-seat silver'></span>
+            <span className='legend-text'>Silver</span>
           </div>
           <div className='legend-item'>
-            <span className='legend-seat vip'></span>
-            <span className='legend-text'>VIP</span>
+            <span className='legend-seat gold'></span>
+            <span className='legend-text'>Gold</span>
+          </div>
+          <div className='legend-item'>
+            <span className='legend-seat premium'></span>
+            <span className='legend-text'>Premium</span>
           </div>
           <div className='legend-item'>
             <span className='legend-seat unavailable'></span>
@@ -425,9 +449,11 @@ const SeatLayout = () => {
               Total: <span className='price-amount'>₹{totalPrice}</span>
             </div>
             <div className='price-breakdown'>
-              {normalCount > 0 && <span>{normalCount} x Regular (₹{seatPrice})</span>}
-              {normalCount > 0 && vipCount > 0 && <span> &nbsp;|&nbsp; </span>}
-              {vipCount > 0 && <span>{vipCount} x VIP (₹{vipSeatPrice})</span>}
+              {silverCount > 0 && <span>{silverCount} x Silver (₹{silverPrice})</span>}
+              {silverCount > 0 && (goldCount > 0 || premiumCount > 0) && <span> &nbsp;|&nbsp; </span>}
+              {goldCount > 0 && <span>{goldCount} x Gold (₹{goldPrice})</span>}
+              {goldCount > 0 && premiumCount > 0 && <span> &nbsp;|&nbsp; </span>}
+              {premiumCount > 0 && <span>{premiumCount} x Premium (₹{premiumPrice})</span>}
             </div>
           </div>
         )}

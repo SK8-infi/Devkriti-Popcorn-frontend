@@ -28,6 +28,55 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
+/* Inactive state colors for seat type buttons */
+.seat-btn.available {
+  background-color: rgba(76, 175, 80, 0.3);
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+.seat-btn.available:hover {
+  background-color: rgba(76, 175, 80, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.seat-btn.gold {
+  background-color: rgba(255, 214, 0, 0.3);
+  border-color: #FFD600;
+  color: #f57f17;
+}
+
+.seat-btn.gold:hover {
+  background-color: rgba(255, 214, 0, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 214, 0, 0.3);
+}
+
+.seat-btn.premium {
+  background-color: rgba(255, 107, 53, 0.3);
+  border-color: #FF6B35;
+  color: #d84315;
+}
+
+.seat-btn.premium:hover {
+  background-color: rgba(255, 107, 53, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.seat-btn.unavailable {
+  background-color: rgba(153, 153, 153, 0.3);
+  border-color: #999;
+  color: #424242;
+}
+
+.seat-btn.unavailable:hover {
+  background-color: rgba(153, 153, 153, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(153, 153, 153, 0.3);
+}
+
 .seat-btn.active {
   border: 2.5px solid #1976d2;
   box-shadow: 0 2px 8px #1976d220;
@@ -44,14 +93,24 @@
   color: #fff;
 }
 
-.seat-btn.vip.active {
+.seat-btn.gold.active {
   background-color: #FFD600;
   color: #111;
   border-color: #FFD600;
 }
-.seat-btn.vip.active:hover {
+.seat-btn.gold.active:hover {
   background-color: #FFD600;
   color: #111;
+}
+
+.seat-btn.premium.active {
+  background-color: #FF6B35;
+  color: #fff;
+  border-color: #FF6B35;
+}
+.seat-btn.premium.active:hover {
+  background-color: #FF6B35;
+  color: #fff;
 }
 
 .seat-btn.unavailable.active {
@@ -182,14 +241,25 @@
   transform: scale(1.08);
 }
 
-.seat-cell.vip {
+.seat-cell.gold {
   background-color: rgba(255, 235, 59, 0.18);
   border-color: #ffeb3b;
 }
 
-.seat-cell.vip:hover {
+.seat-cell.gold:hover {
   background-color: rgba(255, 235, 59, 0.28);
   box-shadow: 0 0 0 2px #ffeb3b33;
+  transform: scale(1.08);
+}
+
+.seat-cell.premium {
+  background-color: rgba(255, 107, 53, 0.18);
+  border-color: #FF6B35;
+}
+
+.seat-cell.premium:hover {
+  background-color: rgba(255, 107, 53, 0.28);
+  box-shadow: 0 0 0 2px #FF6B3533;
   transform: scale(1.08);
 }
 

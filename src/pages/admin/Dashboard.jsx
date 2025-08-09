@@ -252,7 +252,7 @@ const Dashboard = () => {
                       <span className="text-white">{dateFormat(show.showDateTime)}</span>
                       <span className="text-gray-400 text-sm">{show.language || 'N/A'}</span>
                     </div>
-                    <span className="text-primary font-semibold">{currency} {show.normalPrice} / {currency} {show.vipPrice}</span>
+                    <span className="text-primary font-semibold">{currency} {show.silverPrice} / {currency} {show.goldPrice} / {currency} {show.premiumPrice}</span>
                   </li>
                 ))}
               </ul>

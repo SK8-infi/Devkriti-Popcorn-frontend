@@ -16,8 +16,9 @@ const AddShows = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [dateTimeSelection, setDateTimeSelection] = useState({});
     const [dateTimeInput, setDateTimeInput] = useState("");
-    const [normalPrice, setNormalPrice] = useState("");
-    const [vipPrice, setVipPrice] = useState("");
+    const [silverPrice, setSilverPrice] = useState("");
+    const [goldPrice, setGoldPrice] = useState("");
+    const [premiumPrice, setPremiumPrice] = useState("");
     const [addingShow, setAddingShow] = useState(false)
     const [rooms, setRooms] = useState([]);
     const [selectedRoomType, setSelectedRoomType] = useState('Normal');
@@ -234,7 +235,7 @@ const AddShows = () => {
                 return;
             }
 
-            if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !normalPrice || !vipPrice || !selectedRoomId || !selectedLanguage){
+            if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !silverPrice || !goldPrice || !premiumPrice || !selectedRoomId || !selectedLanguage){
                 return toast('Missing required fields');
             }
 
@@ -243,8 +244,9 @@ const AddShows = () => {
             const payload = {
                 movieId: selectedMovie,
                 showsInput,
-                normalPrice: Number(normalPrice),
-                vipPrice: Number(vipPrice),
+                silverPrice: Number(silverPrice),
+                goldPrice: Number(goldPrice),
+                premiumPrice: Number(premiumPrice),
                 theatreId: theatreId, // Only use ObjectId
                 roomId: selectedRoomId,
                 language: selectedLanguage
@@ -256,8 +258,9 @@ const AddShows = () => {
                 toast.success(data.message)
                 setSelectedMovie(null)
                 setDateTimeSelection({})
-                setNormalPrice("")
-                setVipPrice("")
+                setSilverPrice("")
+                setGoldPrice("")
+                setPremiumPrice("")
                 setSelectedRoomId("")
                 setSelectedLanguage("")
                 setLanguageInput("")
@@ -334,21 +337,30 @@ const AddShows = () => {
 
       {/* Show Price, Language & Date/Time Selection */}
       <div className="flex flex-col md:flex-row gap-8 mt-8 w-full">
-        {/* Normal Price Input */}
+        {/* Silver Price Input */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Normal Seat Price</label>
+          <label className="block text-sm font-semibold mb-3 text-white">Silver Seat Price</label>
           <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
             <p className="text-white font-bold text-base">{currency}</p>
-            <input min={0} type="number" value={normalPrice} onChange={(e) => setNormalPrice(e.target.value)} placeholder="Enter normal price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+            <input min={0} type="number" value={silverPrice} onChange={(e) => setSilverPrice(e.target.value)} placeholder="Enter silver price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
           </div>
         </div>
         
-        {/* VIP Price Input */}
+        {/* Gold Price Input */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">VIP Seat Price</label>
+          <label className="block text-sm font-semibold mb-3 text-white">Gold Seat Price</label>
           <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
             <p className="text-white font-bold text-base">{currency}</p>
-            <input min={0} type="number" value={vipPrice} onChange={(e) => setVipPrice(e.target.value)} placeholder="Enter VIP price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+            <input min={0} type="number" value={goldPrice} onChange={(e) => setGoldPrice(e.target.value)} placeholder="Enter gold price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+          </div>
+        </div>
+        
+        {/* Premium Price Input */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <label className="block text-sm font-semibold mb-3 text-white">Premium Seat Price</label>
+          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
+            <p className="text-white font-bold text-base">{currency}</p>
+            <input min={0} type="number" value={premiumPrice} onChange={(e) => setPremiumPrice(e.target.value)} placeholder="Enter premium price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
           </div>
         </div>
         

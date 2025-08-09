@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
-import { ClockIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon, RefreshCwIcon, Download, Mail, QrCode, CalendarIcon, MapPinIcon } from 'lucide-react'
+import { ClockIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon, RefreshCwIcon, Download, Mail, QrCode, CalendarIcon, MapPinIcon, Ban } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Loading from '../components/Loading'
 import isoTimeFormat from '../lib/isoTimeFormat'
 import TicketQRModal from '../components/TicketQRModal'
+import CancellationModal from '../components/CancellationModal'
 import './MyBookings.css'
 
 const MyBookings = () => {
@@ -16,6 +17,8 @@ const MyBookings = () => {
   const [refreshing, setRefreshing] = useState(false)
   const [qrModalOpen, setQrModalOpen] = useState(false)
   const [qrData, setQrData] = useState(null)
+  const [cancellationModalOpen, setCancellationModalOpen] = useState(false)
+  const [selectedBookingForCancellation, setSelectedBookingForCancellation] = useState(null)
   
   const navigate = useNavigate()
   const { axios, getToken } = useAppContext()
@@ -178,21 +181,54 @@ const MyBookings = () => {
     }
   }
 
-  const getStatusIcon = (status, isPaid) => {
+  // Cancellation functions
+  const openCancellationModal = (booking) => {
+    setSelectedBookingForCancellation(booking)
+    setCancellationModalOpen(true)
+  }
+
+  const closeCancellationModal = () => {
+    setSelectedBookingForCancellation(null)
+    setCancellationModalOpen(false)
+  }
+
+  const handleCancellationSuccess = (cancellationData) => {
+    // Refresh bookings to show updated status
+    fetchBookings()
+    toast.success(`Booking cancelled! Refund: ₹${cancellationData.refundAmount}`)
+  }
+
+  // Check if booking can be cancelled (not cancelled, paid, and show hasn't passed)
+  const canCancelBooking = (booking) => {
+    if (booking.isCancelled || booking.status === 'cancelled') return false
+    if (!booking.isPaid) return false
+    if (!booking.show?.time) return false
+    
+    const showTime = new Date(booking.show.time)
+    const now = new Date()
+    return showTime > now // Show hasn't started yet
+  }
+
+  const getStatusIcon = (status, isPaid, isCancelled) => {
+    if (isCancelled) return <Ban className="w-5 h-5 text-red-500" />
     if (isPaid) return <CheckCircleIcon className="w-5 h-5 text-green-500" />
     if (status === 'payment_failed') return <XCircleIcon className="w-5 h-5 text-red-500" />
     if (status === 'pending') return <ClockIcon className="w-5 h-5 text-yellow-500" />
     return <AlertCircleIcon className="w-5 h-5 text-gray-500" />
   }
 
-  const getStatusText = (status, isPaid) => {
+  const getStatusText = (status, isPaid, isCancelled) => {
+    if (isCancelled) return 'Cancelled'
     if (isPaid) return 'Confirmed'
     if (status === 'payment_failed') return 'Payment Failed'
     if (status === 'pending') return 'Pending Payment'
     return 'Unknown'
   }
 
-  const getStatusColor = (status, isPaid) => {
+
+
+  const getStatusColor = (status, isPaid, isCancelled) => {
+    if (isCancelled) return 'text-red-500 bg-red-100'
     if (isPaid) return 'text-green-500 bg-green-100'
     if (status === 'payment_failed') return 'text-red-500 bg-red-100'
     if (status === 'pending') return 'text-yellow-500 bg-yellow-100'
@@ -325,9 +361,9 @@ const MyBookings = () => {
                 >
                   <div className='flex items-center justify-between mb-2'>
                     <div className='flex items-center gap-2'>
-                      {getStatusIcon(booking.status, booking.isPaid)}
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status, booking.isPaid)}`}>
-                        {getStatusText(booking.status, booking.isPaid)}
+                      {getStatusIcon(booking.status, booking.isPaid, booking.isCancelled)}
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status, booking.isPaid, booking.isCancelled)}`}>
+                        {getStatusText(booking.status, booking.isPaid, booking.isCancelled)}
                       </span>
                     </div>
                     <div className='text-xs text-gray-400'>
@@ -468,8 +504,8 @@ const MyBookings = () => {
                       </>
                     )}
                     
-                    {booking.isPaid && (
-                      <div className='grid grid-cols-3 gap-2'>
+                    {booking.isPaid && !booking.isCancelled && (
+                      <div className='grid grid-cols-3 gap-2 mb-3'>
                         <button 
                           onClick={() => downloadTicket(booking._id)}
                           className='bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-500 transition flex items-center justify-center gap-1 text-sm font-medium'
@@ -493,6 +529,29 @@ const MyBookings = () => {
                         </button>
                       </div>
                     )}
+
+                    {/* Cancellation button for eligible bookings */}
+                    {canCancelBooking(booking) && (
+                      <button 
+                        onClick={() => openCancellationModal(booking)}
+                        className='w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2 text-sm font-medium'
+                      >
+                        <Ban className="w-4 h-4" />
+                        Cancel Booking
+                      </button>
+                    )}
+
+                    {/* Show refund info for cancelled bookings */}
+                    {booking.isCancelled && booking.refundAmount > 0 && (
+                      <div className='bg-blue-50 border border-blue-200 p-3 rounded-lg'>
+                        <p className='text-blue-800 text-sm'>
+                          <span className='font-medium'>Refund:</span> ₹{booking.refundAmount} ({booking.refundPercentage}%)
+                        </p>
+                        <p className='text-blue-600 text-xs mt-1'>
+                          Status: {booking.refundStatus}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -506,6 +565,14 @@ const MyBookings = () => {
         isOpen={qrModalOpen}
         onClose={() => setQrModalOpen(false)}
         qrData={qrData}
+      />
+
+      {/* Cancellation Modal */}
+      <CancellationModal
+        isOpen={cancellationModalOpen}
+        onClose={closeCancellationModal}
+        booking={selectedBookingForCancellation}
+        onCancellationSuccess={handleCancellationSuccess}
       />
     </div>
   )

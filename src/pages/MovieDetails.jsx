@@ -23,9 +23,10 @@ const MovieDetails = () => {
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false)
   const [selectedTrailer, setSelectedTrailer] = useState(null)
 
-  const {api, user, image_base_url} = useAppContext()
+  const {api, user, image_base_url, userCity, cityChangeCounter} = useAppContext()
   const [favoriteMovies, setFavoriteMovies] = useState([])
   const [shows, setShows] = useState([])
+  const [currentUserCity, setCurrentUserCity] = useState(null)
 
   const fetchFavoriteMovies = async () => {
     try {
@@ -42,8 +43,19 @@ const MovieDetails = () => {
   };
 
   const fetchShows = async () => {
+    // Only fetch data if we have determined the user city (or lack thereof)
+    if (currentUserCity === null) return;
+    
     try {
-      const response = await api.get('/api/show/all');
+      // Build query params for shows - only add city if it exists
+      const showParams = new URLSearchParams();
+      if (currentUserCity && currentUserCity.trim() !== '') {
+        showParams.append('city', currentUserCity);
+      }
+      const showQueryString = showParams.toString();
+      const showUrl = showQueryString ? `/api/show/all?${showQueryString}` : '/api/show/all';
+      
+      const response = await api.get(showUrl);
       if (response.data.success) {
         setShows(response.data.shows || []);
       }
@@ -53,10 +65,27 @@ const MovieDetails = () => {
     }
   };
 
+  // Get user city from context or localStorage
+  useEffect(() => {
+    const savedCity = localStorage.getItem('userCity');
+    setCurrentUserCity(userCity || savedCity);
+  }, [userCity]);
+
   const getShow = async ()=>{
+    // Only fetch data if we have determined the user city (or lack thereof)
+    if (currentUserCity === null) return;
+    
     try {
+      // Build query params for show - only add city if it exists
+      const showParams = new URLSearchParams();
+      if (currentUserCity && currentUserCity.trim() !== '') {
+        showParams.append('city', currentUserCity);
+      }
+      const showQueryString = showParams.toString();
+      const showUrl = showQueryString ? `/api/show/${id}?${showQueryString}` : `/api/show/${id}`;
+      
       const [{ data: showData }, { data: movieData }] = await Promise.all([
-        api.get(`/api/show/${id}`),
+        api.get(showUrl),
         api.get(`/api/movies/${id}`)
       ]);
       if(showData.success && movieData.movie){
@@ -85,7 +114,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     fetchShows();
-  }, []);
+  }, [currentUserCity, cityChangeCounter]);
 
   const handleFavorite = async ()=>{
     try {
@@ -103,7 +132,7 @@ const MovieDetails = () => {
   
   useEffect(()=>{
     getShow()
-  },[id])
+  },[id, currentUserCity, cityChangeCounter])
 
   const handlePlayTrailer = () => {
     if (movie && movie.trailers && movie.trailers.length > 0) {

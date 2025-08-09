@@ -25,8 +25,9 @@ const SelectShowtime = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
 
-  const { axios, image_base_url } = useAppContext();
+  const { axios, image_base_url, userCity, cityChangeCounter } = useAppContext();
   const navigate = useNavigate();
+  const [currentUserCity, setCurrentUserCity] = useState(null);
 
   // Monitor filter changes
   useEffect(() => {
@@ -59,11 +60,28 @@ const SelectShowtime = () => {
     };
   }, [showLanguageDropdown, showFormatDropdown]);
 
+  // Get user city from context or localStorage
   useEffect(() => {
+    const savedCity = localStorage.getItem('userCity');
+    setCurrentUserCity(userCity || savedCity);
+  }, [userCity]);
+
+  useEffect(() => {
+    // Only fetch data if we have determined the user city (or lack thereof)
+    if (currentUserCity === null) return;
+    
     const getShow = async () => {
       try {
+        // Build query params for show - only add city if it exists
+        const showParams = new URLSearchParams();
+        if (currentUserCity && currentUserCity.trim() !== '') {
+          showParams.append('city', currentUserCity);
+        }
+        const showQueryString = showParams.toString();
+        const showUrl = showQueryString ? `/api/show/${id}?${showQueryString}` : `/api/show/${id}`;
+        
         const [{ data: showData }, { data: movieData }] = await Promise.all([
-          axios.get(`/api/show/${id}`),
+          axios.get(showUrl),
           axios.get(`/api/movies/${id}`)
         ]);
         if (showData.success && movieData.movie) {
@@ -83,7 +101,7 @@ const SelectShowtime = () => {
       }
     };
     getShow();
-  }, [id, axios]);
+  }, [id, axios, currentUserCity, cityChangeCounter]);
 
   if (error) {
     return (

@@ -20,7 +20,7 @@ const Navbar = () => {
  const [isOpen, setIsOpen] = useState(false)
  const [showSearch, setShowSearch] = useState(false)
  const searchInputRef = React.useRef(null)
- const { user, isAuthenticated, login, logout } = useAppContext()
+ const { user, isAuthenticated, login, logout, setUserCity: setContextUserCity } = useAppContext()
 
  const navigate = useNavigate()
 
@@ -91,6 +91,7 @@ const handleSaveCity = async () => {
     // Non-authenticated user: store in localStorage and send to public API
     localStorage.setItem('userCity', selectedCity);
     setUserCity(selectedCity);
+    setContextUserCity(selectedCity); // Update context
 
     try {
       await fetch('/api/user/city/public', {
@@ -125,7 +126,8 @@ const handleSaveCity = async () => {
 
        if (data.success) {
          setUserCity(selectedCity);
-      localStorage.setItem('userCity', selectedCity);
+         setContextUserCity(selectedCity); // Update context
+         localStorage.setItem('userCity', selectedCity);
          setShowLocationModal(false);
          setCityError("");
        } else {

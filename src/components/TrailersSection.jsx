@@ -6,18 +6,72 @@ import ResponsiveContainer from './ResponsiveContainer';
 import useResponsive from '../hooks/useResponsive';
 import './TrailersSection.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const TrailersSection = () => {
-  const { allMovies } = useAppContext();
+  const { allMovies, userCity, cityChangeCounter } = useAppContext();
   const [centerIdx, setCenterIdx] = useState(0); // Start with first trailer
   const [animDirection, setAnimDirection] = useState(null); // 'left' or 'right' or null
   const [trailers, setTrailers] = useState([]);
+  const [cityFilteredMovies, setCityFilteredMovies] = useState([]);
+  const [currentUserCity, setCurrentUserCity] = useState(null);
   const { isTinyMobile, getResponsiveValue } = useResponsive();
 
-  // Extract trailers from movies when allMovies changes
+  // Get user city from context or localStorage
   useEffect(() => {
-    if (allMovies && allMovies.length > 0) {
+    const savedCity = localStorage.getItem('userCity');
+    setCurrentUserCity(userCity || savedCity);
+  }, [userCity]);
+
+  // Fetch shows and filter movies based on user's city
+  useEffect(() => {
+    if (currentUserCity === null) return;
+    
+    const fetchCityFilteredMovies = async () => {
+      try {
+        // Build query params for shows - only add city if it exists
+        const showParams = new URLSearchParams();
+        if (currentUserCity && currentUserCity.trim() !== '') {
+          showParams.append('city', currentUserCity);
+        }
+        const showQueryString = showParams.toString();
+        const showUrl = showQueryString ? `${API_URL}/api/show/all?${showQueryString}` : `${API_URL}/api/show/all`;
+        
+        const showsResponse = await fetch(showUrl);
+        const showsData = await showsResponse.json();
+        
+        if (showsData.success && allMovies && allMovies.length > 0) {
+          const now = new Date();
+          const futureShowMovieIds = new Set(
+            (showsData.shows || [])
+              .filter(show => new Date(show.showDateTime) > now)
+              .map(show => show.movie && String(show.movie._id))
+          );
+          
+          // Filter allMovies to only include those with shows in user's city
+          const filteredMovies = allMovies.filter(movie => 
+            futureShowMovieIds.has(String(movie.id))
+          );
+          
+          setCityFilteredMovies(filteredMovies);
+        } else {
+          setCityFilteredMovies([]);
+        }
+      } catch (error) {
+        console.error('Error fetching city-filtered movies for trailers:', error);
+        // Fallback to all movies if there's an error
+        setCityFilteredMovies(allMovies || []);
+      }
+    };
+    
+    fetchCityFilteredMovies();
+  }, [allMovies, currentUserCity, cityChangeCounter]);
+
+  // Extract trailers from city-filtered movies
+  useEffect(() => {
+    if (cityFilteredMovies && cityFilteredMovies.length > 0) {
       const movieTrailers = [];
-      allMovies.forEach(movie => {
+      cityFilteredMovies.forEach(movie => {
         if (movie.trailers && movie.trailers.length > 0) {
           // Add the first trailer of each movie with movie info
           movieTrailers.push({
@@ -35,7 +89,7 @@ const TrailersSection = () => {
       setTrailers(dummyTrailers);
       setCenterIdx(2);
     }
-  }, [allMovies]);
+  }, [cityFilteredMovies]);
 
   const handleLeft = () => {
     if (centerIdx > 0) {

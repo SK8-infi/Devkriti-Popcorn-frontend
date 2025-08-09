@@ -25,6 +25,7 @@ export const AppProvider = ({ children }) => {
     const [theatreAddress, setTheatreAddress] = useState(null); // Theatre's address
     const [theatreId, setTheatreId] = useState(null); // Theatre's MongoDB ID
     const [userCity, setUserCity] = useState(null); // User's personal city preference
+    const [cityChangeCounter, setCityChangeCounter] = useState(0); // Counter to trigger re-fetching when city changes
     const [allMovies, setAllMovies] = useState([]); // All movies for trailers
     const navigate = useNavigate();
     const location = useLocation();
@@ -75,6 +76,7 @@ export const AppProvider = ({ children }) => {
         setTheatreAddress(null);
         setTheatreId(null);
         setUserCity(null);
+        setCityChangeCounter(0);
         setFavoriteMovies([]);
         toast.success('Logged out successfully');
     };
@@ -322,6 +324,11 @@ export const AppProvider = ({ children }) => {
         theatreAddress,
         theatreId,
         userCity,
+        setUserCity: (newCity) => {
+            setUserCity(newCity);
+            setCityChangeCounter(prev => prev + 1); // Trigger re-fetch
+        },
+        cityChangeCounter,
         favoriteMovies,
         fetchFavoriteMovies,
         fetchDashboardData,

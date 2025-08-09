@@ -4,6 +4,7 @@ import './Movies.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FilterIcon, XIcon } from 'lucide-react'
 import GlareHover from '../components/GlareHover'
+import { useAppContext } from '../context/AppContext'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -13,6 +14,9 @@ const Movies = () => {
   const [loading, setLoading] = useState(true);
   const [noResult, setNoResult] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [currentUserCity, setCurrentUserCity] = useState(null);
+  
+  const { userCity, cityChangeCounter } = useAppContext();
   
   // Filter states
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -206,10 +210,27 @@ const Movies = () => {
     );
   };
 
+  // Get user city from context or localStorage
   useEffect(() => {
+    const savedCity = localStorage.getItem('userCity');
+    setCurrentUserCity(userCity || savedCity);
+  }, [userCity]);
+
+  useEffect(() => {
+    // Only fetch data if we have determined the user city (or lack thereof)
+    if (currentUserCity === null) return;
+    
+    // Build query params for shows - only add city if it exists
+    const showParams = new URLSearchParams();
+    if (currentUserCity && currentUserCity.trim() !== '') {
+      showParams.append('city', currentUserCity);
+    }
+    const showQueryString = showParams.toString();
+    const showUrl = showQueryString ? `${API_URL}/api/show/all?${showQueryString}` : `${API_URL}/api/show/all`;
+    
     Promise.all([
       fetch(`${API_URL}/api/movies/latest`).then(res => res.json()),
-      fetch(`${API_URL}/api/show/all`).then(res => res.json())
+      fetch(showUrl).then(res => res.json())
     ]).then(([moviesData, showsData]) => {
       const now = new Date();
       const futureShowMovieIds = new Set(
@@ -236,7 +257,7 @@ const Movies = () => {
         setNoResult(false);
       }
     }).catch(() => setLoading(false));
-  }, [location.search, navigate]);
+  }, [location.search, navigate, currentUserCity, cityChangeCounter]);
 
   const filteredMovies = getFilteredMovies();
   const uniqueGenres = getUniqueGenres();

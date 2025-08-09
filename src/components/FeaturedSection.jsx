@@ -11,16 +11,32 @@ import './FeaturedSection.css'
 const FeaturedSection = () => {
 
     const navigate = useNavigate()
-    const { api } = useAppContext()
+    const { api, userCity, cityChangeCounter } = useAppContext()
     const [shows, setShows] = useState([])
     const [loading, setLoading] = useState(true)
     const { isTinyMobile, isMobile, getResponsiveValue } = useResponsive()
+    const [currentUserCity, setCurrentUserCity] = useState(null)
 
-    // Fetch shows data
+    // Get user city from context or localStorage
+    useEffect(() => {
+        const savedCity = localStorage.getItem('userCity')
+        setCurrentUserCity(userCity || savedCity)
+    }, [userCity])
+
+    // Fetch shows data with city filtering
     useEffect(() => {
         const fetchShows = async () => {
             try {
-                const response = await api.get('/api/show/all')
+                // Build query params - only add city if it exists
+                const params = new URLSearchParams()
+                if (currentUserCity && currentUserCity.trim() !== '') {
+                    params.append('city', currentUserCity)
+                }
+                
+                const queryString = params.toString()
+                const url = queryString ? `/api/show/all?${queryString}` : '/api/show/all'
+                
+                const response = await api.get(url)
                 if (response.data.success) {
                     setShows(response.data.shows || [])
                 }
@@ -31,8 +47,12 @@ const FeaturedSection = () => {
                 setLoading(false)
             }
         }
-        fetchShows()
-    }, [api])
+        
+        // Only fetch if we have determined the user city (or lack thereof)
+        if (currentUserCity !== null) {
+            fetchShows()
+        }
+    }, [api, currentUserCity, cityChangeCounter])
 
     // Get unique movies from shows
     const uniqueMoviesMap = new Map();

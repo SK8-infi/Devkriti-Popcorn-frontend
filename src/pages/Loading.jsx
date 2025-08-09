@@ -12,7 +12,9 @@ const LoadingPage = () => {
       setCountdown(prev => {
         if (prev <= 1) {
           clearInterval(timer)
-          navigate('/my-bookings')
+          // Use setTimeout to avoid state update during render
+          setTimeout(() => navigate('/my-bookings'), 0)
+          return 0
         }
         return prev - 1
       })

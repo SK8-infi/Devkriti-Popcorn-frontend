@@ -1,31 +1,27 @@
 import React from 'react';
+import './ResponsiveContainer.css';
 
 const ResponsiveContainer = ({ 
   children, 
   className = '', 
   maxWidth = '1200px',
-  padding = '0 1rem',
+  padding,
   center = true 
 }) => {
+  const customStyles = {};
+  
+  if (maxWidth !== '1200px') {
+    customStyles.maxWidth = maxWidth;
+  }
+  
+  if (padding) {
+    customStyles.padding = padding;
+  }
+  
   return (
     <div
-      className={`responsive-container ${className}`}
-      style={{
-        maxWidth,
-        margin: center ? '0 auto' : '0',
-        padding,
-        width: '100%',
-        boxSizing: 'border-box',
-        '@media (max-width: 768px)': {
-          padding: '0 0.75rem',
-        },
-        '@media (max-width: 480px)': {
-          padding: '0 0.5rem',
-        },
-        '@media (max-width: 300px)': {
-          padding: '0 0.25rem',
-        },
-      }}
+      className={`responsive-container ${!center ? 'no-center' : ''} ${className}`}
+      style={customStyles}
     >
       {children}
     </div>

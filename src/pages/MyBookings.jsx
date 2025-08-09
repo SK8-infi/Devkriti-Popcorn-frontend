@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
-import { ClockIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon, RefreshCwIcon } from 'lucide-react'
+import { ClockIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon, RefreshCwIcon, Download, Mail, QrCode } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Loading from '../components/Loading'
 import isoTimeFormat from '../lib/isoTimeFormat'
+import TicketQRModal from '../components/TicketQRModal'
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([])
@@ -12,6 +13,8 @@ const MyBookings = () => {
   const [retryingPayment, setRetryingPayment] = useState(null)
   const [timeRemaining, setTimeRemaining] = useState({})
   const [refreshing, setRefreshing] = useState(false)
+  const [qrModalOpen, setQrModalOpen] = useState(false)
+  const [qrData, setQrData] = useState(null)
   
   const navigate = useNavigate()
   const { axios, getToken } = useAppContext()
@@ -104,9 +107,74 @@ const MyBookings = () => {
         toast.error(data.message || 'Failed to retry payment')
       }
           } catch (error) {
-        toast.error('Failed to retry payment')
-      } finally {
+              toast.error('Failed to retry payment')
+    } finally {
       setRetryingPayment(null)
+    }
+  }
+
+  // Download ticket PDF
+  const downloadTicket = async (bookingId) => {
+    try {
+      const token = await getToken()
+      const response = await axios.get(`/api/tickets/download/${bookingId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      })
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `ticket-${bookingId}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+      
+      toast.success('Ticket downloaded successfully')
+    } catch (error) {
+      console.error('Error downloading ticket:', error)
+      toast.error('Failed to download ticket')
+    }
+  }
+
+  // Resend ticket email
+  const resendTicketEmail = async (bookingId) => {
+    try {
+      const token = await getToken()
+      const { data } = await axios.post(`/api/tickets/resend-email/${bookingId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      
+      if (data.success) {
+        toast.success('Ticket email sent successfully')
+      } else {
+        toast.error(data.message || 'Failed to send ticket email')
+      }
+    } catch (error) {
+      console.error('Error resending ticket email:', error)
+      toast.error('Failed to send ticket email')
+    }
+  }
+
+  // View ticket QR code
+  const viewTicketQR = async (bookingId) => {
+    try {
+      const token = await getToken()
+      const { data } = await axios.get(`/api/tickets/qr-code/${bookingId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      
+      if (data.success) {
+        setQrData(data.qrData)
+        setQrModalOpen(true)
+      } else {
+        toast.error(data.message || 'Failed to get QR code')
+      }
+    } catch (error) {
+      console.error('Error getting QR code:', error)
+      toast.error('Failed to get QR code')
     }
   }
 
@@ -364,9 +432,29 @@ const MyBookings = () => {
                   )}
                   
                   {booking.isPaid && (
-                    <button className='flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-400 transition'>
-                      View Ticket
-                    </button>
+                    <div className='flex gap-2'>
+                      <button 
+                        onClick={() => downloadTicket(booking._id)}
+                        className='flex-1 bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-400 transition flex items-center justify-center gap-1 text-sm'
+                      >
+                        <Download className="w-4 h-4" />
+                        Download
+                      </button>
+                      <button 
+                        onClick={() => resendTicketEmail(booking._id)}
+                        className='flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-400 transition flex items-center justify-center gap-1 text-sm'
+                      >
+                        <Mail className="w-4 h-4" />
+                        Resend
+                      </button>
+                      <button 
+                        onClick={() => viewTicketQR(booking._id)}
+                        className='flex-1 bg-purple-500 text-white px-3 py-2 rounded-lg hover:bg-purple-400 transition flex items-center justify-center gap-1 text-sm'
+                      >
+                        <QrCode className="w-4 h-4" />
+                        QR Code
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -374,6 +462,13 @@ const MyBookings = () => {
           </div>
         )}
       </div>
+      
+      {/* QR Code Modal */}
+      <TicketQRModal
+        isOpen={qrModalOpen}
+        onClose={() => setQrModalOpen(false)}
+        qrData={qrData}
+      />
     </div>
   )
 }

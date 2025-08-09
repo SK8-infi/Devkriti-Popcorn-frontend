@@ -162,7 +162,7 @@ const HeroSection = () => {
     <div
       className="landing-bg hero-vignette-bg"
       style={{
-        position: 'sticky',
+        position: 'relative',
         top: 0,
         left: 0,
         minHeight: '100vh',
@@ -172,7 +172,6 @@ const HeroSection = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        position: 'relative',
         backgroundImage: `url(${galleryItems[activeIndex].backdrop})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',

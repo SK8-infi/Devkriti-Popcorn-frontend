@@ -219,6 +219,9 @@ const SeatLayout = () => {
         const colIdx = parseInt(seatId.slice(1), 10) - 1;
         const seatType = theatreLayout?.[rowIdx]?.[colIdx];
         
+        // Skip unavailable seats (value 0) - they shouldn't be selectable anyway
+        if (seatType === 0) return;
+        
         // Ensure prices exist and are valid numbers
         const silverPrice = Number(selectedTime.silverPrice) || 100;
         const goldPrice = Number(selectedTime.goldPrice) || 150;
@@ -309,19 +312,36 @@ const SeatLayout = () => {
           <div key={rowIdx} className='seat-row'>
             {row.map((cell, colIdx) => {
               const seatId = `${String.fromCharCode(65 + rowIdx)}${colIdx + 1}`;
+              
+              // Don't render unavailable seats (value 0) - creates custom theatre shapes
+              if (cell === 0) {
+                return (
+                  <div 
+                    key={seatId} 
+                    className='seat-empty-space'
+                    style={{ 
+                      width: '40px', 
+                      height: '40px', 
+                      margin: '2px',
+                      display: 'inline-block' 
+                    }}
+                  />
+                );
+              }
+              
               let seatClass = 'seat-button';
               if (cell === 3) seatClass += ' seat-premium'; // Premium
               if (cell === 2) seatClass += ' seat-gold'; // Gold
-              if (cell === 0) seatClass += ' seat-unavailable'; // Unavailable
               if (selectedSeats.includes(seatId)) seatClass += ' seat-selected';
               if (occupiedSeats.includes(seatId)) seatClass += ' seat-occupied';
+              
               return (
                 <button
                   key={seatId}
-                  onClick={() => cell !== 0 && !occupiedSeats.includes(seatId) ? handleSeatClick(seatId) : null}
+                  onClick={() => !occupiedSeats.includes(seatId) ? handleSeatClick(seatId) : null}
                   className={seatClass}
-                  disabled={cell === 0 || occupiedSeats.includes(seatId)}
-                  title={cell === 3 ? 'Premium' : cell === 2 ? 'Gold' : cell === 0 ? 'Unavailable' : 'Silver'}
+                  disabled={occupiedSeats.includes(seatId)}
+                  title={cell === 3 ? 'Premium' : cell === 2 ? 'Gold' : 'Silver'}
                 >
                   {seatId}
                 </button>
@@ -350,6 +370,10 @@ const SeatLayout = () => {
       const rowIdx = seatId.charCodeAt(0) - 65;
       const colIdx = parseInt(seatId.slice(1), 10) - 1;
       const seatType = theatreLayout?.[rowIdx]?.[colIdx];
+      
+      // Skip unavailable seats (value 0) - they shouldn't be selectable anyway
+      if (seatType === 0) return;
+      
       if (seatType === 3) {
         premiumCount++;
         totalPrice += premiumPrice;
@@ -433,12 +457,12 @@ const SeatLayout = () => {
             <span className='legend-text'>Premium</span>
           </div>
           <div className='legend-item'>
-            <span className='legend-seat unavailable'></span>
-            <span className='legend-text'>Unavailable</span>
-          </div>
-          <div className='legend-item'>
             <span className='legend-seat selected'></span>
             <span className='legend-text'>Selected</span>
+          </div>
+          <div className='legend-item'>
+            <span className='legend-seat occupied'></span>
+            <span className='legend-text'>Occupied</span>
           </div>
         </div>
 

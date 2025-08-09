@@ -1,6 +1,11 @@
 import React from 'react'
 import Navbar from './components/Navbar'
+<<<<<<< Updated upstream
 import { Route, Routes, useLocation } from 'react-router-dom'
+=======
+import BottomNavigation from './components/BottomNavigation'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
+>>>>>>> Stashed changes
 import Home from './pages/Home'
 import Movies from './pages/Movies'
 import MovieDetails from './pages/MovieDetails'
@@ -54,6 +59,9 @@ const App = () => {
       </Routes>
       {/* Render Footer on all pages except the homepage */}
       {!isAdminRoute && !isHome && <Footer />}
+      
+      {/* Bottom Navigation for Mobile */}
+      {!isAdminRoute && <BottomNavigation />}
     </>
   )
 }

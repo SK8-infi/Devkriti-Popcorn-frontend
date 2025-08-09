@@ -2,6 +2,48 @@ import React from 'react'
 import { assets } from '../assets/assets'
 
 const Footer = () => {
+<<<<<<< Updated upstream
+=======
+  const navigate = useNavigate();
+  const { isTinyMobile, getResponsiveValue } = useResponsive();
+
+  const responsiveLogoSize = getResponsiveValue({
+    xl: '144px',
+    lg: '120px',
+    md: '100px',
+    sm: '80px',
+    xs: '60px',
+    tiny: '40px', // Reduced from 50px for better mobile proportion
+  });
+
+  const responsivePartnerWidth = getResponsiveValue({
+    xl: '50%',
+    lg: '60%',
+    md: '70%',
+    sm: '80%',
+    xs: '90%',
+    tiny: '95%',
+  });
+
+  const responsivePartnerPadding = getResponsiveValue({
+    xl: '22.5px',
+    lg: '20px',
+    md: '18px',
+    sm: '16px',
+    xs: '14px',
+    tiny: '12px',
+  });
+
+  const responsiveSocialSize = getResponsiveValue({
+    xl: '40px',
+    lg: '35px',
+    md: '30px',
+    sm: '25px',
+    xs: '20px',
+    tiny: '18px',
+  });
+
+>>>>>>> Stashed changes
   return (
     <footer className='footer-section' style={{ zIndex: 60, position: 'sticky', top: '54px', background: '#000' }}>
             <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500 pb-14">

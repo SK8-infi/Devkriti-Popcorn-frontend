@@ -69,4 +69,590 @@ input::-webkit-inner-spin-button {
 :root {
   --color-primary: #F84565;
   --color-primary-dull: #D63854;
+<<<<<<< Updated upstream
+=======
+}
+
+html, body, * {
+  font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+/* Movie Card Flip Effect */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.movie-flip-card {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%; /* 2:3 aspect ratio */
+}
+.movie-flip-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+.movie-flip-card:hover .movie-flip-inner {
+  transform: rotateY(180deg);
+}
+.movie-flip-front, .movie-flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.movie-flip-back {
+  background: #000;
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Responsive Utilities */
+.hidden-mobile {
+  display: block;
+}
+
+.hidden-desktop {
+  display: none;
+}
+
+.text-responsive {
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .text-responsive {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none;
+  }
+  
+  .hidden-desktop {
+    display: block;
+  }
+  
+  .text-responsive {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-responsive {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .text-responsive {
+    font-size: 0.8rem;
+  }
+}
+
+/* Responsive spacing utilities */
+.responsive-padding {
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .responsive-padding {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-padding {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .responsive-padding {
+    padding: 0.75rem;
+  }
+}
+
+/* Responsive margins */
+.responsive-margin {
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .responsive-margin {
+    margin: 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-margin {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 300px) {
+  .responsive-margin {
+    margin: 0.75rem 0;
+  }
+}
+
+/* Comprehensive 300px Screen Optimizations */
+@media (max-width: 340px) {
+  /* Global adjustments for tiny devices */
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 80px; /* Add space for bottom navigation */
+  }
+
+  /* Container adjustments */
+  .responsive-container {
+    padding: 0 8px !important;
+    max-width: 100% !important;
+  }
+
+  .responsive-grid {
+    gap: 8px !important;
+    padding: 0 4px !important;
+  }
+
+  /* Button adjustments */
+  button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    font-size: 0.8rem !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Typography adjustments */
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 1.2rem !important;
+    line-height: 1.3 !important;
+    margin: 8px 0 !important;
+  }
+
+  p {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin: 6px 0 !important;
+  }
+
+  svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Movie card adjustments */
+  .movie-card {
+    height: 260px !important;
+    min-width: 140px !important;
+  }
+
+  .movie-card-img {
+    height: 180px !important;
+  }
+
+  /* Hide scrollbars for horizontal scrolling */
+  .featured-section div[style*="overflowX: auto"]::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .featured-section div[style*="overflowX: auto"] {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  /* Featured section adjustments */
+  .featured-section {
+    padding: 10px 0 !important;
+  }
+
+  .hero-section {
+    min-height: 60vh !important;
+  }
+
+  .featured-section {
+    padding: 15px 0 !important;
+  }
+
+  .featured-header {
+    padding: 0 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Trailer section adjustments - Vertical list */
+  .trailers-section {
+    padding: 15px 0 30px 0 !important;
+  }
+
+  /* Vertical trailer layout for tiny devices */
+  .trailers-section .responsive-container {
+    padding: 0 8px !important;
+  }
+
+  .trailers-section h2 {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    color: #fff !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Full-width trailer cards - More specific selectors */
+  .trailers-section > div > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding: 0 8px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: hidden !important;
+  }
+
+  .trailers-section > div > div > div {
+    width: 100% !important;
+    background: #111 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Video player container */
+  .trailers-section > div > div > div > div:first-child {
+    width: 100% !important;
+    height: 200px !important;
+    position: relative !important;
+    background: #000 !important;
+  }
+
+  /* Trailer info section */
+  .trailers-section > div > div > div > div:last-child {
+    padding: 12px !important;
+    background: #111 !important;
+  }
+
+  .trailers-section h3 {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    margin: 0 0 8px 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  .trailers-section p {
+    font-size: 0.85rem !important;
+    color: #ccc !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Override any horizontal scrolling */
+  .trailers-section * {
+    overflow-x: hidden !important;
+  }
+
+  /* Force vertical layout for all trailer containers */
+  .trailers-section .responsive-container > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding: 0 8px !important;
+  }
+
+  /* Ensure trailer items are full width */
+  .trailers-section .responsive-container > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Modern grid layout for tiny trailer cards */
+  .tiny-trailers-modern {
+    padding: 20px 0 !important;
+  }
+
+  .tiny-trailers-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 0 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .tiny-trailers-grid > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Modal styles for video player */
+  .trailer-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0,0,0,0.9) !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+  }
+
+  .trailer-modal-content {
+    width: 100% !important;
+    max-width: 400px !important;
+    background: #111 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  /* Footer adjustments */
+  .footer-section {
+    padding: 0 0 10px 0 !important;
+  }
+
+  /* Navigation adjustments */
+  .navbar-content {
+    padding: 0 4px !important;
+    max-width: 100% !important;
+  }
+
+  .navbar-logo {
+    width: 3rem !important;
+  }
+
+  .navbar-icons {
+    gap: 8px !important;
+  }
+
+  .navbar-login-btn {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
+  }
+
+  .navbar-location-btn {
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+  }
+
+  .navbar-hamburger-btn {
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+  }
+
+  .navbar-fav-btn {
+    width: 1.8rem !important;
+    height: 1.8rem !important;
+  }
+
+  /* Modal adjustments */
+  .modal-content {
+    width: 95% !important;
+    margin: 10px auto !important;
+    padding: 1rem !important;
+  }
+
+  /* Form adjustments */
+  input, textarea, select {
+    font-size: 0.9rem !important;
+    padding: 8px !important;
+  }
+
+  /* Spacing adjustments */
+  .section-padding {
+    padding: 1rem 0 !important;
+  }
+
+  .container-padding {
+    padding: 0 4px !important;
+  }
+
+  /* Image adjustments */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Flex adjustments */
+  .flex-container {
+    gap: 8px !important;
+  }
+
+  /* Text overflow handling */
+  .text-ellipsis {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Responsive text */
+  .responsive-text {
+    font-size: 0.9rem !important;
+  }
+
+  /* Responsive spacing */
+  .responsive-spacing {
+    margin: 8px 0 !important;
+    padding: 8px !important;
+  }
+
+  /* Tiny device specific layouts */
+  .tiny-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: center !important;
+    padding: 20px 8px !important;
+  }
+
+  .tiny-movie-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .tiny-movie-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    background: #fff !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  }
+
+  .tiny-trailer-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .tiny-trailer-item {
+    background: #111 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+  }
+
+  /* Touch targets */
+  .touch-target {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  /* Improved readability */
+  .tiny-text {
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .tiny-title {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+  }
+
+  .tiny-subtitle {
+    font-size: 0.75rem !important;
+    color: #666 !important;
+  }
+
+  /* Button improvements */
+  .tiny-button {
+    background: #FFD6A0 !important;
+    color: #232323 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    min-height: 44px !important;
+  }
+
+  /* Navigation dots */
+  .tiny-dots {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .tiny-dot {
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .tiny-dot.active {
+    width: 12px !important;
+    background: #FFD6A0 !important;
+  }
+
+  .tiny-dot.inactive {
+    background: rgba(255,255,255,0.3) !important;
+  }
+
+  /* Prevent horizontal scrolling */
+  .landing-bg {
+    overflow: hidden !important;
+  }
+
+  /* Ensure proper text wrapping */
+  .hero-info-block {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  /* Optimize circular gallery for tiny screens */
+  .circular-gallery {
+    height: 200px !important;
+    margin-top: 20px !important;
+  }
+>>>>>>> Stashed changes
 }

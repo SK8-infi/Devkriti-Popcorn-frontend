@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useAppContext } from '../../context/AppContext';
-import { Users, Shield, User, ArrowLeft, Home, RefreshCw, Search, Filter } from 'lucide-react';
+import { Users, Shield, User, ArrowLeft, Home, RefreshCw, Search, Filter, Film, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/Loading';
 import { getUserImage } from '../../utils/imageUtils';
@@ -13,6 +13,11 @@ const ManageUsers = () => {
     const [fetchingUsers, setFetchingUsers] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterRole, setFilterRole] = useState('all');
+    
+    // Movie fetching state
+    const [movieId, setMovieId] = useState('');
+    const [fetchingMovie, setFetchingMovie] = useState(false);
+    const [lastFetchedMovie, setLastFetchedMovie] = useState(null);
 
     // Fetch all users from backend
     const fetchUsers = async () => {
@@ -66,6 +71,43 @@ const ManageUsers = () => {
             toast.error(error.response?.data?.message || 'Failed to update user role');
         } finally {
             setManageLoading(false);
+        }
+    };
+
+    // Fetch movie by TMDB ID
+    const handleFetchMovie = async () => {
+        if (!movieId.trim()) {
+            toast.error('Please enter a valid TMDB movie ID');
+            return;
+        }
+
+        setFetchingMovie(true);
+        try {
+            const response = await api.post('/api/movies/fetch-by-id', { 
+                movieId: movieId.trim() 
+            });
+
+            if (response.data.success) {
+                if (response.data.alreadyExists) {
+                    toast.success(`Movie "${response.data.movie.title}" already exists in cache`);
+                } else {
+                    toast.success(`Movie "${response.data.movie.title}" successfully added to cache!`);
+                }
+                
+                setLastFetchedMovie(response.data.movie);
+                setMovieId(''); // Clear the input
+            } else {
+                toast.error(response.data.message || 'Failed to fetch movie');
+            }
+        } catch (error) {
+            console.error('Fetch movie error:', error);
+            if (error.response?.status === 404) {
+                toast.error(`Movie with ID ${movieId} not found on TMDB`);
+            } else {
+                toast.error(error.response?.data?.message || 'Failed to fetch movie');
+            }
+        } finally {
+            setFetchingMovie(false);
         }
     };
 
@@ -322,6 +364,94 @@ const ManageUsers = () => {
                         <p>• Use the search bar to find specific users</p>
                         <p>• Use the filter dropdown to view specific roles</p>
                         <p>• Only users with owner access can manage other users</p>
+                    </div>
+                </div>
+
+                {/* Movie Management Section */}
+                <div className="mt-8 bg-white/10 rounded-lg shadow-md border border-white/20">
+                    <div className="px-6 py-4 border-b border-white/20">
+                        <div className="flex items-center gap-3">
+                            <Film className="w-6 h-6 text-yellow-500" />
+                            <h3 className="text-lg font-semibold text-white">Movie Management</h3>
+                        </div>
+                        <p className="text-sm text-gray-300 mt-1">Add specific movies to the cache by TMDB ID</p>
+                    </div>
+                    
+                    <div className="p-6">
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="flex-1">
+                                <label htmlFor="movieId" className="block text-sm font-medium text-gray-300 mb-2">
+                                    TMDB Movie ID
+                                </label>
+                                <input
+                                    id="movieId"
+                                    type="text"
+                                    placeholder="Enter TMDB movie ID (e.g., 550)"
+                                    value={movieId}
+                                    onChange={(e) => setMovieId(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleFetchMovie()}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-black text-white"
+                                    disabled={fetchingMovie}
+                                />
+                                <p className="text-xs text-gray-400 mt-1">
+                                    Find TMDB IDs on <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:underline">themoviedb.org</a>
+                                </p>
+                            </div>
+                            <div className="flex items-end">
+                                <button
+                                    onClick={handleFetchMovie}
+                                    disabled={fetchingMovie || !movieId.trim()}
+                                    className="flex items-center gap-2 px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <Plus className={`w-4 h-4 ${fetchingMovie ? 'animate-spin' : ''}`} />
+                                    {fetchingMovie ? 'Fetching...' : 'Add Movie'}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Last Fetched Movie Display */}
+                        {lastFetchedMovie && (
+                            <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+                                <div className="flex items-start gap-4">
+                                    {lastFetchedMovie.poster_url && (
+                                        <img 
+                                            src={`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${lastFetchedMovie.poster_url}`}
+                                            alt={lastFetchedMovie.title}
+                                            className="w-16 h-24 object-cover rounded-md flex-shrink-0"
+                                        />
+                                    )}
+                                    <div className="flex-1">
+                                        <h4 className="text-lg font-semibold text-white mb-1">
+                                            {lastFetchedMovie.title}
+                                        </h4>
+                                        <div className="text-sm text-gray-300 space-y-1">
+                                            <p><strong>TMDB ID:</strong> {lastFetchedMovie.id}</p>
+                                            <p><strong>Release Date:</strong> {lastFetchedMovie.release_date}</p>
+                                            <p><strong>Runtime:</strong> {lastFetchedMovie.runtime ? `${lastFetchedMovie.runtime} minutes` : 'N/A'}</p>
+                                            {lastFetchedMovie.genres && lastFetchedMovie.genres.length > 0 && (
+                                                <p><strong>Genres:</strong> {lastFetchedMovie.genres.map(g => g.name).join(', ')}</p>
+                                            )}
+                                        </div>
+                                        {lastFetchedMovie.overview && (
+                                            <p className="text-sm text-gray-400 mt-2 line-clamp-3">
+                                                {lastFetchedMovie.overview}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Instructions */}
+                        <div className="mt-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                            <h5 className="text-sm font-medium text-yellow-200 mb-2">How to use</h5>
+                            <div className="text-sm text-yellow-300 space-y-1">
+                                <p>• Visit <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" className="underline">themoviedb.org</a> and search for a movie</p>
+                                <p>• Copy the movie ID from the URL (e.g., in themoviedb.org/movie/<strong>550</strong>, the ID is 550)</p>
+                                <p>• Enter the ID above and click "Add Movie" to fetch it into the cache</p>
+                                <p>• The movie will be available for show creation immediately</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

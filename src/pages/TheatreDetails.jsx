@@ -6,6 +6,8 @@ import TheatreReviews from '../components/TheatreReviews';
 import TheatreReviewForm from '../components/TheatreReviewForm';
 import TheatreResponseForm from '../components/TheatreResponseForm';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const TheatreDetails = () => {
   const { theatreId } = useParams();
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ const TheatreDetails = () => {
 
   const fetchTheatreDetails = async () => {
     try {
-      const response = await fetch(`/api/admin/theatre/${theatreId}`);
+      const response = await fetch(`${API_URL}/api/admin/theatre/${theatreId}`);
       const data = await response.json();
       
       if (data.success) {
@@ -41,7 +43,7 @@ const TheatreDetails = () => {
 
   const checkUserReview = async () => {
     try {
-      const response = await fetch('/api/reviews/user', {
+      const response = await fetch(`${API_URL}/api/reviews/user`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -61,7 +63,7 @@ const TheatreDetails = () => {
 
   const handleSubmitReview = async (reviewData) => {
     try {
-      const response = await fetch('/api/reviews', {
+      const response = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +90,7 @@ const TheatreDetails = () => {
 
   const handleTheatreResponse = async (reviewId, content) => {
     try {
-      const response = await fetch(`/api/reviews/${reviewId}/response`, {
+      const response = await fetch(`${API_URL}/api/reviews/${reviewId}/response`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -218,3 +218,112 @@ html, body, * {
     margin: 0.75rem 0;
   }
 }
+
+/* Mobile-specific text wrapping */
+@media (max-width: 768px) {
+  .text-wrap-mobile {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Ensure long words don't overflow */
+  * {
+    word-break: break-word;
+  }
+}
+
+/* Tiny mobile optimizations (around 300px width) */
+@media (max-width: 350px) {
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+    padding-bottom: 80px; /* Space for bottom navigation */
+  }
+  
+  /* Ensure content takes full viewport width */
+  .container, .section {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  /* Text wrapping for all elements */
+  * {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+  
+  /* Ensure proper text sizing */
+  h1 { font-size: 1.25rem !important; }
+  h2 { font-size: 1.1rem !important; }
+  h3 { font-size: 1rem !important; }
+  p { font-size: 0.85rem !important; }
+}
+
+@media (max-width: 300px) {
+  /* Further optimize for tiny screens */
+  body {
+    padding-bottom: 70px; /* Reduced space for bottom navigation */
+  }
+  
+  .container, .section {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+  
+  /* Reduce font sizes further */
+  h1 { font-size: 1.1rem !important; }
+  h2 { font-size: 1rem !important; }
+  h3 { font-size: 0.9rem !important; }
+  p { font-size: 0.8rem !important; }
+}
+
+/* Mobile bottom dock spacing */
+@media (max-width: 768px) {
+  html, body {
+    padding-bottom: 80px; /* Space for bottom dock */
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Ensure content doesn't get hidden behind bottom dock */
+  .main-content,
+  .page-content,
+  .container,
+  #root {
+    padding-bottom: 80px;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+}
+
+/* Mobile text overflow prevention */
+@media (max-width: 768px) {
+  h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  p, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* Mobile logo sizing */
+@media (max-width: 768px) {
+  .navbar-logo {
+    font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
+  }
+}
+
+

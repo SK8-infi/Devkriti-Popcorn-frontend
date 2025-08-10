@@ -77,7 +77,8 @@ const Footer = () => {
           }}>
             <img src={logo} alt="Popcorn Logo" style={{ 
               height: responsiveLogoSize, 
-              width: 'auto' 
+              width: 'auto',
+              maxWidth: isTinyMobile ? '100px' : 'none' // Limit logo width on mobile
             }} />
           </div>
           <div style={{ 

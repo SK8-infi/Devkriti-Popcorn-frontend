@@ -1,0 +1,92 @@
+.recommended-section {
+  width: 100%;
+  color: #ffefcb;
+  padding: 20px 0 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.recommended-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.recommended-title {
+  text-align: left;
+  margin: 0;
+  font-family: 'Gotham', Arial, sans-serif;
+  font-size: 1.6rem;
+  color: #ffefcb;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.recommended-movies {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .recommended-title {
+    font-size: 1.5rem;
+  }
+  
+  .recommended-movies {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .recommended-title {
+    font-size: 1.4rem;
+  }
+  
+  .recommended-movies {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recommended-title {
+    font-size: 1.3rem;
+  }
+  
+  .recommended-movies {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .recommended-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .recommended-title {
+    font-size: 1.2rem;
+  }
+  
+  .recommended-movies {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .recommended-title {
+    font-size: 1.1rem;
+  }
+  
+  .recommended-movies {
+    gap: 0.5rem;
+  }
+}

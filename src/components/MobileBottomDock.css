@@ -1,0 +1,125 @@
+.mobile-bottom-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1300;
+  display: none;
+}
+
+/* Force show on mobile */
+@media (max-width: 768px) {
+  .mobile-bottom-dock {
+    display: block !important;
+  }
+}
+
+.mobile-bottom-dock-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 214, 160, 0.2);
+  padding: 0.75rem 0.5rem;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-bottom-dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  max-width: 80px;
+}
+
+.mobile-bottom-dock-link,
+.mobile-bottom-dock-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.mobile-bottom-dock-link:hover,
+.mobile-bottom-dock-button:hover {
+  color: #FFD6A0;
+}
+
+.mobile-bottom-dock-item.active .mobile-bottom-dock-link,
+.mobile-bottom-dock-item.active .mobile-bottom-dock-button {
+  color: #FFD6A0;
+}
+
+.mobile-bottom-dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: all 0.2s ease;
+}
+
+.mobile-bottom-dock-item.active .mobile-bottom-dock-icon {
+  transform: scale(1.1);
+}
+
+.mobile-bottom-dock-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Mobile optimizations for very small screens */
+@media (max-width: 350px) {
+  .mobile-bottom-dock-content {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .mobile-bottom-dock-item {
+    max-width: 70px;
+  }
+  
+  .mobile-bottom-dock-link,
+  .mobile-bottom-dock-button {
+    padding: 0.375rem;
+  }
+  
+  .mobile-bottom-dock-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .mobile-bottom-dock-label {
+    font-size: 0.625rem;
+  }
+}
+
+/* Show bottom dock only on mobile */
+@media (max-width: 768px) {
+  .mobile-bottom-dock {
+    display: block;
+  }
+}
+
+/* Hide on larger screens */
+@media (min-width: 769px) {
+  .mobile-bottom-dock {
+    display: none;
+  }
+}

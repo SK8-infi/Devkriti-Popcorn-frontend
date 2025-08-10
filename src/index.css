@@ -30,8 +30,9 @@
 
 body{
   color: white;
-  background-color: #000000;
+  background-color: transparent !important;
   font-family: 'Montserrat', Arial, sans-serif;
+  min-height: 100vh;
 }
 
 .no-scrollbar{
@@ -76,6 +77,14 @@ input::-webkit-inner-spin-button {
 
 html, body, * {
   font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+html {
+  background-color: transparent !important;
+}
+
+#root {
+  background-color: transparent !important;
 }
 
 /* Movie Card Flip Effect */

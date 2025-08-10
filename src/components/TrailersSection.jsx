@@ -169,7 +169,7 @@ const TrailersSection = () => {
         padding: '40px 0 80px 0', 
         position: 'relative', 
         overflow: 'hidden', 
-        backgroundColor: '#000000', 
+        backgroundColor: 'transparent', 
         marginBottom: '60px' 
       }}>
         <div style={{ 

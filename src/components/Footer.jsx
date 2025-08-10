@@ -91,13 +91,13 @@ const Footer = () => {
 
         {/* Partner Banner - Redesigned */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)', 
+          background: 'transparent', 
           margin: '0 auto 40px auto', 
           marginTop: '0px',
           padding: responsivePartnerPadding, 
           borderRadius: '16px',
-          border: '1px solid #333',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: 'none',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',

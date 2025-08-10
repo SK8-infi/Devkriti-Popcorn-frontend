@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Star, Heart } from 'lucide-react';
+import { Send, MessageCircle } from 'lucide-react';
 import GlareHover from '../components/GlareHover';
 import './ContactUs.css';
 
@@ -76,93 +76,9 @@ const ContactUs = () => {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid xl:grid-cols-3 gap-8 mb-16">
-          {/* Contact Information - Takes 1 column */}
-          <div className="xl:col-span-1">
-            <h2 className="text-2xl font-bold mb-6" style={{ 
-              color: '#FFD6A0'
-            }}>
-              Get in Touch
-            </h2>
-            <div className="space-y-6">
-              <div 
-                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
-                style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
-                    <Mail size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-lg mb-2">Email</h3>
-                    <p className="text-gray-300">support@popcorn.com</p>
-                    <p className="text-gray-300">info@popcorn.com</p>
-                  </div>
-                </div>
-              </div>
-
-              <div 
-                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
-                style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
-                    <Phone size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-lg mb-2">Phone</h3>
-                    <p className="text-gray-300">+91 62629 51712</p>
-                    <p className="text-gray-300">+91 83184 07289</p>
-                    <p className="text-gray-300">+91 78934 55768</p>
-                  </div>
-                </div>
-              </div>
-
-              <div 
-                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
-                style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
-                    <MapPin size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-lg mb-2">Address</h3>
-                    <p className="text-gray-300">ABV-IIITM GWALIOR</p>
-                    <p className="text-gray-300">Morena Link Road, 474015</p>
-                    <p className="text-gray-300">Madhya Pradesh, India</p>
-                  </div>
-                </div>
-              </div>
-
-              <div 
-                className="p-6 rounded-2xl border border-gray-600/50 hover:border-primary/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary/20"
-                style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl text-black" style={{ backgroundColor: '#FFD6A0' }}>
-                    <Clock size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-lg mb-2">Business Hours</h3>
-                    <p className="text-gray-300">Monday - Friday: 9:00 AM - 8:00 PM</p>
-                    <p className="text-gray-300">Saturday - Sunday: 10:00 AM - 10:00 PM</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form - Takes 2 columns */}
-          <div className="xl:col-span-2">
+        <div className="flex justify-center mb-16">
+          {/* Contact Form - Takes full width */}
+          <div className="w-full max-w-4xl">
             <div 
               className="p-6 rounded-xl border border-gray-600/50 backdrop-blur-sm relative overflow-hidden max-w-2xl mx-auto mt-12"
               style={{

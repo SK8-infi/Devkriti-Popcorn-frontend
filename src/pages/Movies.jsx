@@ -331,7 +331,7 @@ const Movies = () => {
       {showFilters && (
         <div className="filters-section">
           <div className="filters-header">
-            <h3>Filters</h3>
+            <h3 style={{ color: '#ffffff' }}>Filters</h3>
             <GlareHover
               width="auto"
               height="auto"
@@ -346,7 +346,7 @@ const Movies = () => {
               playOnce={false}
               style={{ display: 'inline-block' }}
             >
-              <button onClick={clearAllFilters} className="clear-filters-btn" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}>
+              <button onClick={clearAllFilters} className="clear-filters-btn" style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto', color: '#ffffff' }}>
                 Clear All
               </button>
             </GlareHover>
@@ -354,7 +354,7 @@ const Movies = () => {
 
           {/* Search */}
           <div className="filter-group">
-            <label>Search Movies</label>
+            <label style={{ color: '#ffffff' }}>Search Movies</label>
             <input
               type="text"
               placeholder="Search by movie title..."
@@ -366,14 +366,14 @@ const Movies = () => {
 
           {/* Genres */}
           <div className="filter-group">
-            <label>Genres</label>
+            <label style={{ color: '#ffffff' }}>Genres</label>
             <div className="filter-options">
               {uniqueGenres.map(genre => (
                 <GlareHover
                   key={genre}
                   width="auto"
                   height="auto"
-                  background={selectedGenres.includes(genre) ? "linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)" : "rgba(255, 255, 255, 0.1)"}
+                  background={selectedGenres.includes(genre) ? "linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)" : "#000000"}
                   borderRadius="12px"
                   borderColor={selectedGenres.includes(genre) ? "#FFD6A0" : "rgba(255, 255, 255, 0.3)"}
                   glareColor="#ffffff"
@@ -387,7 +387,7 @@ const Movies = () => {
                   <button
                     onClick={() => toggleGenre(genre)}
                     className={`filter-option ${selectedGenres.includes(genre) ? 'active' : ''}`}
-                    style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+                    style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto', color: '#ffffff' }}
                   >
                     {genre}
                   </button>
@@ -398,14 +398,14 @@ const Movies = () => {
 
           {/* Languages */}
           <div className="filter-group">
-            <label>Languages</label>
+            <label style={{ color: '#ffffff' }}>Languages</label>
             <div className="filter-options">
               {uniqueLanguages.map(language => (
                 <GlareHover
                   key={language}
                   width="auto"
                   height="auto"
-                  background={selectedLanguages.includes(language) ? "linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)" : "rgba(255, 255, 255, 0.1)"}
+                  background={selectedLanguages.includes(language) ? "linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)" : "#000000"}
                   borderRadius="12px"
                   borderColor={selectedLanguages.includes(language) ? "#FFD6A0" : "rgba(255, 255, 255, 0.3)"}
                   glareColor="#ffffff"
@@ -419,7 +419,7 @@ const Movies = () => {
                   <button
                     onClick={() => toggleLanguage(language)}
                     className={`filter-option ${selectedLanguages.includes(language) ? 'active' : ''}`}
-                    style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+                    style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto', color: '#ffffff' }}
                   >
                     {language}
                   </button>
@@ -432,14 +432,14 @@ const Movies = () => {
 
           {/* Ratings */}
           <div className="filter-group">
-            <label>Ratings</label>
+            <label style={{ color: '#ffffff' }}>Ratings</label>
             <div className="filter-options">
               {getUniqueRatings().map(rating => (
                 <GlareHover
                   key={rating.label}
                   width="auto"
                   height="auto"
-                  background={selectedRatings.includes(rating.label) ? "linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)" : "rgba(255, 255, 255, 0.1)"}
+                  background={selectedRatings.includes(rating.label) ? "linear-gradient(135deg, #FFD6A0 0%, #FFA500 100%)" : "#000000"}
                   borderRadius="12px"
                   borderColor={selectedRatings.includes(rating.label) ? "#FFD6A0" : "rgba(255, 255, 255, 0.3)"}
                   glareColor="#ffffff"
@@ -453,7 +453,7 @@ const Movies = () => {
                   <button
                     onClick={() => toggleRating(rating.label)}
                     className={`filter-option ${selectedRatings.includes(rating.label) ? 'active' : ''}`}
-                    style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto' }}
+                    style={{ background: 'transparent', border: 'none', boxShadow: 'none', pointerEvents: 'auto', color: '#ffffff' }}
                   >
                     {rating.label}
                   </button>
@@ -465,7 +465,7 @@ const Movies = () => {
           {/* Active Filters Display */}
           {(selectedGenres.length > 0 || selectedLanguages.length > 0 || selectedRatings.length > 0 || searchTerm) && (
             <div className="active-filters">
-              <span>Active Filters:</span>
+              <span style={{ color: '#ffffff' }}>Active Filters:</span>
               {selectedGenres.map(genre => (
                 <GlareHover
                   key={genre}
@@ -482,7 +482,7 @@ const Movies = () => {
                   playOnce={false}
                   style={{ display: 'inline-block' }}
                 >
-                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#ffffff' }}>
                     {genre} <XIcon size={12} onClick={() => toggleGenre(genre)} />
                   </span>
                 </GlareHover>
@@ -503,7 +503,7 @@ const Movies = () => {
                   playOnce={false}
                   style={{ display: 'inline-block' }}
                 >
-                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#ffffff' }}>
                     {language} <XIcon size={12} onClick={() => toggleLanguage(language)} />
                   </span>
                 </GlareHover>
@@ -524,7 +524,7 @@ const Movies = () => {
                   playOnce={false}
                   style={{ display: 'inline-block' }}
                 >
-                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#ffffff' }}>
                     {rating} <XIcon size={12} onClick={() => toggleRating(rating)} />
                   </span>
                 </GlareHover>
@@ -544,7 +544,7 @@ const Movies = () => {
                   playOnce={false}
                   style={{ display: 'inline-block' }}
                 >
-                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <span className="active-filter-tag" style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#ffffff' }}>
                     Search: {searchTerm} <XIcon size={12} onClick={() => setSearchTerm('')} />
                   </span>
                 </GlareHover>

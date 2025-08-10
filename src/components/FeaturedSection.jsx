@@ -23,25 +23,51 @@ const FeaturedSection = () => {
         setCurrentUserCity(userCity || savedCity)
     }, [userCity])
 
-    // Fetch shows data with city filtering
+    // Fetch movies and shows data with city filtering
     useEffect(() => {
-        const fetchShows = async () => {
+        const fetchData = async () => {
             try {
-                // Build query params - only add city if it exists
-                const params = new URLSearchParams()
+                // Build query params for shows - only add city if it exists
+                const showParams = new URLSearchParams();
                 if (currentUserCity && currentUserCity.trim() !== '') {
-                    params.append('city', currentUserCity)
+                    showParams.append('city', currentUserCity);
                 }
+                const showQueryString = showParams.toString();
+                const showUrl = showQueryString ? `/api/show/all?${showQueryString}` : '/api/show/all';
                 
-                const queryString = params.toString()
-                const url = queryString ? `/api/show/all?${queryString}` : '/api/show/all'
+                const [moviesResponse, showsResponse] = await Promise.all([
+                    api.get('/api/movies/latest'),
+                    api.get(showUrl)
+                ]);
                 
-                const response = await api.get(url)
-                if (response.data.success) {
-                    setShows(response.data.shows || [])
+                if (moviesResponse.data.movies && showsResponse.data.success) {
+                    const now = new Date();
+                    const futureShowMovieIds = new Set();
+                    
+                    // Collect all movie IDs from shows that have future showtimes
+                    (showsResponse.data.shows || []).forEach(show => {
+                        if (new Date(show.showDateTime) > now && show.movie) {
+                            // Add both _id and id if they exist
+                            if (show.movie._id) {
+                                futureShowMovieIds.add(String(show.movie._id));
+                            }
+                            if (show.movie.id) {
+                                futureShowMovieIds.add(String(show.movie.id));
+                            }
+                        }
+                    });
+                    
+                    // Filter movies that have shows - check both id and _id fields
+                    const filteredMovies = (moviesResponse.data.movies || []).filter(movie => {
+                        const movieId = String(movie.id || '');
+                        const movieIdAlt = String(movie._id || '');
+                        return futureShowMovieIds.has(movieId) || futureShowMovieIds.has(movieIdAlt);
+                    });
+                    
+                    setShows(filteredMovies);
                 }
             } catch (error) {
-                console.error('Error fetching shows:', error)
+                console.error('Error fetching data:', error)
                 setShows([])
             } finally {
                 setLoading(false)
@@ -50,20 +76,12 @@ const FeaturedSection = () => {
         
         // Only fetch if we have determined the user city (or lack thereof)
         if (currentUserCity !== null) {
-            fetchShows()
+            fetchData()
         }
     }, [api, currentUserCity, cityChangeCounter])
 
-    // Get unique movies from shows
-    const uniqueMoviesMap = new Map();
-    if (shows && shows.length > 0) {
-        shows.forEach(show => {
-            if (show.movie && !uniqueMoviesMap.has(show.movie._id)) {
-                uniqueMoviesMap.set(show.movie._id, show);
-            }
-        });
-    }
-    const uniqueShows = Array.from(uniqueMoviesMap.values());
+    // Use the filtered movies directly (no need for uniqueMoviesMap since we're already filtering)
+    const uniqueShows = shows;
 
     const responsiveTitleSize = getResponsiveValue({
         xl: '1.6rem',
@@ -115,7 +133,7 @@ const FeaturedSection = () => {
                 fontSize: responsiveTitleSize, 
                 color: '#ffefcb', 
                 letterSpacing: '1px' 
-              }}>NOW SHOWING</p>
+              }}>NOW SHOWING{currentUserCity ? ` IN ${currentUserCity.toUpperCase()}` : ''}</p>
               <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
                   View All 
                   <ArrowRight style={{transition: 'transform 0.2s'}}/>
@@ -170,7 +188,7 @@ const FeaturedSection = () => {
               color: '#ffefcb', 
               letterSpacing: '1px', 
               fontWeight: 'bold' 
-            }}>NOW SHOWING</p>
+            }}>NOW SHOWING{currentUserCity ? ` IN ${currentUserCity.toUpperCase()}` : ''}</p>
             <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
                 View All 
                 <ArrowRight style={{transition: 'transform 0.2s'}}/>
@@ -188,9 +206,9 @@ const FeaturedSection = () => {
               }}
               gap={responsiveGap}
             >
-              {uniqueShows.map((show) => (
-                <MovieCard key={show.movie._id || show.movie.id} movie={{ ...show.movie, id: show.movie.id || show.movie._id }}/>
-              ))}
+                             {uniqueShows.map((movie) => (
+                 <MovieCard key={movie.id || movie._id} movie={movie}/>
+               ))}
             </ResponsiveGrid>
           ) : (
             <div style={{ 

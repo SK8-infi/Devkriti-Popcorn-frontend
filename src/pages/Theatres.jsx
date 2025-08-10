@@ -17,9 +17,21 @@ const Theatres = () => {
   const navigate = useNavigate();
   const { userCity } = useAppContext();
 
+
   const fetchTheatres = async () => {
+    // Only fetch data if we have determined the user city (or lack thereof)
+    if (currentUserCity === null) return;
+    
     try {
-      const res = await fetch(`${API_URL}/api/admin/all-theatres`);
+      // Build query params for theatres - only add city if it exists
+      const theatreParams = new URLSearchParams();
+      if (currentUserCity && currentUserCity.trim() !== '') {
+        theatreParams.append('city', currentUserCity);
+      }
+      const theatreQueryString = theatreParams.toString();
+      const theatreUrl = theatreQueryString ? `${API_URL}/api/admin/all-theatres?${theatreQueryString}` : `${API_URL}/api/admin/all-theatres`;
+      
+      const res = await fetch(theatreUrl);
       const data = await res.json();
       if (data.success) {
         setTheatres(data.theatres);
@@ -49,7 +61,7 @@ const Theatres = () => {
 
   useEffect(() => {
     fetchTheatres();
-  }, []);
+  }, [currentUserCity, cityChangeCounter]);
 
   // Re-filter when user city changes
   useEffect(() => {
@@ -60,6 +72,7 @@ const Theatres = () => {
     setRefreshing(true);
     await fetchTheatres();
   };
+
 
   if (loading) return (
     <motion.div 
@@ -223,6 +236,7 @@ const Theatres = () => {
              {refreshing ? 'Refreshing...' : 'Refresh Theatres'}
            </motion.button>
         </motion.div>
+
 
                                    <AnimatePresence mode="wait">
             {filteredTheatres.length === 0 ? (

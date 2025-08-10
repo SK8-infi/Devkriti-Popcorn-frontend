@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, MapPin, Phone, Mail, Calendar, MessageSquare, Plus, Building, Film } from 'lucide-react';
+import { Star, MapPin, Phone, Mail, Calendar, MessageSquare, Plus, Building } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import TheatreReviews from '../components/TheatreReviews';
 import TheatreReviewForm from '../components/TheatreReviewForm';
@@ -18,8 +18,7 @@ const TheatreDetails = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showResponseForm, setShowResponseForm] = useState(null);
   const [userReview, setUserReview] = useState(null);
-  const [theatreShows, setTheatreShows] = useState([]);
-  const [movies, setMovies] = useState([]);
+
 
   useEffect(() => {
     fetchTheatreDetails();
@@ -28,41 +27,9 @@ const TheatreDetails = () => {
     }
   }, [theatreId, isAuthenticated]);
 
-  useEffect(() => {
-    if (theatre?._id) {
-      fetchTheatreShows();
-    }
-  }, [theatre]);
 
-  const fetchTheatreShows = async () => {
-    try {
-      const response = await fetch(`${API_URL}/api/shows/all`);
-      const data = await response.json();
-      
-      if (data.success) {
-        // Filter shows for this specific theatre
-        const theatreShows = data.shows.filter(show => 
-          show.theatre && show.theatre._id === theatre._id
-        );
-        setTheatreShows(theatreShows);
-        
-        // Extract unique movies from shows
-        const uniqueMovies = [];
-        const movieIds = new Set();
-        
-        theatreShows.forEach(show => {
-          if (show.movie && !movieIds.has(show.movie._id)) {
-            movieIds.add(show.movie._id);
-            uniqueMovies.push(show.movie);
-          }
-        });
-        
-        setMovies(uniqueMovies);
-      }
-    } catch (error) {
-      console.error('Error fetching theatre shows:', error);
-    }
-  };
+
+
 
   const fetchTheatreDetails = async () => {
     try {
@@ -369,107 +336,7 @@ const TheatreDetails = () => {
         </div>
       )}
 
-        {/* Movies Section */}
-        {movies.length > 0 && (
-          <div 
-            className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-            }}
-          >
-                         <div className="flex items-center gap-3 mb-6">
-               <Film className="w-6 h-6 text-primary" />
-               <h2 className="text-2xl font-bold" style={{ color: '#FFD6A0' }}>
-                 Currently Airing Shows
-               </h2>
-               <span className="text-sm text-gray-400 bg-gray-800/50 px-3 py-1 rounded-full">
-                 {movies.length} movie{movies.length !== 1 ? 's' : ''} • {theatreShows.length} show{theatreShows.length !== 1 ? 's' : ''}
-               </span>
-             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {movies.map((movie) => (
-                <div 
-                  key={movie._id}
-                  className="bg-gray-800/50 rounded-lg p-4 border border-gray-700/50 hover:border-primary/50 transition-all duration-300 cursor-pointer"
-                  onClick={() => window.open(`/movie/${movie._id}`, '_blank')}
-                >
-                  <div className="flex items-start gap-4">
-                    {movie.poster_path && (
-                      <img 
-                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                        alt={movie.title}
-                        className="w-16 h-24 object-cover rounded-md"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                      />
-                    )}
-                                         <div className="flex-1 min-w-0">
-                       <h3 className="font-semibold text-white mb-2 truncate">{movie.title}</h3>
-                       {movie.vote_average && (
-                         <div className="flex items-center gap-1 mb-2">
-                           <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                           <span className="text-sm text-gray-300">{movie.vote_average.toFixed(1)}</span>
-                         </div>
-                       )}
-                       {movie.release_date && (
-                         <p className="text-xs text-gray-400">
-                           Released: {new Date(movie.release_date).getFullYear()}
-                         </p>
-                       )}
-                       {movie.runtime && (
-                         <p className="text-xs text-gray-400">
-                           {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
-                         </p>
-                       )}
-                       
-                       {/* Show Times */}
-                       {(() => {
-                         const movieShows = theatreShows.filter(show => show.movie && show.movie._id === movie._id);
-                         const upcomingShows = movieShows
-                           .filter(show => new Date(show.showDateTime) > new Date())
-                           .sort((a, b) => new Date(a.showDateTime) - new Date(b.showDateTime))
-                           .slice(0, 3); // Show only next 3 shows
-                         
-                         if (upcomingShows.length > 0) {
-                           return (
-                             <div className="mt-3 pt-3 border-t border-gray-700/50">
-                               <p className="text-xs text-gray-400 mb-1">Next shows:</p>
-                               <div className="flex flex-wrap gap-1">
-                                 {upcomingShows.map((show, idx) => (
-                                   <span 
-                                     key={idx}
-                                     className="text-xs bg-primary/20 text-primary px-2 py-1 rounded"
-                                   >
-                                     {new Date(show.showDateTime).toLocaleDateString('en-US', { 
-                                       month: 'short', 
-                                       day: 'numeric' 
-                                     })} {new Date(show.showDateTime).toLocaleTimeString('en-US', { 
-                                       hour: '2-digit', 
-                                       minute: '2-digit',
-                                       hour12: true 
-                                     })}
-                                   </span>
-                                 ))}
-                                 {movieShows.length > 3 && (
-                                   <span className="text-xs text-gray-500">
-                                     +{movieShows.length - 3} more
-                                   </span>
-                                 )}
-                               </div>
-                             </div>
-                           );
-                         }
-                         return null;
-                       })()}
-                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        
 
         {/* All Reviews Section */}
         <div 

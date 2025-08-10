@@ -13,9 +13,17 @@ const Theatres = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [currentUserCity, setCurrentUserCity] = useState(null);
+  const [cityChangeCounter, setCityChangeCounter] = useState(0);
 
   const navigate = useNavigate();
   const { userCity } = useAppContext();
+
+  // Set current user city from context or localStorage
+  useEffect(() => {
+    const savedCity = localStorage.getItem('userCity');
+    setCurrentUserCity(userCity || savedCity);
+  }, [userCity]);
 
 
   const fetchTheatres = async () => {

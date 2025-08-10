@@ -159,6 +159,26 @@ const MovieDetails = () => {
     }
   }
 
+  const handleBuyTickets = () => {
+    // Check if there are any shows for this movie - convert IDs to strings for comparison
+    const movieShows = shows.filter(show => {
+      if (!show.movie) return false
+      
+      const showMovieId = String(show.movie._id || show.movie.id || '')
+      const movieId = String(id || '')
+      
+      return showMovieId === movieId
+    });
+    
+    if (movieShows.length === 0) {
+      toast.error('No shows for this movie right now');
+      return;
+    }
+    
+    // If there are shows, navigate to select showtime
+    navigate(`/movies/${id}/select-showtime`);
+  }
+
   // Check if user has reviewed this movie
   const checkUserReview = async () => {
     if (!isAuthenticated || !movie || (!movie._id && !movie.id)) return;
@@ -285,12 +305,26 @@ const MovieDetails = () => {
                 return Array.from(languages).join(' | ') || 'EN';
               })()}
             </p>
-            <h1 className='text-4xl font-semibold whitespace-nowrap' style={{fontFamily: 'Times New Roman, Times, serif'}}>{movie.title}</h1>
+            <h1 className='text-4xl font-semibold' style={{
+              fontFamily: 'Times New Roman, Times, serif',
+              fontSize: 'clamp(1.5rem, 6vw, 2.25rem)',
+              lineHeight: 1.2,
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'normal',
+              wordBreak: 'break-word'
+            }}>{movie.title}</h1>
             <div className='flex items-center gap-2 text-gray-300'>
               <StarIcon className="w-5 h-5" style={{ color: '#FFD600', fill: '#FFD600' }}/>
               {show.movie.vote_average.toFixed(1)}
             </div>
-            <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{movie.overview}</p>
+            <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl' style={{
+              fontSize: 'clamp(0.875rem, 3.5vw, 0.875rem)',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'normal',
+              wordBreak: 'break-word'
+            }}>{movie.overview}</p>
             <p>
               {timeFormat(movie.runtime)} • {Array.isArray(movie.genres) ? movie.genres.map(genre => (typeof genre === 'string' ? genre : genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name)).join(", ") : ''} • {movie.release_date?.split("-")[0]}
             </p>
@@ -338,7 +372,7 @@ const MovieDetails = () => {
                 style={{ display: 'inline-block' }}
               >
                 <button
-                  onClick={() => navigate(`/movies/${id}/select-showtime`)}
+                  onClick={handleBuyTickets}
                   className='flex items-center gap-2 px-7 py-3 text-sm bg-transparent hover:bg-transparent transition rounded-md font-medium cursor-pointer active:scale-95'
                   style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#000', pointerEvents: 'auto' }}
                 >

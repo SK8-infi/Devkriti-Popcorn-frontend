@@ -130,7 +130,7 @@ export default function Dock({
   return (
     <motion.div
       style={{ width, scrollbarWidth: "none" }}
-      className="dock-outer dock-vertical"
+      className="dock-outer"
     >
       <motion.div
         onMouseMove={e => {
@@ -141,7 +141,7 @@ export default function Dock({
           isHovered.set(0);
           mouseY.set(Infinity);
         }}
-        className={`dock-panel dock-panel-vertical ${className}`}
+        className={`dock-panel ${className}`}
         style={{ width: panelWidth }}
         role="toolbar"
         aria-label="Application dock"
@@ -166,4 +166,4 @@ export default function Dock({
       </motion.div>
     </motion.div>
   );
-} 
+}

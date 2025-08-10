@@ -7,11 +7,31 @@ import './MovieCard.css'
 import CircularRating from './CircularRating'
 import TrailerModal from './TrailerModal'
 import GlareHover from './GlareHover'
+import toast from 'react-hot-toast'
+import useResponsive from '../hooks/useResponsive'
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate()
   const { image_base_url } = useAppContext()
   const [showTrailer, setShowTrailer] = React.useState(false)
+  const { isMobile, isTinyMobile } = useResponsive()
+
+  const handleBookTicket = () => {
+    // Navigate to movie details page first, let the details page handle show availability
+    if (movie.id || movie._id) {
+      navigate(`/movies/${movie.id || movie._id}`)
+      scrollTo(0, 0)
+    }
+  }
+
+  // Mobile-optimized dimensions
+  const cardWidth = isMobile ? '100%' : 220
+  const cardHeight = isMobile ? 'auto' : 440
+  const imageHeight = isMobile ? 200 : 330
+  const titleSize = isMobile ? '14px' : '16px'
+  const detailsSize = isMobile ? '12px' : '14px'
+  const buttonSize = isMobile ? '13px' : '15px'
+  const ratingSize = isMobile ? 32 : 40
 
   return (
     <div
@@ -21,16 +41,17 @@ const MovieCard = ({ movie }) => {
         borderRadius: 12,
         boxShadow: '0 2px 8px 0 rgba(16,30,54,.08)',
         overflow: 'hidden',
-        width: 220,
-        height: 440,
+        width: cardWidth,
+        height: cardHeight,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         transition: 'box-shadow 0.2s, transform 0.2s',
         borderBottom: '1px dashed #FFD6A0',
+        minHeight: isMobile ? 320 : 'auto',
       }}
     >
-      <div style={{ position: 'relative', width: '100%', height: 330 }}>
+      <div style={{ position: 'relative', width: '100%', height: imageHeight }}>
         <img
           onClick={() => {
             if (movie.id || movie._id) {
@@ -55,7 +76,7 @@ const MovieCard = ({ movie }) => {
         <div
           style={{
             position: 'absolute',
-            left: 16,
+            left: isMobile ? 12 : 16,
             bottom: 0,
             zIndex: 2,
             transform: 'translateY(50%)',
@@ -63,17 +84,18 @@ const MovieCard = ({ movie }) => {
         >
           <CircularRating
             value={typeof movie.vote_average === 'number' ? movie.vote_average * 10 : 0}
-            size={40}
+            size={ratingSize}
           />
         </div>
       </div>
       <div
         className='movie-card-content'
         style={{
-          padding: '14px 12px 10px 12px',
+          padding: isMobile ? '10px 8px 8px 8px' : '14px 12px 10px 12px',
           flex: 1,
           position: 'relative',
           overflow: 'hidden',
+          background: '#fff',
         }}
       >
         <div className='movie-card-text-content'>
@@ -81,11 +103,19 @@ const MovieCard = ({ movie }) => {
             className='movie-card-title-animated'
             style={{
               fontWeight: 700,
-              fontSize: 16,
+              fontSize: titleSize,
               color: '#222',
               marginBottom: 4,
-              marginTop: 12,
+              marginTop: isMobile ? 8 : 12,
               overflow: 'hidden',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'normal',
+              lineHeight: isMobile ? 1.2 : 1.3,
+              display: '-webkit-box',
+              WebkitLineClamp: isMobile ? 2 : 3,
+              WebkitBoxOrient: 'vertical',
+              textOverflow: 'ellipsis',
             }}
           >
             {movie.title}
@@ -95,15 +125,18 @@ const MovieCard = ({ movie }) => {
             style={{
               color: '#888',
               fontWeight: 500,
-              fontSize: 14,
+              fontSize: detailsSize,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              marginTop: isMobile ? 4 : 6,
             }}
           >
             {(movie.genres && Array.isArray(movie.genres)
               ? movie.genres
-                  .slice(0, 2)
+                  .slice(0, isMobile ? 1 : 2)
                   .map((genre) => (genre.name === 'Science Fiction' ? 'Sci-Fi' : genre.name))
                   .join(' | ')
               : 'No Genre')}{' '}
@@ -111,7 +144,7 @@ const MovieCard = ({ movie }) => {
           </div>
         </div>
       </div>
-      <div className='movie-card-book-btn-container'>
+      <div className='movie-card-book-btn-container' style={{ padding: isMobile ? '8px' : '12px' }}>
         <GlareHover
           width='auto'
           height='auto'
@@ -128,12 +161,7 @@ const MovieCard = ({ movie }) => {
         >
           <button
             className='movie-card-show-trailer-btn'
-            onClick={() => {
-              if (movie.id || movie._id) {
-                navigate(`/movies/${movie.id || movie._id}`)
-                scrollTo(0, 0)
-              }
-            }}
+            onClick={handleBookTicket}
             style={{
               background: 'transparent',
               border: 'none',
@@ -141,9 +169,10 @@ const MovieCard = ({ movie }) => {
               pointerEvents: 'auto',
               color: '#FFD6A0',
               fontWeight: 'bold',
-              fontSize: '15px',
-              padding: '8px 12px',
+              fontSize: buttonSize,
+              padding: isMobile ? '6px 10px' : '8px 12px',
               cursor: 'pointer',
+              width: '100%',
             }}
           >
             Book Ticket

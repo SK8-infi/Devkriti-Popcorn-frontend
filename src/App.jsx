@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from './components/Navbar'
+import MobileNavigation from './components/MobileNavigation'
 import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
@@ -58,6 +59,7 @@ const App = () => {
     <>
       <Toaster />
       {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && <MobileNavigation />}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/movies' element={<Movies />} />

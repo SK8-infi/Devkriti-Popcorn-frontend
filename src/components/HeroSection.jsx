@@ -198,16 +198,17 @@ const HeroSection = () => {
         position: 'absolute',
         top: responsiveTopPosition,
         left: responsiveLeftPosition,
-        right: isTinyMobile ? '10px' : '20px',
+        right: '10px',
         zIndex: 3,
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: responsiveGap,
-        minWidth: isTinyMobile ? 'auto' : '340px',
-        maxWidth: '600px',
-        padding: '0 20px',
+        width: 'auto',
+        maxWidth: 'calc(100vw - 20px)',
+        padding: '0 10px',
+        boxSizing: 'border-box',
       }}>
         {/* Movie Logo or Placeholder */}
         {galleryItems[activeIndex].logo ? (
@@ -250,6 +251,12 @@ const HeroSection = () => {
           lineHeight: 1.1,
           fontFamily: 'Times New Roman, Times, serif',
           display: galleryItems[activeIndex].logo ? 'none' : 'block',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+          maxWidth: '100%',
+          width: '100%',
         }}>
           {galleryItems[activeIndex].text}
         </div>
@@ -259,9 +266,13 @@ const HeroSection = () => {
           alignItems: 'center',
           fontSize: responsiveInfoSize,
           opacity: 0.85,
-          flexWrap: isTinyMobile ? 'wrap' : 'nowrap',
+          flexWrap: 'wrap',
           wordWrap: 'break-word',
           overflowWrap: 'break-word',
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+          maxWidth: '100%',
+          width: '100%',
         }}>
           <span style={{ color: '#FFD6A0', fontWeight: 600 }}>
             {galleryItems[activeIndex].release_date ? new Date(galleryItems[activeIndex].release_date).getFullYear() : ''}
@@ -269,10 +280,13 @@ const HeroSection = () => {
           <span style={{ color: '#aaa' }}>|</span>
           {/* Genres */}
           <span style={{ 
-            maxWidth: isTinyMobile ? '120px' : 'auto',
+            maxWidth: '100%',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word',
           }}>
             {galleryItems[activeIndex].genres && galleryItems[activeIndex].genres.length > 0
               ? galleryItems[activeIndex].genres.map(g =>
@@ -288,20 +302,21 @@ const HeroSection = () => {
             {galleryItems[activeIndex].runtime ? `${Math.floor(galleryItems[activeIndex].runtime / 60)}h ${galleryItems[activeIndex].runtime % 60}m` : '~2h'}
           </span>
         </div>
-        <div style={{ 
-          fontSize: responsiveOverviewSize, 
-          opacity: 0.92, 
-          lineHeight: 1.5, 
-          display: '-webkit-box', 
-          WebkitLineClamp: isTinyMobile ? 4 : 3, 
-          WebkitBoxOrient: 'vertical', 
-          overflow: 'hidden', 
-          textOverflow: 'ellipsis', 
-          maxHeight: isTinyMobile ? '6em' : '4.5em',
-          wordWrap: 'break-word',
-          overflowWrap: 'break-word',
-          hyphens: 'auto',
-        }}>
+        <div 
+          className="hero-overview-text"
+          style={{ 
+            fontSize: `clamp(0.875rem, 3.5vw, ${responsiveOverviewSize})`, 
+            opacity: 0.92, 
+            lineHeight: 1.5, 
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            hyphens: 'auto',
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+            maxWidth: '50%',
+            width: '50%',
+          }}
+        >
           {galleryItems[activeIndex].overview}
         </div>
       </div>

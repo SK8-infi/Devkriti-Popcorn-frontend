@@ -490,3 +490,94 @@
   transform: translateX(80px) scale(0.95);
   opacity: 0.7;
 } 
+
+/* Tiny mobile optimizations (around 300px width) */
+@media (max-width: 350px) {
+  .trailers-section {
+    padding: 2rem 0.5rem !important;
+  }
+  
+  .trailers-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 1.5rem !important;
+    text-align: center !important;
+  }
+  
+  /* Convert to vertical layout for tiny screens */
+  .trailers-player-modern {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    padding: 0 0.5rem !important;
+  }
+  
+  .modern-player {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 200px !important;
+  }
+  
+  /* Hide navigation arrows on tiny screens */
+  .trailers-player-modern button {
+    display: none !important;
+  }
+  
+  /* Make each trailer full width */
+  .center-trailer-anim {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 200px !important;
+    margin: 0 !important;
+  }
+  
+  /* Adjust trailer thumbnails for vertical layout */
+  .trailer-carousel-thumb {
+    width: 100% !important;
+    height: 150px !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .trailer-story-thumb {
+    width: 100% !important;
+    height: 120px !important;
+    margin-bottom: 0.75rem !important;
+  }
+}
+
+@media (max-width: 300px) {
+  .trailers-section {
+    padding: 1.5rem 0.25rem !important;
+  }
+  
+  .trailers-title {
+    font-size: 1.1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .trailers-player-modern {
+    gap: 0.75rem !important;
+    max-height: 65vh !important;
+    padding: 0 0.25rem !important;
+  }
+  
+  .modern-player {
+    min-height: 180px !important;
+  }
+  
+  .center-trailer-anim {
+    height: 180px !important;
+  }
+  
+  .trailer-carousel-thumb {
+    height: 130px !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .trailer-story-thumb {
+    height: 100px !important;
+    margin-bottom: 0.5rem !important;
+  }
+} 

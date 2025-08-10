@@ -313,33 +313,7 @@
   }
 }
 
-@media (max-width: 300px) {
-  .navbar-content {
-    padding: 0 0.2rem;
-  }
-  .navbar-logo {
-    width: 3.5rem;
-  }
-  .navbar-icons {
-    gap: 0.3rem;
-  }
-  .navbar-login-btn {
-    padding: 0.15rem 0.6rem;
-    font-size: 0.75rem;
-  }
-  .navbar-location-btn {
-    width: 1.8rem;
-    height: 1.8rem;
-  }
-  .navbar-fav-btn {
-    width: 2rem;
-    height: 2rem;
-  }
-  .navbar-menu {
-    padding: 1rem 1.5rem;
-    gap: 1rem;
-  }
-}
+
 
 .navbar-close-icon {
   position: absolute;
@@ -410,4 +384,217 @@
 .location-modal select option:checked {
   background: #1a1a1a !important;
   color: #FFD6A0 !important;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-button:hover {
+  background: rgba(255, 214, 160, 0.1);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 54px;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 999;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu.open {
+  transform: translateY(0);
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.mobile-nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-link:hover {
+  background: rgba(255, 214, 160, 0.1);
+  color: #FFD6A0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* Keep navbar visible but hide only navigation links */
+  .navbar {
+    display: flex !important;
+  }
+  
+  /* Hide desktop navigation links */
+  .desktop-menu {
+    display: none !important;
+  }
+  
+  /* Hide mobile menu button since we have bottom dock */
+  .mobile-menu-button {
+    display: none !important;
+  }
+  
+  /* Hide mobile menu since we have bottom dock */
+  .mobile-menu {
+    display: none !important;
+  }
+  
+  /* Ensure navbar stays compact on mobile */
+  .navbar-content {
+    padding: 0 0.5rem !important;
+  }
+  
+  /* Keep logo visible but smaller */
+  .navbar-logo {
+    width: clamp(3rem, 6vw, 3.5rem) !important;
+  }
+  
+  /* Keep icons visible but compact */
+  .navbar-icons {
+    gap: 0.5rem !important;
+  }
+  
+  /* Adjust location button for mobile */
+  .navbar-location-btn-new {
+    font-size: 0.7rem !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Adjust search button for mobile */
+  .navbar-location-btn {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+  
+  /* Hide login/profile button on mobile since it's in bottom dock */
+  .navbar-login-btn,
+  .navbar-user-profile,
+  .navbar-user-btn {
+    display: none !important;
+  }
+  
+  /* Hide user dropdown on mobile since profile button is hidden */
+  .navbar-user-btn + div[style*="position: absolute"] {
+    display: none !important;
+  }
+}
+
+@media (min-width: 701px) {
+  .mobile-menu-button {
+    display: none;
+  }
+  
+  .mobile-menu {
+    display: none;
+  }
+  
+  .desktop-menu {
+    display: flex;
+  }
+}
+
+/* Tiny mobile optimizations (around 300px width) */
+@media (max-width: 350px) {
+  .navbar-content {
+    max-width: 98% !important;
+    padding: 0 0.25rem !important;
+  }
+  
+  .navbar-logo {
+    width: clamp(3.5rem, 8vw, 4rem) !important;
+  }
+  
+  .navbar-icons {
+    gap: 0.25rem !important;
+  }
+  
+  .navbar-login-btn {
+    padding: 0.15rem 0.3rem !important;
+    font-size: 0.65rem !important;
+  }
+  
+  .navbar-location-btn-new {
+    font-size: 0.6rem !important;
+    padding: 2px 4px !important;
+  }
+  
+  .navbar-fav-btn {
+    padding: 0.25rem !important;
+  }
+  
+  .mobile-menu-button {
+    padding: 0.25rem !important;
+  }
+  
+  .mobile-menu-links {
+    padding: 0.5rem 0 !important;
+  }
+  
+  .mobile-nav-link {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+@media (max-width: 300px) {
+  .navbar-content {
+    max-width: 98% !important;
+    padding: 0 0.15rem !important;
+  }
+  
+  .navbar-logo {
+    width: 3.5rem !important;
+  }
+  
+  .navbar-icons {
+    gap: 0.2rem !important;
+  }
+  
+  .navbar-login-btn {
+    padding: 0.1rem 0.25rem !important;
+    font-size: 0.6rem !important;
+  }
+  
+  .navbar-location-btn-new {
+    font-size: 0.55rem !important;
+    padding: 1px 3px !important;
+  }
+  
+  .navbar-fav-btn {
+    padding: 0.2rem !important;
+  }
+  
+  .mobile-menu-links {
+    padding: 0.4rem 0 !important;
+  }
+  
+  .mobile-nav-link {
+    padding: 0.6rem 1.25rem !important;
+    font-size: 0.8rem !important;
+  }
 }

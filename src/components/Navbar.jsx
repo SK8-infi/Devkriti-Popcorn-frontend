@@ -47,6 +47,7 @@ const handleAuthenticatedNavigation = (path) => {
   navigate(path);
 };
 
+
 // Fetch user's city from backend or localStorage
  useEffect(() => {
   const savedCity = localStorage.getItem('userCity');
@@ -160,11 +161,19 @@ const handleSaveCity = async () => {
    login();
  };
 
- const handleLogout = () => {
-   logout();
-   setShowUserDropdown(false);
-   navigate('/');
- };
+   const handleLogout = () => {
+    logout();
+    setShowUserDropdown(false);
+    navigate('/');
+  };
+
+  const toggleMobileMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMenuOpen(false);
+  };
 
   return (
     <div className='navbar'>
@@ -173,39 +182,39 @@ const handleSaveCity = async () => {
           <img src={logo} alt="Popcorn Logo" className='navbar-logo'/>
         </Link>
         {/* Desktop Menu */}
-        <div className={`navbar-menu${isOpen ? ' open' : ''}`} style={{ display: window.innerWidth > 700 ? 'flex' : 'none' }}>
-          <XIcon className='navbar-close-icon' onClick={()=> setIsOpen(false)}/>
+        <div className='navbar-menu desktop-menu'>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Home</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/' className='navbar-link'>Home</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/movies' className='navbar-link'>Movies</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/movies' className='navbar-link'>Movies</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/theatres' className='navbar-link'>Theatres</Link>
           </motion.div>
           <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-            <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/contact' className='navbar-link'>Contact Us</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/contact' className='navbar-link'>Contact Us</Link>
           </motion.div>
         </div>
+        
+        {/* Hamburger Menu Button */}
+        <button
+          className='mobile-menu-button'
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {menuOpen ? <XIcon size={24} /> : <MenuIcon size={24} />}
+        </button>
+        
         {/* Mobile Menu */}
-        {window.innerWidth <= 700 && (
-          <div className={`navbar-menu${isOpen ? ' open' : ''}`} style={{ display: isOpen ? 'flex' : 'none' }}>
-            <XIcon className='navbar-close-icon' onClick={()=> setIsOpen(false)}/>
-            <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/' className='navbar-link'>Home</Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/movies' className='navbar-link'>Movies</Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/theatres' className='navbar-link'>Theatres</Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.18 }} whileFocus={{ scale: 1.18 }} style={{ display: 'inline-block' }}>
-              <Link onClick={()=> {window.scrollTo(0,0); setIsOpen(false)}} to='/contact' className='navbar-link'>Contact Us</Link>
-            </motion.div>
+        <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+          <div className='mobile-menu-links'>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/' className='mobile-nav-link'>Home</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/movies' className='mobile-nav-link'>Movies</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/theatres' className='mobile-nav-link'>Theatres</Link>
+            <Link onClick={()=> {window.scrollTo(0,0); closeMobileMenu()}} to='/contact' className='mobile-nav-link'>Contact Us</Link>
           </div>
-        )}
+        </div>
         <div className='navbar-icons'>
           {isHomePage && (
             <motion.button 

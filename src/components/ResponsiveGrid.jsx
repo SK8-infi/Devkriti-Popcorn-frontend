@@ -9,8 +9,8 @@ const ResponsiveGrid = ({
     lg: 4,
     md: 3,
     sm: 2,
-    xs: 1,
-    tiny: 1
+    xs: 2,
+    tiny: 2
   }
 }) => {
   const getGridTemplateColumns = () => {

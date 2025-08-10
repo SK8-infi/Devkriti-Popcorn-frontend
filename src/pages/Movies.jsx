@@ -233,12 +233,28 @@ const Movies = () => {
       fetch(showUrl).then(res => res.json())
     ]).then(([moviesData, showsData]) => {
       const now = new Date();
-      const futureShowMovieIds = new Set(
-        (showsData.shows || [])
-          .filter(show => new Date(show.showDateTime) > now)
-          .map(show => show.movie && String(show.movie._id))
-      );
-      const filteredMovies = (moviesData.movies || []).filter(movie => futureShowMovieIds.has(String(movie.id)));
+      const futureShowMovieIds = new Set();
+      
+      // Collect all movie IDs from shows that have future showtimes
+      (showsData.shows || []).forEach(show => {
+        if (new Date(show.showDateTime) > now && show.movie) {
+          // Add both _id and id if they exist
+          if (show.movie._id) {
+            futureShowMovieIds.add(String(show.movie._id));
+          }
+          if (show.movie.id) {
+            futureShowMovieIds.add(String(show.movie.id));
+          }
+        }
+      });
+      
+      // Filter movies that have shows - check both id and _id fields
+      const filteredMovies = (moviesData.movies || []).filter(movie => {
+        const movieId = String(movie.id || '');
+        const movieIdAlt = String(movie._id || '');
+        return futureShowMovieIds.has(movieId) || futureShowMovieIds.has(movieIdAlt);
+      });
+      
       setMovies(filteredMovies);
       setAllMovies(moviesData.movies || []);
       setLoading(false);

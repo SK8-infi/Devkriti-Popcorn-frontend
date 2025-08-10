@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { ClockIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import CircularGallery from './CircularGallery';
+import AnimatedMovieGallery from './AnimatedMovieGallery';
 import ResponsiveContainer from './ResponsiveContainer';
 import useResponsive from '../hooks/useResponsive';
 
@@ -29,7 +29,8 @@ const HeroSection = () => {
     fetch(`${API_URL}/api/movies/latest`)
       .then(res => res.json())
       .then(data => {
-        if (data.movies) {
+        console.log('Movies data received:', data);
+        if (data.movies && data.movies.length > 0) {
           const items = data.movies.slice(0, 10).map(movie => ({
             image: getImageUrl(movie.poster_url), // for gallery
             backdrop: getImageUrl(movie.backdrop_url) || getImageUrl(movie.poster_url), // for background
@@ -40,6 +41,7 @@ const HeroSection = () => {
             genres: movie.genres,   // new
             logo: movie.logos && movie.logos.length > 0 ? movie.logos[0].url : null, // new
           }));
+          console.log('Gallery items prepared:', items);
           setGalleryItems(items);
           // Preload all backdrops
           items.forEach(item => {
@@ -48,10 +50,34 @@ const HeroSection = () => {
               img.src = item.backdrop;
             }
           });
+        } else {
+          console.warn('No movies data received or empty array');
+          // Set fallback data to prevent black screen
+          setGalleryItems([{
+            image: '/path/to/fallback-poster.jpg',
+            backdrop: '/path/to/fallback-backdrop.jpg',
+            text: 'Loading Movies...',
+            release_date: new Date().toISOString(),
+            overview: 'Please wait while we load the latest movies.',
+            runtime: 120,
+            genres: ['Loading'],
+            logo: null
+          }]);
         }
       })
       .catch(err => {
         console.error('Failed to fetch movies:', err);
+        // Set fallback data to prevent black screen
+        setGalleryItems([{
+          image: '/path/to/fallback-poster.jpg',
+          backdrop: '/path/to/fallback-backdrop.jpg',
+          text: 'Error Loading Movies',
+          release_date: new Date().toISOString(),
+          overview: 'There was an error loading movies. Please refresh the page.',
+          runtime: 120,
+          genres: ['Error'],
+          logo: null
+        }]);
       });
   }, []);
 
@@ -155,7 +181,22 @@ const HeroSection = () => {
   });
 
   if (!galleryItems.length) {
-    return <div style={{ color: 'white', textAlign: 'center', paddingTop: 100 }}>Loading latest movies...</div>;
+    return (
+      <div style={{ 
+        color: 'white', 
+        textAlign: 'center', 
+        paddingTop: 100, 
+        backgroundColor: '#000',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column'
+      }}>
+        <div style={{ fontSize: '1.5rem', marginBottom: '20px' }}>Loading latest movies...</div>
+        <div style={{ fontSize: '1rem', opacity: 0.7 }}>If this persists, check console for errors</div>
+      </div>
+    );
   }
 
   return (
@@ -172,7 +213,7 @@ const HeroSection = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        backgroundImage: `url(${galleryItems[activeIndex].backdrop})`,
+        backgroundImage: `url(${galleryItems[activeIndex]?.backdrop || '/path/to/default-backdrop.jpg'})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -210,7 +251,7 @@ const HeroSection = () => {
         padding: '0 20px',
       }}>
         {/* Movie Logo or Placeholder */}
-        {galleryItems[activeIndex].logo ? (
+        {galleryItems[activeIndex]?.logo ? (
           <div style={{ 
             marginBottom: '8px', 
             minHeight: responsiveLogoHeight, 
@@ -219,8 +260,8 @@ const HeroSection = () => {
             alignItems: 'center',
           }}>
             <img 
-              src={galleryItems[activeIndex].logo}
-              alt={`${galleryItems[activeIndex].text} logo`}
+              src={galleryItems[activeIndex]?.logo}
+              alt={`${galleryItems[activeIndex]?.text || 'Movie'} logo`}
               style={{
                 maxHeight: responsiveLogoHeight,
                 maxWidth: responsiveLogoWidth,
@@ -244,14 +285,14 @@ const HeroSection = () => {
         )}
         {/* Movie Title (shown when no logo or as fallback) */}
         <div style={{
-          fontSize: galleryItems[activeIndex].logo ? responsiveLogoTitleSize : responsiveTitleSize,
+          fontSize: galleryItems[activeIndex]?.logo ? responsiveLogoTitleSize : responsiveTitleSize,
           fontWeight: 700,
           letterSpacing: '-1px',
           lineHeight: 1.1,
           fontFamily: 'Times New Roman, Times, serif',
-          display: galleryItems[activeIndex].logo ? 'none' : 'block',
+          display: galleryItems[activeIndex]?.logo ? 'none' : 'block',
         }}>
-          {galleryItems[activeIndex].text}
+          {galleryItems[activeIndex]?.text || 'Loading...'}
         </div>
         <div style={{
           display: 'flex',
@@ -264,7 +305,7 @@ const HeroSection = () => {
           overflowWrap: 'break-word',
         }}>
           <span style={{ color: '#FFD6A0', fontWeight: 600 }}>
-            {galleryItems[activeIndex].release_date ? new Date(galleryItems[activeIndex].release_date).getFullYear() : ''}
+            {galleryItems[activeIndex]?.release_date ? new Date(galleryItems[activeIndex].release_date).getFullYear() : ''}
           </span>
           <span style={{ color: '#aaa' }}>|</span>
           {/* Genres */}
@@ -274,7 +315,7 @@ const HeroSection = () => {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}>
-            {galleryItems[activeIndex].genres && galleryItems[activeIndex].genres.length > 0
+            {galleryItems[activeIndex]?.genres && galleryItems[activeIndex].genres.length > 0
               ? galleryItems[activeIndex].genres.map(g =>
                   typeof g === 'string'
                     ? (g === 'Science Fiction' ? 'Sci-Fi' : g)
@@ -285,7 +326,7 @@ const HeroSection = () => {
           <span style={{ color: '#aaa' }}>|</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <ClockIcon size={isTinyMobile ? 14 : 16} style={{ marginRight: 4, position: 'relative', top: 1 }} />
-            {galleryItems[activeIndex].runtime ? `${Math.floor(galleryItems[activeIndex].runtime / 60)}h ${galleryItems[activeIndex].runtime % 60}m` : '~2h'}
+            {galleryItems[activeIndex]?.runtime ? `${Math.floor(galleryItems[activeIndex].runtime / 60)}h ${galleryItems[activeIndex].runtime % 60}m` : '~2h'}
           </span>
         </div>
         <div style={{ 
@@ -302,34 +343,24 @@ const HeroSection = () => {
           overflowWrap: 'break-word',
           hyphens: 'auto',
         }}>
-          {galleryItems[activeIndex].overview}
+          {galleryItems[activeIndex]?.overview || 'Loading movie information...'}
         </div>
       </div>
 
-      {/* Circular Gallery */}
+      {/* Animated Movie Gallery */}
       <div style={{
+        position: 'absolute',
+        bottom: '50px',
+        left: '0',
+        right: '0',
         width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        height: isTinyMobile ? '250px' : '300px',
-        position: 'relative',
+        height: 'auto',
         zIndex: 2,
-        margin: '5px',
-        marginTop: isTinyMobile ? '40px' : '60px',
+        overflow: 'visible',
       }}>
-        <div style={{display: 'none'}}>
-          {galleryItems.map((item, idx) => (
-            <img key={idx} src={item.image} alt={item.text} />
-          ))}
-        </div>
-        <CircularGallery
-          items={galleryItems}
-          bend={2}
-          textColor="#ffffff"
-          borderRadius={0.05}
-          scrollEase={0.02}
+        <AnimatedMovieGallery
           onActiveIndexChange={handleActiveIndexChange}
+          galleryItems={galleryItems}
         />
       </div>
     </div>

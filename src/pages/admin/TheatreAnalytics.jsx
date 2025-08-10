@@ -3,7 +3,7 @@ import TheatreAnalytics from '../../components/TheatreAnalytics';
 
 const TheatreAnalyticsPage = () => {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
       <TheatreAnalytics />
     </div>
   );

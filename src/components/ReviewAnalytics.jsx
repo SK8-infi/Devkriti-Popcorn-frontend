@@ -159,7 +159,7 @@ const ReviewAnalytics = () => {
   }
 
   return (
-    <div className="review-analytics bg-black text-white p-6">
+    <div className="review-analytics text-white p-6">
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
         <BarChart3 size={24} className="text-yellow-400" />
         Review Analytics

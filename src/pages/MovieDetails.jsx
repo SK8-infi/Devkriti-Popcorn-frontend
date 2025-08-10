@@ -448,29 +448,20 @@ const MovieDetails = () => {
             {isAuthenticated && (
               <div className='flex gap-4'>
                 {!userReview && (
-                  <GlareHover
-                    width="auto"
-                    height="auto"
-                    background="#FFD600"
-                    borderRadius="12px"
-                    borderColor="transparent"
-                    glareColor="#ffffff"
-                    glareOpacity={0.3}
-                    glareAngle={-30}
-                    glareSize={300}
-                    transitionDuration={800}
-                    playOnce={false}
-                    style={{ display: 'inline-block' }}
+                  <button
+                    onClick={() => setShowReviewForm(true)}
+                    className='flex items-center gap-2 px-4 py-2 transition rounded-lg font-medium cursor-pointer active:scale-95 text-sm'
+                    style={{ 
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#ffffff',
+                      pointerEvents: 'auto'
+                    }}
                   >
-                    <button
-                      onClick={() => setShowReviewForm(true)}
-                      className='flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-transparent transition rounded-lg font-medium cursor-pointer active:scale-95 text-sm'
-                      style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#000', pointerEvents: 'auto' }}
-                    >
-                      <Plus size={16} />
-                      Write a Review
-                    </button>
-                  </GlareHover>
+                    <Plus size={16} />
+                    Write a Review
+                  </button>
                 )}
                 
                 {userReview && (
@@ -643,7 +634,7 @@ const MovieDetails = () => {
             <div className="absolute top-4 right-4 z-10">
               <button
                 onClick={() => setShowReviewForm(false)}
-                className="w-10 h-10 bg-gray-800/80 hover:bg-gray-700/80 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
+                className="w-10 h-10 bg-gray-800/80 hover:bg-red-950/80 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
               >
                 <X size={20} />
               </button>

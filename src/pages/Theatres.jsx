@@ -59,35 +59,82 @@ const Theatres = () => {
   };
 
   if (loading || currentUserCity === null) return (
-    <div className="min-h-screen bg-black pt-20 flex items-center justify-center">
-      <div className="text-center">
-        <RefreshCwIcon className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
-        <div className="text-white text-xl">
-          {currentUserCity === null ? 'Determining your location...' : 'Loading theatres...'}
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCwIcon className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
+          <div className="text-white text-xl">
+            {currentUserCity === null ? 'Determining your location...' : 'Loading theatres...'}
+          </div>
         </div>
       </div>
     </div>
   );
   
   if (error) return (
-    <div className="min-h-screen bg-black pt-20 flex items-center justify-center">
-      <div className="text-center">
-        <div className="text-red-500 text-xl mb-4">{error}</div>
-        <button 
-          onClick={handleRefresh}
-          className="bg-primary text-black px-6 py-2 rounded-lg hover:bg-primary/80 transition"
-        >
-          Try Again
-        </button>
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-xl mb-4">{error}</div>
+          <button 
+            onClick={handleRefresh}
+            className="bg-primary text-black px-6 py-2 rounded-lg hover:bg-primary/80 transition"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-black pt-20 py-10 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen pt-20 py-10 px-4" style={{ backgroundColor: 'transparent' }}>
+      <div className="max-w-7xl mx-auto" style={{ backgroundColor: 'transparent' }}>
+        <div className="text-center mb-10" style={{ backgroundColor: 'transparent' }}>
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0', backgroundColor: 'transparent' }}>
             THEATRES{currentUserCity ? ` IN ${currentUserCity.toUpperCase()}` : ''}
           </h1>
           <p className="text-gray-300 mb-6">
@@ -105,7 +152,7 @@ const Theatres = () => {
           <button
             onClick={handleRefresh}
             disabled={refreshing}
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition disabled:opacity-50 flex items-center gap-2 mx-auto mt-4 font-medium"
+            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-red-950 transition disabled:opacity-50 flex items-center gap-2 mx-auto mt-4 font-medium"
           >
             <RefreshCwIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
             {refreshing ? 'Refreshing...' : 'Refresh Theatres'}
@@ -133,7 +180,9 @@ const Theatres = () => {
                 onClick={() => navigate(`/theatres/${encodeURIComponent(theatre.name)}`)}
                 className="border border-gray-700 rounded-xl p-6 hover:border-primary/50 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl"
                 style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
                 }}
               >
                 {/* Theatre Header */}
@@ -182,6 +231,7 @@ const Theatres = () => {
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

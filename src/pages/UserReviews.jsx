@@ -201,7 +201,7 @@ const UserReviews = () => {
                         setEditingReview(review);
                         setShowEditForm(true);
                       }}
-                      className="flex items-center gap-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors text-sm"
+                      className="flex items-center gap-1 px-3 py-1 bg-blue-600 hover:bg-red-950 rounded-md transition-colors text-sm"
                     >
                       <Edit size={14} />
                       Edit

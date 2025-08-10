@@ -14,7 +14,7 @@ const cellClass = (val) => {
   if (val === SEAT_AVAILABLE) return 'bg-green-500 hover:bg-green-600';
   if (val === SEAT_GOLD) return 'bg-yellow-400 hover:bg-yellow-500';
   if (val === SEAT_PREMIUM) return 'bg-orange-500 hover:bg-orange-600';
-  return 'bg-gray-300 hover:bg-gray-400';
+  return 'bg-gray-300 hover:bg-red-200';
 };
 
 const cellLabel = (val) => {
@@ -191,7 +191,7 @@ const UpdateLayout = () => {
       <div className="flex justify-center mt-8">
       <button
         onClick={saveLayout}
-          className="px-8 py-3 bg-white text-black rounded-xl font-semibold shadow-md transition-all duration-200 hover:bg-gray-100 hover:text-primary focus:outline-none border-none"
+                        className="px-8 py-3 bg-white text-black rounded-xl font-semibold shadow-md transition-all duration-200 hover:bg-red-50 hover:text-primary focus:outline-none border-none"
           style={{ border: 'none' }}
         disabled={saving}
       >

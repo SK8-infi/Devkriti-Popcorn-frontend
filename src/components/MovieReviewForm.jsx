@@ -65,7 +65,15 @@ const MovieReviewForm = ({ movieId, onSubmit, onCancel, initialData }) => {
   };
 
   return (
-    <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50" style={{ transform: 'scale(0.7)', transformOrigin: 'center center', marginTop: '50px' }}>
+    <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50" style={{ 
+      backgroundImage: 'url("/bg-4.svg")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      transform: 'scale(0.7)', 
+      transformOrigin: 'center center', 
+      marginTop: '50px' 
+    }}>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
@@ -230,7 +238,7 @@ const MovieReviewForm = ({ movieId, onSubmit, onCancel, initialData }) => {
           <button 
             type="button" 
             onClick={onCancel} 
-            className="flex-1 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+            className="flex-1 bg-gray-800/50 hover:bg-red-950/50 border border-gray-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
             Cancel
           </button>

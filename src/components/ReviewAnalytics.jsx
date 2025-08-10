@@ -280,7 +280,7 @@ const ReviewAnalytics = () => {
                   {theatreAnalytics.recentReviews.map(review => (
                     <div 
                       key={review._id} 
-                      className="bg-gray-800 p-3 rounded-md cursor-pointer hover:bg-gray-700 transition-colors"
+                      className="bg-gray-800 p-3 rounded-md cursor-pointer hover:bg-red-950 transition-colors"
                       onClick={() => handleViewReview(theatreAnalytics.theatre._id, review)}
                     >
                       <div className="flex items-center justify-between mb-2">

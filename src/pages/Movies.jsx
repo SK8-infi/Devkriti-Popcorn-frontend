@@ -293,11 +293,45 @@ const Movies = () => {
   const uniqueLanguages = getUniqueLanguages();
 
   return noResult ? (
-    <div className='movies-empty'>
-      <h1 className='movies-empty-title'>No shows for this movie.</h1>
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10" style={{ backgroundColor: 'transparent' }}>
+        <div className='movies-empty'>
+          <h1 className='movies-empty-title'>No shows for this movie.</h1>
+        </div>
+      </div>
     </div>
   ) : movies.length > 0 ? (
-    <div className='movies-container'>
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10" style={{ backgroundColor: 'transparent' }}>
+        <div className='movies-container'>
       <div className="movies-header">
         <h1 className='movies-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px', fontWeight: 'bold' }}>
           NOW SHOWING{currentUserCity ? ` IN ${currentUserCity.toUpperCase()}` : ''}
@@ -566,10 +600,30 @@ const Movies = () => {
           <p>Try adjusting your search criteria or clear all filters</p>
         </div>
       )}
+        </div>
+      </div>
     </div>
   ) : loading ? (
-    <div className='movies-empty'>
-      <h1 className='movies-empty-title'>Loading movies...</h1>
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10" style={{ backgroundColor: 'transparent' }}>
+        <div className='movies-empty'>
+          <h1 className='movies-empty-title'>Loading movies...</h1>
+        </div>
+      </div>
     </div>
   ) : null;
 }

@@ -48,7 +48,7 @@ const TicketQRModal = ({ isOpen, onClose, qrData }) => {
           <h3 className="text-lg font-semibold text-gray-900">Ticket QR Code</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition"
+            className="text-gray-400 hover:text-red-600 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -72,7 +72,7 @@ const TicketQRModal = ({ isOpen, onClose, qrData }) => {
         <div className="mt-6 flex justify-end">
           <button
             onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-red-950 transition"
           >
             Close
           </button>

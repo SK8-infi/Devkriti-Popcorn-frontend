@@ -107,7 +107,7 @@ const ManageRooms = () => {
             <form onSubmit={handleAddRoom} className="flex flex-col gap-4">
               <div className="flex gap-4 items-end flex-wrap">
                 <input type="text" required placeholder="Room Name" value={addForm.name} onChange={e => setAddForm(f => ({ ...f, name: e.target.value }))} className="border p-2 rounded" />
-                <select value={addForm.type} onChange={e => setAddForm(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded">
+                <select value={addForm.type} onChange={e => setAddForm(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded bg-black text-white">
                   {ROOM_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
               </div>
@@ -149,7 +149,7 @@ const ManageRooms = () => {
               <form onSubmit={handleEditRoom} className="flex flex-col gap-4">
                 <div className="flex gap-4 items-end flex-wrap">
                   <input type="text" required placeholder="Room Name" value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} className="border p-2 rounded" />
-                  <select value={editForm.type} onChange={e => setEditForm(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded">
+                  <select value={editForm.type} onChange={e => setEditForm(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded bg-black text-white">
                     {ROOM_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
                   </select>
                 </div>

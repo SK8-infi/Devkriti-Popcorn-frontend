@@ -440,7 +440,7 @@ const AddShows = () => {
                 filteredLanguages.map((language, index) => (
                   <div
                     key={index}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
+                    className="px-4 py-2 hover:bg-red-50 cursor-pointer text-black"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -520,7 +520,7 @@ const AddShows = () => {
             <div className="flex gap-3 justify-center items-center">
               <button
                 onClick={() => setShowTimePicker(false)}
-                className="bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold text-lg hover:bg-gray-400 transition"
+                className="bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold text-lg hover:bg-red-200 transition"
               >
                 Cancel
               </button>

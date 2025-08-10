@@ -228,7 +228,7 @@ const TheatreReviews = ({ theatreId }) => {
           {reviews.map(review => (
             <div 
               key={review._id} 
-              className="review-card bg-black p-4 rounded-md cursor-pointer hover:bg-gray-900 transition-colors border border-gray-700"
+              className="review-card bg-black p-4 rounded-md cursor-pointer hover:bg-red-950 transition-colors border border-gray-700"
               onClick={() => handleViewReview(review)}
             >
               <div className="flex items-center justify-between mb-2">
@@ -288,9 +288,16 @@ const TheatreReviews = ({ theatreId }) => {
       {selectedReview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div 
-            className="rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            className="rounded-xl max-w-4xl w-full border border-gray-600"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              backgroundImage: 'url("/bg-4.svg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              transform: 'scale(0.7)',
+              transformOrigin: 'center center'
             }}
           >
             <div className="p-6">
@@ -408,7 +415,7 @@ const TheatreReviews = ({ theatreId }) => {
                 <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                   <button
                     onClick={() => handleHelpful(selectedReview._id)}
-                    className="helpful-btn flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-900 rounded-lg transition-colors text-sm border border-gray-600"
+                    className="helpful-btn flex items-center gap-2 px-4 py-2 bg-black hover:bg-red-950 rounded-lg transition-colors text-sm border border-gray-600"
                   >
                     <ThumbsUp size={14} />
                     Helpful ({selectedReview.helpful?.length || 0})
@@ -427,9 +434,16 @@ const TheatreReviews = ({ theatreId }) => {
       {showResponseForm && selectedReview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div 
-            className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            className="rounded-xl max-w-2xl w-full border border-gray-600"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              backgroundImage: 'url("/bg-4.svg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              transform: 'scale(0.7)',
+              transformOrigin: 'center center'
             }}>
             <TheatreResponseForm
               reviewId={selectedReview._id}

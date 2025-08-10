@@ -156,7 +156,7 @@ const Dashboard = () => {
         <div className="flex justify-center mb-6">
           <Link 
             to="/manage-users"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-red-950 transition-colors"
           >
             <Settings className="w-5 h-5" />
             Manage Users
@@ -199,7 +199,7 @@ const Dashboard = () => {
                         e.stopPropagation();
                         setSelectedMovie({ movie, shows });
                       }}
-                      className="mt-3 px-4 py-2 bg-white text-black text-xs font-medium rounded-lg hover:bg-gray-100 transition-colors w-full"
+                      className="mt-3 px-4 py-2 bg-white text-black text-xs font-medium rounded-lg hover:bg-red-50 transition-colors w-full"
                     >
                       More Details
                     </button>

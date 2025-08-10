@@ -21,9 +21,11 @@ const AskAI = () => {
         {/* Coming Soon Section */}
         <div 
           className="rounded-3xl p-12 mb-16 border border-gray-600 shadow-2xl"
-          style={{
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-          }}
+                          style={{
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
         >
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-4 mb-6">

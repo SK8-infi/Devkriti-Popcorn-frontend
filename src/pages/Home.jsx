@@ -12,7 +12,7 @@ const Home = () => {
       <div 
         className="fixed inset-0 w-full h-full z-0"
         style={{
-          backgroundImage: 'url("/bg-1%20exp.svg")',
+          backgroundImage: 'url("/bg-4.svg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

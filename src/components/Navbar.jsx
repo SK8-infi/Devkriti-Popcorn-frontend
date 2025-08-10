@@ -477,7 +477,11 @@ const handleSaveCity = async () => {
           <div
             className="location-modal"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+              background: 'rgba(0, 0, 0, 0.3)',
+              backgroundImage: 'url("/bg-4.svg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               backdropFilter: 'blur(20px)',
               borderRadius: '16px',
               padding: '24px',

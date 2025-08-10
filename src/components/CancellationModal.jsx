@@ -97,7 +97,7 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
           <h2 className="text-xl font-bold text-white">Cancel Booking</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-full transition-colors text-white"
+            className="p-2 hover:bg-red-950 rounded-full transition-colors text-white"
             disabled={submitting}
           >
             <X className="w-5 h-5" />
@@ -238,7 +238,7 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
                       <button
                         onClick={() => setShowConfirmation(false)}
                         disabled={submitting}
-                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-red-950"
                       >
                         No, Keep Booking
                       </button>

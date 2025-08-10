@@ -25,15 +25,34 @@ const ContactUs = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitStatus('success');
-      setIsSubmitting(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
       
-      // Reset status after 3 seconds
-      setTimeout(() => setSubmitStatus(null), 3000);
-    }, 1500);
+      const response = await fetch(`${API_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error sending contact form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+      
+      // Reset status after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    }
   };
 
   return (
@@ -263,7 +282,14 @@ const ContactUs = () => {
                   {submitStatus === 'success' && (
                     <div className="bg-green-900/20 border border-green-600/50 text-green-400 p-4 rounded-lg flex items-center gap-2">
                       <MessageCircle size={20} />
-                      Thank you! Your message has been sent successfully.
+                      Thank you! Your message has been sent successfully. We will get back to you soon!
+                    </div>
+                  )}
+                  
+                  {submitStatus === 'error' && (
+                    <div className="bg-red-900/20 border border-red-600/50 text-red-400 p-4 rounded-lg flex items-center gap-2">
+                      <MessageCircle size={20} />
+                      Failed to send message. Please try again later or contact us directly.
                     </div>
                   )}
                 </form>

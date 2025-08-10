@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { dummyDateTimeData, dummyShowsData } from '../assets/assets'
-import { Heart, PlayCircleIcon, StarIcon } from 'lucide-react'
+import { Heart, PlayCircleIcon, StarIcon, Plus, MessageSquare, X } from 'lucide-react'
 import timeFormat from '../lib/timeFormat'
 import DateSelect from '../components/DateSelect'
 import MovieCard from '../components/MovieCard'
 import Loading from '../components/Loading'
 import TrailerModal from '../components/TrailerModal'
+import MovieReviewForm from '../components/MovieReviewForm'
+import MovieReviews from '../components/MovieReviews'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import './MovieDetails.css'
@@ -23,10 +25,12 @@ const MovieDetails = () => {
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false)
   const [selectedTrailer, setSelectedTrailer] = useState(null)
 
-  const {api, user, image_base_url, userCity, cityChangeCounter} = useAppContext()
+  const {api, user, image_base_url, userCity, cityChangeCounter, isAuthenticated} = useAppContext()
   const [favoriteMovies, setFavoriteMovies] = useState([])
   const [shows, setShows] = useState([])
   const [currentUserCity, setCurrentUserCity] = useState(null)
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [userReview, setUserReview] = useState(null)
 
   const fetchFavoriteMovies = async () => {
     try {
@@ -154,6 +158,90 @@ const MovieDetails = () => {
       toast.error('No trailer available for this movie');
     }
   }
+
+  // Check if user has reviewed this movie
+  const checkUserReview = async () => {
+    if (!isAuthenticated || !movie || (!movie._id && !movie.id)) return;
+    
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/movie-reviews/user`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        const movieId = movie._id || movie.id;
+        const userReviewForThisMovie = data.reviews.find(
+          review => review.movie._id === movieId
+        );
+        setUserReview(userReviewForThisMovie);
+      }
+    } catch (error) {
+      console.error('Error checking user review:', error);
+    }
+  };
+
+  // Handle movie review submission
+  const handleSubmitMovieReview = async (reviewData) => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      
+      // Determine if this is a new review or an update
+      const isUpdate = userReview && userReview._id;
+      const url = isUpdate 
+        ? `${API_URL}/api/movie-reviews/${userReview._id}`
+        : `${API_URL}/api/movie-reviews`;
+      
+      const response = await fetch(url, {
+        method: isUpdate ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify({ ...reviewData, movieId: movie._id || movie.id })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setShowReviewForm(false);
+        setUserReview(data.review);
+        toast.success(`Review ${isUpdate ? 'updated' : 'submitted'} successfully!`);
+        // Optionally refresh the page to show updated reviews
+        window.location.reload();
+      } else {
+        toast.error(data.message || `Failed to ${isUpdate ? 'update' : 'submit'} review`);
+      }
+    } catch (error) {
+      console.error('Error submitting movie review:', error);
+      toast.error('Failed to submit review');
+    }
+  };
+
+  // Check user review when movie loads
+  useEffect(() => {
+    if (movie && isAuthenticated) {
+      checkUserReview();
+    }
+  }, [movie, isAuthenticated]);
+
+  // Lock/unlock scrolling when modal is open
+  useEffect(() => {
+    if (showReviewForm) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to restore scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showReviewForm]);
+
+
 
 
 
@@ -295,6 +383,174 @@ const MovieDetails = () => {
             </div>
           </div>
         </div>
+
+        {/* Movie Reviews Section */}
+        <div className='mt-20'>
+          {/* Section Header */}
+          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8'>
+            <div>
+              <h2 className='text-lg font-medium text-white'>
+                Movie Reviews
+              </h2>
+              <p className='text-gray-400 text-sm mt-1'>Share your thoughts and read what others think</p>
+            </div>
+            
+            {isAuthenticated && (
+              <div className='flex gap-4'>
+                {!userReview && (
+                  <GlareHover
+                    width="auto"
+                    height="auto"
+                    background="#FFD600"
+                    borderRadius="12px"
+                    borderColor="transparent"
+                    glareColor="#ffffff"
+                    glareOpacity={0.3}
+                    glareAngle={-30}
+                    glareSize={300}
+                    transitionDuration={800}
+                    playOnce={false}
+                    style={{ display: 'inline-block' }}
+                  >
+                    <button
+                      onClick={() => setShowReviewForm(true)}
+                      className='flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-transparent transition rounded-lg font-medium cursor-pointer active:scale-95 text-sm'
+                      style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#000', pointerEvents: 'auto' }}
+                    >
+                      <Plus size={16} />
+                      Write a Review
+                    </button>
+                  </GlareHover>
+                )}
+                
+                {userReview && (
+                  <GlareHover
+                    width="auto"
+                    height="auto"
+                    background="#3B82F6"
+                    borderRadius="12px"
+                    borderColor="transparent"
+                    glareColor="#ffffff"
+                    glareOpacity={0.3}
+                    glareAngle={-30}
+                    glareSize={300}
+                    transitionDuration={800}
+                    playOnce={false}
+                    style={{ display: 'inline-block' }}
+                  >
+                    <button
+                      onClick={() => setShowReviewForm(true)}
+                      className='flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-transparent transition rounded-lg font-medium cursor-pointer active:scale-95 text-sm'
+                      style={{ background: 'transparent', border: 'none', boxShadow: 'none', color: '#fff', pointerEvents: 'auto' }}
+                    >
+                      <MessageSquare size={16} />
+                      Edit Review
+                    </button>
+                  </GlareHover>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* User's Review Section */}
+          {userReview && (
+            <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                    <span className="text-black font-bold text-lg">Y</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white" style={{fontFamily: 'Times New Roman, Times, serif'}}>
+                      Your Review
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      {new Date(userReview.watchDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <StarIcon
+                        key={star}
+                        size={20}
+                        style={{ 
+                          color: star <= userReview.rating ? '#FFD700' : '#666',
+                          fill: star <= userReview.rating ? '#FFD700' : 'none'
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-white font-bold text-xl">{userReview.rating}</span>
+                </div>
+              </div>
+              
+              {/* Review Content */}
+              <div className="mb-6">
+                <h4 className="text-2xl font-bold text-white mb-3" style={{fontFamily: 'Times New Roman, Times, serif'}}>
+                  {userReview.title}
+                </h4>
+                <p className="text-gray-300 leading-relaxed text-lg">{userReview.content}</p>
+              </div>
+              
+              {/* Pros and Cons Section */}
+              {(userReview.pros.length > 0 || userReview.cons.length > 0) && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {userReview.pros.length > 0 && (
+                    <div className="p-4 bg-green-900/20 border border-green-500/30 rounded-xl">
+                      <h5 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                        What you liked
+                      </h5>
+                      <ul className="space-y-2">
+                        {userReview.pros.map((pro, index) => (
+                          <li key={index} className="text-sm text-gray-300 flex items-center gap-2">
+                            <span className="text-green-400">•</span>
+                            {pro}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {userReview.cons.length > 0 && (
+                    <div className="p-4 bg-red-900/20 border border-red-500/30 rounded-xl">
+                      <h5 className="text-sm font-semibold text-red-400 mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                        What could be better
+                      </h5>
+                      <ul className="space-y-2">
+                        {userReview.cons.map((con, index) => (
+                          <li key={index} className="text-sm text-gray-300 flex items-center gap-2">
+                            <span className="text-red-400">•</span>
+                            {con}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* All Reviews Section */}
+          {movie && (movie._id || movie.id) && (
+            <div className="rounded-2xl p-6 border border-gray-800/50" style={{
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <MovieReviews movieId={movie._id || movie.id} />
+            </div>
+          )}
+        </div>
+
         <p className='text-lg font-medium mt-20 mb-8'>You May Also Like</p>
         <div style={{ marginBottom: '60px' }}>
           {shows && shows.length > 0 ? (
@@ -327,6 +583,37 @@ const MovieDetails = () => {
           />
         </div>
       </div>
+
+      {/* Movie Review Form Modal */}
+      {showReviewForm && movie && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="relative w-full max-w-4xl">
+            <div className="absolute top-4 right-4 z-10">
+              <button
+                onClick={() => setShowReviewForm(false)}
+                className="w-10 h-10 bg-gray-800/80 hover:bg-gray-700/80 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="py-8">
+              {movie && (movie._id || movie.id) ? (
+                <MovieReviewForm
+                  movieId={movie._id || movie.id}
+                  onSubmit={handleSubmitMovieReview}
+                  onCancel={() => setShowReviewForm(false)}
+                  initialData={userReview}
+                />
+              ) : (
+                <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50 text-white text-center">
+                  <p>Loading form...</p>
+                  <p className="text-sm text-gray-400 mt-2">Movie ID: {movie ? (movie._id || movie.id || 'undefined') : 'null'}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   ) : <Loading />
 }

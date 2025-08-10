@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Star, Plus, X, MessageSquare } from 'lucide-react';
 
-const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
+const MovieReviewForm = ({ movieId, onSubmit, onCancel, initialData }) => {
   const [rating, setRating] = useState(initialData?.rating || 0);
   const [title, setTitle] = useState(initialData?.title || '');
   const [content, setContent] = useState(initialData?.content || '');
   const [pros, setPros] = useState(initialData?.pros?.length ? initialData.pros : ['']);
   const [cons, setCons] = useState(initialData?.cons?.length ? initialData.cons : ['']);
-  const [visitDate, setVisitDate] = useState(initialData?.visitDate ? new Date(initialData.visitDate).toISOString().split('T')[0] : '');
+  const [watchDate, setWatchDate] = useState(initialData?.watchDate ? new Date(initialData.watchDate).toISOString().split('T')[0] : '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -31,13 +31,13 @@ const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
 
     try {
       const reviewData = {
-        theatreId,
+        movieId,
         rating,
         title: title.trim(),
         content: content.trim(),
         pros: pros.filter(p => p.trim()),
         cons: cons.filter(c => c.trim()),
-        visitDate: visitDate || new Date().toISOString().split('T')[0]
+        watchDate: watchDate || new Date().toISOString().split('T')[0]
       };
 
       await onSubmit(reviewData);
@@ -65,7 +65,7 @@ const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
   };
 
   return (
-    <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50">
+    <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50" style={{ transform: 'scale(0.7)', transformOrigin: 'center center', marginTop: '50px' }}>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
@@ -75,7 +75,7 @@ const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
           <h3 className="text-2xl font-bold text-white" style={{fontFamily: 'Times New Roman, Times, serif'}}>
             {initialData ? 'Edit Your Review' : 'Write a Review'}
           </h3>
-          <p className="text-gray-400 text-sm">Share your thoughts about this theatre</p>
+          <p className="text-gray-400 text-sm">Share your thoughts about this movie</p>
         </div>
       </div>
 
@@ -124,7 +124,7 @@ const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Share your detailed thoughts about the theatre..."
+            placeholder="Share your detailed thoughts about the movie..."
             maxLength={1000}
             required
             rows={4}
@@ -206,13 +206,13 @@ const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
           </div>
         </div>
 
-        {/* Visit Date */}
+        {/* Watch Date */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">When did you visit?</label>
+          <label className="block text-sm font-medium text-gray-300">When did you watch it?</label>
           <input
             type="date"
-            value={visitDate}
-            onChange={(e) => setVisitDate(e.target.value)}
+            value={watchDate}
+            onChange={(e) => setWatchDate(e.target.value)}
             className="px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 text-white transition-all duration-200"
           />
         </div>
@@ -239,4 +239,4 @@ const TheatreReviewForm = ({ theatreId, onSubmit, onCancel, initialData }) => {
   );
 };
 
-export default TheatreReviewForm; 
+export default MovieReviewForm;

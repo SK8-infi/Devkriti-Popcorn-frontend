@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, MapPin, Phone, Mail, Calendar, MessageSquare, Plus } from 'lucide-react';
+import { Star, MapPin, Phone, Mail, Calendar, MessageSquare, Plus, Building } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import TheatreReviews from '../components/TheatreReviews';
 import TheatreReviewForm from '../components/TheatreReviewForm';
@@ -152,7 +152,7 @@ const TheatreDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-20 py-10 px-4">
+    <div className="min-h-screen bg-transparent pt-20 py-10 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Theatre Header */}
         <div className="text-center mb-10 mt-8">
@@ -171,6 +171,30 @@ const TheatreDetails = () => {
               </>
             )}
           </div>
+          
+          {/* Available Formats */}
+          {theatre.rooms && theatre.rooms.length > 0 && (
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Building className="w-5 h-5 text-primary" />
+              <span className="text-gray-300">Available Formats:</span>
+              <div className="flex gap-2">
+                {[...new Set(theatre.rooms.map(room => room.type))].map((type, idx) => (
+                  <span 
+                    key={idx}
+                    className={`text-xs px-2 py-1 rounded-full font-medium ${
+                      type === 'IMAX' 
+                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                        : type === '3D' 
+                        ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                        : 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+                    }`}
+                  >
+                    {type}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Rating Display */}
           {theatre.averageRating !== undefined && (
@@ -374,4 +398,4 @@ const TheatreDetails = () => {
   );
 };
 
-export default TheatreDetails; 
+export default TheatreDetails;

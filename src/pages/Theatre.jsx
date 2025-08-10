@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Star, Plus, MessageSquare } from 'lucide-react';
+import { Star, Plus, MessageSquare, MapPin, Building } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import TheatreReviews from '../components/TheatreReviews';
 import TheatreReviewForm from '../components/TheatreReviewForm';
@@ -29,19 +29,23 @@ const Theatre = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        // Fetch theatre details
-        const tRes = await fetch(`${API_URL}/api/admin/all-theatres`);
+        // Fetch theatre details by ID instead of name
+        const tRes = await fetch(`${API_URL}/api/admin/theatre/${theatreId}`);
         const tData = await tRes.json();
-        const found = tData.theatres.find(t => t.name === decodeURIComponent(theatreId));
-        setTheatre(found);
-        // Admin data is already populated in the theatre object
-        if (found && found.admin) {
-          setAdmin(found.admin);
-        }
         
-        // Check if user has reviewed this theatre
-        if (isAuthenticated && found?._id) {
-          checkUserReview(found._id);
+        if (tData.success) {
+          setTheatre(tData.theatre);
+          // Admin data is already populated in the theatre object
+          if (tData.theatre && tData.theatre.admin) {
+            setAdmin(tData.theatre.admin);
+          }
+          
+          // Check if user has reviewed this theatre
+          if (isAuthenticated && tData.theatre?._id) {
+            checkUserReview(tData.theatre._id);
+          }
+        } else {
+          setError('Theatre not found.');
         }
         
         setLoading(false);
@@ -154,19 +158,41 @@ const Theatre = () => {
       <div className="max-w-7xl mx-auto">
         {/* Theatre Header */}
         <div className="text-center mb-10">
-          <div className="flex justify-center mb-6">
-            <img 
-              className="w-24 h-24 rounded-full border-4 border-primary/50" 
-              src={admin?.image || getPlaceholderImg(admin?.name)} 
-              alt="Theatre Admin" 
-            />
-          </div>
           <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>
             {theatre.name}
           </h1>
-          <p className="text-gray-300 mb-6">
-            Admin: {admin?.name || (theatre.admin.slice(0,8)+'...')}
-          </p>
+          
+          {/* Theatre Address */}
+          {theatre.address && (
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <MapPin className="w-5 h-5 text-primary" />
+              <span className="text-gray-300">{theatre.address}</span>
+            </div>
+          )}
+          
+          {/* Available Formats */}
+          {theatre.rooms && theatre.rooms.length > 0 && (
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Building className="w-5 h-5 text-primary" />
+              <span className="text-gray-300">Available Formats:</span>
+              <div className="flex gap-2">
+                {[...new Set(theatre.rooms.map(room => room.type))].map((type, idx) => (
+                  <span 
+                    key={idx}
+                    className={`text-xs px-2 py-1 rounded-full font-medium ${
+                      type === 'IMAX' 
+                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                        : type === '3D' 
+                        ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                        : 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+                    }`}
+                  >
+                    {type}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Rating Display */}
           {theatre.averageRating !== undefined && (
@@ -239,52 +265,50 @@ const Theatre = () => {
             }}
           >
             <h3 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>Your Review</h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-              {[1, 2, 3, 4, 5].map(star => (
-                <Star
-                  key={star}
-                  size={14}
-                  style={{ 
-                    color: star <= userReview.rating ? '#FFD700' : '#DDD',
-                    fill: star <= userReview.rating ? '#FFD700' : 'none'
-                  }}
-                />
-              ))}
-            </div>
-            <span style={{ fontSize: '12px', color: '#666' }}>
-              {new Date(userReview.visitDate).toLocaleDateString()}
-            </span>
-          </div>
-          
-          <h4 style={{ margin: '8px 0', fontSize: '16px', fontWeight: '600' }}>{userReview.title}</h4>
-          <p style={{ margin: '8px 0', lineHeight: '1.5', color: '#333' }}>{userReview.content}</p>
-          
-          {userReview.pros.length > 0 && (
-            <div style={{ margin: '12px 0' }}>
-              <strong style={{ color: '#28a745', fontSize: '14px' }}>Pros:</strong>
-              <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
-                {userReview.pros.map((pro, index) => (
-                  <li key={index} style={{ fontSize: '14px', color: '#333' }}>{pro}</li>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                {[1, 2, 3, 4, 5].map(star => (
+                  <Star
+                    key={star}
+                    size={14}
+                    style={{ 
+                      color: star <= userReview.rating ? '#FFD700' : '#DDD',
+                      fill: star <= userReview.rating ? '#FFD700' : 'none'
+                    }}
+                  />
                 ))}
-              </ul>
+              </div>
+              <span style={{ fontSize: '12px', color: '#666' }}>
+                {new Date(userReview.visitDate).toLocaleDateString()}
+              </span>
             </div>
-          )}
-          
-          {userReview.cons.length > 0 && (
-            <div style={{ margin: '12px 0' }}>
-              <strong style={{ color: '#dc3545', fontSize: '14px' }}>Cons:</strong>
-              <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
-                {userReview.cons.map((con, index) => (
-                  <li key={index} style={{ fontSize: '14px', color: '#333' }}>{con}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+            
+            <h4 style={{ margin: '8px 0', fontSize: '16px', fontWeight: '600' }}>{userReview.title}</h4>
+            <p style={{ margin: '8px 0', lineHeight: '1.5', color: '#333' }}>{userReview.content}</p>
+            
+            {userReview.pros.length > 0 && (
+              <div style={{ margin: '12px 0' }}>
+                <strong style={{ color: '#28a745', fontSize: '14px' }}>Pros:</strong>
+                <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
+                  {userReview.pros.map((pro, index) => (
+                    <li key={index} style={{ fontSize: '14px', color: '#333' }}>{pro}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {userReview.cons.length > 0 && (
+              <div style={{ margin: '12px 0' }}>
+                <strong style={{ color: '#dc3545', fontSize: '14px' }}>Cons:</strong>
+                <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
+                  {userReview.cons.map((con, index) => (
+                    <li key={index} style={{ fontSize: '14px', color: '#333' }}>{con}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
-
-
 
         {/* All Reviews Section */}
         {theatre._id && (
@@ -372,4 +396,4 @@ const Theatre = () => {
   );
 };
 
-export default Theatre; 
+export default Theatre;

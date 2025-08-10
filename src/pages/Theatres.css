@@ -217,9 +217,87 @@
   }
 }
 
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 214, 160, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 214, 160, 0.2);
+  }
+}
+
 /* Card animation */
 .theatre-card-animate {
   animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Header animation */
+.theatre-header-animate {
+  animation: slideInFromTop 0.8s ease-out forwards;
+}
+
+/* Filter button animations */
+.filter-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.filter-button:hover::before {
+  left: 100%;
+}
+
+/* Theatre card hover effects */
+.theatre-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.theatre-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 214, 160, 0.05), transparent);
+  transition: left 0.6s;
+}
+
+.theatre-card:hover::after {
+  left: 100%;
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+  .theatre-card-animate {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+  
+  .theatre-header-animate {
+    animation: slideInFromTop 0.6s ease-out forwards;
+  }
 }
 
 /* Enhanced Review Button Styles */

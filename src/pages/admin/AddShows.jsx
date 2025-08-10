@@ -131,7 +131,7 @@ const AddShows = () => {
         
         const timeString = `${selectedHour}:${selectedMinute}`;
         const dateTimeString = `${selectedDate}T${timeString}`;
-        
+
         setDateTimeSelection((prev) => {
             const times = prev[selectedDate] || [];
             if (!times.includes(timeString)) {

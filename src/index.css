@@ -30,8 +30,14 @@
 
 body{
   color: white;
-  background-color: #000000;
+  background-color: transparent !important;
+  background-image: url('/bg-4.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: 'Montserrat', Arial, sans-serif;
+  min-height: 100vh;
 }
 
 .no-scrollbar{
@@ -76,6 +82,20 @@ input::-webkit-inner-spin-button {
 
 html, body, * {
   font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+html {
+  background-color: transparent !important;
+  background-image: url('/bg-4.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+#root {
+  background-color: transparent !important;
 }
 
 /* Movie Card Flip Effect */

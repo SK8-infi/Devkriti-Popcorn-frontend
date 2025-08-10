@@ -199,7 +199,7 @@ const MovieReviews = ({ movieId }) => {
         <div className="text-center pt-6">
           <button
             onClick={loadMore}
-            className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 border border-gray-600/50"
+            className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-red-950 hover:to-red-900 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 border border-gray-600/50"
           >
             Load More Reviews
           </button>

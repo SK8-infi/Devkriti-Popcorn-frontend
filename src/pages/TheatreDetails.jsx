@@ -19,7 +19,6 @@ const TheatreDetails = () => {
   const [showResponseForm, setShowResponseForm] = useState(null);
   const [userReview, setUserReview] = useState(null);
 
-
   useEffect(() => {
     fetchTheatreDetails();
     if (isAuthenticated) {
@@ -27,9 +26,21 @@ const TheatreDetails = () => {
     }
   }, [theatreId, isAuthenticated]);
 
+  // Lock/unlock body scroll when modals open/close
+  useEffect(() => {
+    if (showReviewForm || showResponseForm) {
+      // Lock scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Unlock scroll
+      document.body.style.overflow = 'unset';
+    }
 
-
-
+    // Cleanup function to ensure scroll is unlocked when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showReviewForm, showResponseForm]);
 
   const fetchTheatreDetails = async () => {
     try {
@@ -141,7 +152,7 @@ const TheatreDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-20 py-10 px-4">
+    <div className="min-h-screen bg-transparent pt-20 py-10 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Theatre Header */}
         <div className="text-center mb-10 mt-8">
@@ -212,7 +223,7 @@ const TheatreDetails = () => {
           {isAuthenticated && !userReview && (
             <button
               onClick={() => setShowReviewForm(true)}
-              className="flex items-center gap-2 bg-primary hover:bg-primary/80 text-black font-bold px-6 py-3 rounded-lg transition duration-300"
+              className="flex items-center gap-2 bg-black hover:bg-red-950 text-white font-bold px-6 py-3 rounded-lg transition duration-300"
               style={{
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
@@ -228,7 +239,9 @@ const TheatreDetails = () => {
               onClick={() => setShowReviewForm(true)}
               className="flex items-center gap-2 border border-gray-600 hover:border-primary/50 text-white font-bold px-6 py-3 rounded-lg transition duration-300"
               style={{
-                background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                background: 'rgba(0, 0, 0, 0.3)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}
@@ -244,9 +257,16 @@ const TheatreDetails = () => {
       {showReviewForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div 
-            className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            className="rounded-xl max-w-2xl w-full border border-gray-600"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              backgroundImage: 'url("/bg-4.svg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              transform: 'scale(0.7)',
+              transformOrigin: 'center center'
             }}
           >
             <TheatreReviewForm
@@ -262,9 +282,16 @@ const TheatreDetails = () => {
       {showResponseForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div 
-            className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-600"
+            className="rounded-xl max-w-2xl w-full border border-gray-600"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              backgroundImage: 'url("/bg-4.svg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              transform: 'scale(0.7)',
+              transformOrigin: 'center center'
             }}
           >
             <TheatreResponseForm
@@ -283,7 +310,9 @@ const TheatreDetails = () => {
           <div 
             className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              background: 'rgba(0, 0, 0, 0.3)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
             <h2 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>Your Review</h2>
@@ -336,13 +365,13 @@ const TheatreDetails = () => {
         </div>
       )}
 
-        
-
         {/* All Reviews Section */}
         <div 
           className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
           style={{
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+            background: 'rgba(0, 0, 0, 0.3)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
           }}
         >
           <div className="flex items-center justify-between mb-6">
@@ -369,4 +398,4 @@ const TheatreDetails = () => {
   );
 };
 
-export default TheatreDetails; 
+export default TheatreDetails;

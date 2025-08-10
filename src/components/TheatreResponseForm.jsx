@@ -26,7 +26,12 @@ const TheatreResponseForm = ({ reviewId, onResponse, onCancel }) => {
   };
 
   return (
-    <div className="theatre-response-form bg-gray-800 p-4 rounded-md border border-gray-600">
+    <div className="theatre-response-form bg-gray-800 p-4 rounded-md border border-gray-600" style={{
+      backgroundImage: 'url("/bg-4.svg")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
+    }}>
       <div className="flex items-center gap-2 mb-3">
         <MessageSquare size={16} className="text-yellow-400" />
         <span className="text-sm font-medium text-yellow-400">Respond to Review</span>
@@ -56,7 +61,7 @@ const TheatreResponseForm = ({ reviewId, onResponse, onCancel }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-md transition-colors"
+            className="px-4 py-2 bg-gray-700 hover:bg-red-950 text-white font-semibold rounded-md transition-colors"
           >
             Cancel
           </button>

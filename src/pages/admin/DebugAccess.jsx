@@ -97,7 +97,7 @@ const DebugAccess = () => {
           <div className="space-x-4">
             <a 
               href="/admin" 
-              className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-red-950"
             >
               Try Admin Dashboard
             </a>

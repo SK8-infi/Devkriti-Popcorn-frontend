@@ -5,7 +5,7 @@
   max-width: 650px;
   margin: 40px auto 0 auto;
   padding: 36px 24px 48px 24px;
-  background: #000000;
+  background: transparent;
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   min-height: 420px;
@@ -197,7 +197,7 @@
   text-align: center;
   font-size: 1.3rem;
   margin-top: 80px;
-  background: #000000;
+  background: transparent;
   min-height: 100vh;
   display: flex;
   align-items: center;

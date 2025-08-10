@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { X } from 'lucide-react';
 
 const TrailerModal = ({ isOpen, onClose, trailer }) => {
+  // Lock/unlock body scroll when modal opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      // Lock scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Unlock scroll
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to ensure scroll is unlocked when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
   if (!isOpen || !trailer) return null;
 
   const handleBackdropClick = (e) => {
@@ -13,14 +28,21 @@ const TrailerModal = ({ isOpen, onClose, trailer }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{
+        backgroundImage: 'url("/bg-4.svg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)'
+      }}
       onClick={handleBackdropClick}
     >
-      <div className="relative w-full max-w-4xl mx-4">
+      <div className="relative w-full max-w-4xl mx-4" style={{ marginTop: '60px' }}>
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+                      className="absolute -top-12 right-0 text-white hover:text-red-300 transition-colors z-10"
         >
           <X size={32} />
         </button>

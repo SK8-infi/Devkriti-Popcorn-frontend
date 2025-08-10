@@ -292,7 +292,7 @@ const MyBookings = () => {
   if (loading) return <Loading />
 
   return (
-    <div className='min-h-screen bg-black pt-20 py-10 px-4'>
+    <div className='min-h-screen pt-20 py-10 px-4' style={{ backgroundColor: 'transparent' }}>
       <div className='max-w-7xl mx-auto'>
         <div className='text-center mb-10'>
           <h1 className='text-4xl font-bold mb-4' style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>My Bookings</h1>
@@ -312,7 +312,7 @@ const MyBookings = () => {
           <button
             onClick={refreshBookings}
             disabled={refreshing}
-            className='mt-4 bg-primary text-black px-6 py-3 rounded-lg hover:bg-primary/80 transition disabled:opacity-50 flex items-center gap-2 mx-auto font-medium'
+            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-red-950 transition disabled:opacity-50 flex items-center gap-2 mx-auto mt-4 font-medium"
           >
             <RefreshCwIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
             {refreshing ? 'Refreshing...' : 'Refresh Bookings'}
@@ -349,14 +349,18 @@ const MyBookings = () => {
                 key={booking._id} 
                 className='border border-primary/30 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-xl'
                 style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
                 }}
               >
                 {/* Booking Header */}
                 <div 
                   className='p-4 border-b border-gray-700/50'
                   style={{
-                    background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
                   }}
                 >
                   <div className='flex items-center justify-between mb-2'>
@@ -380,8 +384,9 @@ const MyBookings = () => {
                   <div 
                     className='rounded-lg p-3 mb-4'
                     style={{
-                      background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-                      border: '1px solid rgba(75, 85, 99, 0.3)'
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
                     }}
                   >
                     <div className='text-sm text-gray-300 space-y-2'>
@@ -496,7 +501,7 @@ const MyBookings = () => {
                                 navigate('/movies');
                               }
                             }}
-                            className='w-full bg-gray-600 text-white px-4 py-3 rounded-lg hover:bg-gray-500 transition font-medium'
+                            className='w-full bg-gray-600 text-white px-4 py-3 rounded-lg hover:bg-red-950 transition font-medium'
                           >
                             Book Again
                           </button>
@@ -515,7 +520,7 @@ const MyBookings = () => {
                         </button>
                         <button 
                           onClick={() => resendTicketEmail(booking._id)}
-                          className='bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition flex items-center justify-center gap-1 text-sm font-medium'
+                          className='bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-red-950 transition flex items-center justify-center gap-1 text-sm font-medium'
                         >
                           <Mail className="w-4 h-4" />
                           Email

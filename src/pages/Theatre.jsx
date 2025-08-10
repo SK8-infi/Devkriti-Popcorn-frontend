@@ -25,7 +25,6 @@ const Theatre = () => {
   const [showResponseForm, setShowResponseForm] = useState(null);
   const [userReview, setUserReview] = useState(null);
 
-
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
@@ -45,8 +44,6 @@ const Theatre = () => {
           if (isAuthenticated && tData.theatre?._id) {
             checkUserReview(tData.theatre._id);
           }
-          
-
         } else {
           setError('Theatre not found.');
         }
@@ -60,7 +57,21 @@ const Theatre = () => {
     fetchData();
   }, [theatreId, isAuthenticated]);
 
+  // Lock/unlock body scroll when modals open/close
+  useEffect(() => {
+    if (showReviewForm || showResponseForm) {
+      // Lock scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Unlock scroll
+      document.body.style.overflow = 'unset';
+    }
 
+    // Cleanup function to ensure scroll is unlocked when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showReviewForm, showResponseForm]);
 
   const checkUserReview = async (theatreObjectId) => {
     try {
@@ -84,14 +95,8 @@ const Theatre = () => {
 
   const handleSubmitReview = async (reviewData) => {
     try {
-      // Determine if this is a new review or an update
-      const isUpdate = userReview && userReview._id;
-      const url = isUpdate 
-        ? `${API_URL}/api/reviews/${userReview._id}`
-        : `${API_URL}/api/reviews`;
-      
-      const response = await fetch(url, {
-        method: isUpdate ? 'PUT' : 'POST',
+      const response = await fetch(`${API_URL}/api/reviews`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
@@ -107,7 +112,7 @@ const Theatre = () => {
         // Optionally refresh the page to show updated reviews
         window.location.reload();
       } else {
-        alert(data.message || `Failed to ${isUpdate ? 'update' : 'submit'} review`);
+        alert(data.message || 'Failed to submit review');
       }
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -149,7 +154,7 @@ const Theatre = () => {
   if (error || !theatre) return <div className="theatres-error">{error || 'Theatre not found.'}</div>;
 
   return (
-    <div className="min-h-screen bg-black pt-20 py-10 px-4">
+    <div className="min-h-screen bg-transparent pt-20 py-10 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Theatre Header */}
         <div className="text-center mb-10">
@@ -212,19 +217,17 @@ const Theatre = () => {
           )}
           
           {/* Review Action Buttons */}
-          <div className="flex justify-center gap-4 mb-8">
+          <div className="flex justify-center gap-4 mb-6">
             {isAuthenticated && !userReview && (
               <button
                 onClick={() => setShowReviewForm(true)}
-                className="review-button-write flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-500 hover:from-yellow-300 hover:via-orange-400 hover:to-yellow-400 text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-lg"
+                className="flex items-center gap-2 bg-black hover:bg-red-950 text-white font-bold px-6 py-3 rounded-lg transition duration-300"
                 style={{
                   textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  boxShadow: '0 10px 25px rgba(255, 193, 7, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3)',
-                  border: '2px solid rgba(255, 193, 7, 0.3)'
+                  letterSpacing: '0.5px'
                 }}
               >
-                <Plus size={20} className="animate-pulse" />
+                <Plus size={18} />
                 Write a Review
               </button>
             )}
@@ -232,15 +235,16 @@ const Theatre = () => {
             {userReview && (
               <button
                 onClick={() => setShowReviewForm(true)}
-                className="review-button-edit flex items-center gap-3 bg-gradient-to-r from-blue-500 via-purple-600 to-blue-600 hover:from-blue-400 hover:via-purple-500 hover:to-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-lg"
+                className="flex items-center gap-2 border border-gray-600 hover:border-primary/50 text-white font-bold px-6 py-3 rounded-lg transition duration-300"
                 style={{
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  boxShadow: '0 10px 25px rgba(59, 130, 246, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3)',
-                  border: '2px solid rgba(59, 130, 246, 0.3)'
+                  letterSpacing: '0.5px'
                 }}
               >
-                <MessageSquare size={20} className="animate-pulse" />
+                <MessageSquare size={18} />
                 Edit Your Review
               </button>
             )}
@@ -253,92 +257,67 @@ const Theatre = () => {
         {/* User's Review Section */}
         {userReview && (
           <div 
-            className="p-6 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
+            className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+              background: 'rgba(0, 0, 0, 0.3)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold" style={{ color: '#FFD6A0' }}>Your Review</h3>
-              <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded-md">
+            <h3 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>Your Review</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                {[1, 2, 3, 4, 5].map(star => (
+                  <Star
+                    key={star}
+                    size={14}
+                    style={{ 
+                      color: star <= userReview.rating ? '#FFD700' : '#DDD',
+                      fill: star <= userReview.rating ? '#FFD700' : 'none'
+                    }}
+                  />
+                ))}
+              </div>
+              <span style={{ fontSize: '12px', color: '#666' }}>
                 {new Date(userReview.visitDate).toLocaleDateString()}
               </span>
             </div>
             
-            {/* Rating and Title Section */}
-            <div className="mb-4 p-4 bg-gray-800/50 rounded-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map(star => (
-                    <Star
-                      key={star}
-                      size={16}
-                      style={{ 
-                        color: star <= userReview.rating ? '#FFD700' : '#666',
-                        fill: star <= userReview.rating ? '#FFD700' : 'none'
-                      }}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-gray-300">
-                  {userReview.rating} out of 5 stars
-                </span>
-              </div>
-              
-              <h4 className="text-lg font-semibold text-white mb-2">{userReview.title}</h4>
-              <p className="text-gray-200 leading-relaxed">{userReview.content}</p>
-            </div>
+            <h4 style={{ margin: '8px 0', fontSize: '16px', fontWeight: '600' }}>{userReview.title}</h4>
+            <p style={{ margin: '8px 0', lineHeight: '1.5', color: '#333' }}>{userReview.content}</p>
             
-            {/* Pros and Cons Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {userReview.pros.length > 0 && (
-                <div className="p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
-                  <h5 className="text-sm font-semibold text-green-400 mb-2 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                    Pros
-                  </h5>
-                  <ul className="space-y-1">
-                    {userReview.pros.map((pro, index) => (
-                      <li key={index} className="text-sm text-gray-200 flex items-center gap-2">
-                        <span className="text-green-400">•</span>
-                        {pro}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {userReview.cons.length > 0 && (
-                <div className="p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-                  <h5 className="text-sm font-semibold text-red-400 mb-2 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-red-400 rounded-full"></span>
-                    Cons
-                  </h5>
-                  <ul className="space-y-1">
-                    {userReview.cons.map((con, index) => (
-                      <li key={index} className="text-sm text-gray-200 flex items-center gap-2">
-                        <span className="text-red-400">•</span>
-                        {con}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+            {userReview.pros.length > 0 && (
+              <div style={{ margin: '12px 0' }}>
+                <strong style={{ color: '#28a745', fontSize: '14px' }}>Pros:</strong>
+                <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
+                  {userReview.pros.map((pro, index) => (
+                    <li key={index} style={{ fontSize: '14px', color: '#333' }}>{pro}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {userReview.cons.length > 0 && (
+              <div style={{ margin: '12px 0' }}>
+                <strong style={{ color: '#dc3545', fontSize: '14px' }}>Cons:</strong>
+                <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
+                  {userReview.cons.map((con, index) => (
+                    <li key={index} style={{ fontSize: '14px', color: '#333' }}>{con}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
-
-
-
-        
 
         {/* All Reviews Section */}
         {theatre._id && (
           <div 
             className="p-8 rounded-xl border border-gray-600/50 hover:border-primary/50 transition-all duration-300"
             style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+              background: 'rgba(0, 0, 0, 0.3)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
             <h2 className="text-2xl font-bold mb-6" style={{ color: '#FFD6A0' }}>
@@ -362,12 +341,15 @@ const Theatre = () => {
           padding: '16px'
         }}>
           <div style={{
-            backgroundColor: '#000',
+            backgroundImage: 'url("/bg-4.svg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             borderRadius: '8px',
             maxWidth: '600px',
             width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto'
+            transform: 'scale(0.7)',
+            transformOrigin: 'center center'
           }}>
             <TheatreReviewForm
               theatreId={theatre._id}
@@ -392,12 +374,15 @@ const Theatre = () => {
           padding: '16px'
         }}>
           <div style={{
-            backgroundColor: '#000',
+            backgroundImage: 'url("/bg-4.svg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             borderRadius: '8px',
             maxWidth: '600px',
             width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto'
+            transform: 'scale(0.7)',
+            transformOrigin: 'center center'
           }}>
             <TheatreResponseForm
               reviewId={showResponseForm}
@@ -411,4 +396,4 @@ const Theatre = () => {
   );
 };
 
-export default Theatre; 
+export default Theatre;

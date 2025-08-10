@@ -56,18 +56,26 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-20 py-10 px-4 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen pt-20 py-10 px-4" style={{ backgroundColor: 'transparent' }}>
+        <div className="max-w-7xl mx-auto" style={{ backgroundColor: 'transparent' }}>
         {/* Header Section */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0' }}>
+        <div className="text-center mb-10" style={{ backgroundColor: 'transparent' }}>
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Times New Roman, Times, serif', color: '#FFD6A0', backgroundColor: 'transparent' }}>
             Contact Us
           </h1>
           <p className="text-gray-300 mb-6">
@@ -81,9 +89,11 @@ const ContactUs = () => {
           <div className="w-full max-w-4xl">
             <div 
               className="p-6 rounded-xl border border-gray-600/50 backdrop-blur-sm relative overflow-hidden max-w-2xl mx-auto mt-12"
-              style={{
-                background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-              }}
+                              style={{
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
             >
               {/* Form Background Accent */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl"></div>
@@ -165,20 +175,25 @@ const ContactUs = () => {
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full text-black font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
                     style={{
-                      backgroundColor: '#FFD6A0',
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#FFD6A0',
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px'
                     }}
                     onMouseEnter={(e) => {
                       if (!isSubmitting) {
-                        e.target.style.backgroundColor = '#E6C090';
+                        e.target.style.background = 'rgba(0, 0, 0, 0.5)';
+                        e.target.style.border = '1px solid rgba(255, 214, 160, 0.3)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isSubmitting) {
-                        e.target.style.backgroundColor = '#FFD6A0';
+                        e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                        e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)';
                       }
                     }}
                   >
@@ -213,8 +228,7 @@ const ContactUs = () => {
             </div>
           </div>
         </div>
-
-
+        </div>
       </div>
     </div>
   );

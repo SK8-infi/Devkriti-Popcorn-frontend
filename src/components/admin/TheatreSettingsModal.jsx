@@ -119,7 +119,7 @@ const TheatreSettingsModal = ({ isOpen, onClose }) => {
         
         <div className="flex gap-3 w-full mt-4">
           <button
-            className="bg-gray-300 text-black px-6 py-2 rounded-lg flex-1 font-semibold text-lg hover:bg-gray-400 transition"
+                          className="bg-gray-300 text-black px-6 py-2 rounded-lg flex-1 font-semibold text-lg hover:bg-red-200 transition"
             onClick={onClose}
             disabled={submitting}
           >

@@ -1,6 +1,6 @@
 /* My Bookings Page Styles */
 body {
-  background-color: #000000 !important;
+  background-color: transparent !important;
 }
 
 .mybookings-container {
@@ -9,7 +9,7 @@ body {
   padding-right: 1.5rem;
   padding-top: 7.5rem;
   min-height: 100vh;
-  background-color: #000000;
+  background-color: transparent;
 }
 
 @media (min-width: 768px) {
@@ -178,7 +178,7 @@ body {
   }
 }
 
-/* Ensure consistent black background */
+/* Ensure consistent transparent background */
 .min-h-screen {
-  background-color: #000000 !important;
+  background-color: transparent !important;
 } 

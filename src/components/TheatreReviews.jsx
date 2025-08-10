@@ -20,6 +20,22 @@ const TheatreReviews = ({ theatreId }) => {
     fetchReviews();
   }, [theatreId, page, sortBy, filters]);
 
+  // Lock/unlock body scroll when modals open/close
+  useEffect(() => {
+    if (selectedReview || showResponseForm) {
+      // Lock scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Unlock scroll
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to ensure scroll is unlocked when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedReview, showResponseForm]);
+
   const fetchReviews = async () => {
     try {
       const params = new URLSearchParams({

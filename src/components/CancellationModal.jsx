@@ -19,6 +19,22 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
     }
   }, [isOpen, booking]);
 
+  // Lock/unlock body scroll when modal opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      // Lock scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Unlock scroll
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to ensure scroll is unlocked when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const fetchCancellationPolicy = async () => {
     try {
       setLoading(true);
@@ -75,13 +91,13 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-black rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-700">
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-800">Cancel Booking</h2>
+        <div className="flex justify-between items-center p-6 border-b border-gray-700">
+          <h2 className="text-xl font-bold text-white">Cancel Booking</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-800 rounded-full transition-colors text-white"
             disabled={submitting}
           >
             <X className="w-5 h-5" />
@@ -98,49 +114,49 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
             <>
               {/* Booking Details */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-800 mb-3">Booking Details</h3>
-                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                  <p><span className="font-medium">Movie:</span> {cancellationPolicy.booking.movieTitle}</p>
-                  <p><span className="font-medium">Theatre:</span> {cancellationPolicy.booking.theatreName}</p>
-                  <p><span className="font-medium">Show Time:</span> {cancellationPolicy.booking.showDateTime ? new Date(cancellationPolicy.booking.showDateTime).toLocaleString('en-IN') : 'N/A'}</p>
-                  <p><span className="font-medium">Seats:</span> {cancellationPolicy.booking.seats.join(', ')}</p>
-                  <p><span className="font-medium">Original Amount:</span> ₹{cancellationPolicy.booking.originalAmount}</p>
+                <h3 className="font-semibold text-white mb-3">Booking Details</h3>
+                <div className="bg-gray-800 p-4 rounded-lg space-y-2">
+                  <p className="text-gray-300"><span className="font-medium text-white">Movie:</span> {cancellationPolicy.booking.movieTitle}</p>
+                  <p className="text-gray-300"><span className="font-medium text-white">Theatre:</span> {cancellationPolicy.booking.theatreName}</p>
+                  <p className="text-gray-300"><span className="font-medium text-white">Show Time:</span> {cancellationPolicy.booking.showDateTime ? new Date(cancellationPolicy.booking.showDateTime).toLocaleString('en-IN') : 'N/A'}</p>
+                  <p className="text-gray-300"><span className="font-medium text-white">Seats:</span> {cancellationPolicy.booking.seats.join(', ')}</p>
+                  <p className="text-gray-300"><span className="font-medium text-white">Original Amount:</span> ₹{cancellationPolicy.booking.originalAmount}</p>
                 </div>
               </div>
 
               {/* Time Until Show */}
               <div className="mb-6">
-                <div className="flex items-center gap-2 text-blue-600 mb-2">
+                <div className="flex items-center gap-2 text-blue-400 mb-2">
                   <Clock className="w-5 h-5" />
-                  <span className="font-medium">Time Until Show</span>
+                  <span className="font-medium text-white">Time Until Show</span>
                 </div>
-                <p className="text-lg">
+                <p className="text-lg text-white">
                   {formatTimeUntilShow(cancellationPolicy.refundInfo.hoursUntilShow)}
                 </p>
               </div>
 
               {/* Refund Information */}
               <div className="mb-6">
-                <div className="flex items-center gap-2 text-green-600 mb-3">
+                <div className="flex items-center gap-2 text-green-400 mb-3">
                   <IndianRupee className="w-5 h-5" />
-                  <span className="font-medium">Refund Information</span>
+                  <span className="font-medium text-white">Refund Information</span>
                 </div>
                 
                 {cancellationPolicy.refundInfo.refundAmount > 0 ? (
-                  <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
-                    <p className="text-green-800">
+                  <div className="bg-green-900/20 border border-green-600/50 p-4 rounded-lg">
+                    <p className="text-green-400">
                       <span className="font-medium">Refund Amount: </span>
                       ₹{cancellationPolicy.refundInfo.refundAmount} 
                       ({cancellationPolicy.refundInfo.refundPercentage}% of original amount)
                     </p>
-                    <p className="text-sm text-green-600 mt-1">
+                    <p className="text-sm text-green-300 mt-1">
                       Refund will be processed within 5-7 business days
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
-                    <p className="text-red-800 font-medium">No refund applicable</p>
-                    <p className="text-sm text-red-600 mt-1">
+                  <div className="bg-red-900/20 border border-red-600/50 p-4 rounded-lg">
+                    <p className="text-red-400 font-medium">No refund applicable</p>
+                    <p className="text-sm text-red-300 mt-1">
                       Cancellations made less than 2 hours before show time are not eligible for refund
                     </p>
                   </div>
@@ -149,13 +165,13 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
 
               {/* Cancellation Policy */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-800 mb-3">Cancellation Policy</h3>
-                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                  <ul className="space-y-2 text-sm">
-                    <li><span className="font-medium">24+ hours before show:</span> 80% refund</li>
-                    <li><span className="font-medium">12-24 hours before show:</span> 50% refund</li>
-                    <li><span className="font-medium">2-12 hours before show:</span> 25% refund</li>
-                    <li><span className="font-medium">Less than 2 hours:</span> No refund</li>
+                <h3 className="font-semibold text-white mb-3">Cancellation Policy</h3>
+                <div className="bg-blue-900/20 border border-blue-600/50 p-4 rounded-lg">
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li><span className="font-medium text-white">24+ hours before show:</span> 80% refund</li>
+                    <li><span className="font-medium text-white">12-24 hours before show:</span> 50% refund</li>
+                    <li><span className="font-medium text-white">2-12 hours before show:</span> 25% refund</li>
+                    <li><span className="font-medium text-white">Less than 2 hours:</span> No refund</li>
                   </ul>
                 </div>
               </div>
@@ -163,12 +179,12 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
               {/* Warning for past shows */}
               {!canCancel && (
                 <div className="mb-6">
-                  <div className="flex items-center gap-2 text-red-600 mb-2">
+                  <div className="flex items-center gap-2 text-red-400 mb-2">
                     <AlertTriangle className="w-5 h-5" />
-                    <span className="font-medium">Cannot Cancel</span>
+                    <span className="font-medium text-white">Cannot Cancel</span>
                   </div>
-                  <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
-                    <p className="text-red-800">
+                  <div className="bg-red-900/20 border border-red-600/50 p-4 rounded-lg">
+                    <p className="text-red-300">
                       This booking cannot be cancelled as the show has already started or passed.
                     </p>
                   </div>
@@ -178,14 +194,14 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
               {/* Cancellation Reason */}
               {canCancel && (
                 <div className="mb-6">
-                  <label htmlFor="reason" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="reason" className="block text-sm font-medium text-white mb-2">
                     Reason for Cancellation (Optional)
                   </label>
                   <textarea
                     id="reason"
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-gray-800 text-white placeholder-gray-400"
                     rows="3"
                     placeholder="Please let us know why you're cancelling..."
                     disabled={submitting}
@@ -196,12 +212,12 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
               {/* Confirmation Dialog */}
               {showConfirmation && (
                 <div className="mb-6">
-                  <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                    <div className="flex items-center gap-2 text-yellow-800 mb-2">
+                  <div className="bg-yellow-900/20 border border-yellow-600/50 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 text-yellow-400 mb-2">
                       <AlertTriangle className="w-5 h-5" />
-                      <span className="font-medium">Confirm Cancellation</span>
+                      <span className="font-medium text-white">Confirm Cancellation</span>
                     </div>
-                    <p className="text-yellow-800 mb-3">
+                    <p className="text-yellow-300 mb-3">
                       Are you sure you want to cancel this booking? This action cannot be undone.
                     </p>
                     <div className="flex gap-3">
@@ -222,7 +238,7 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
                       <button
                         onClick={() => setShowConfirmation(false)}
                         disabled={submitting}
-                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
                       >
                         No, Keep Booking
                       </button>
@@ -236,11 +252,11 @@ const CancellationModal = ({ isOpen, onClose, booking, onCancellationSuccess }) 
 
         {/* Footer */}
         {!loading && cancellationPolicy && (
-          <div className="flex justify-end gap-3 p-6 border-t bg-gray-50">
+          <div className="flex justify-end gap-3 p-6 border-t border-gray-700 bg-gray-900">
             <button
               onClick={onClose}
               disabled={submitting}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
             >
               Close
             </button>

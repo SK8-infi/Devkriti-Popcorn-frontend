@@ -75,6 +75,22 @@ const MovieDetails = () => {
     setCurrentUserCity(userCity || savedCity);
   }, [userCity]);
 
+  // Lock/unlock body scroll when review form modal opens/closes
+  useEffect(() => {
+    if (showReviewForm) {
+      // Lock scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Unlock scroll
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to ensure scroll is unlocked when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showReviewForm]);
+
   const getShow = async ()=>{
     // Only fetch data if we have determined the user city (or lack thereof)
     if (currentUserCity === null) return;

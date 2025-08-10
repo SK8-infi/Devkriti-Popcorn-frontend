@@ -41,6 +41,35 @@ const AddShows = () => {
     const minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
     const hours = Array.from({length: 24}, (_, i) => i.toString().padStart(2, '0'));
 
+    // Get available hours and minutes based on selected date
+    const getAvailableHours = () => {
+        if (!selectedDate) return hours;
+        
+        const today = new Date().toISOString().split('T')[0];
+        if (selectedDate !== today) return hours;
+        
+        const now = new Date();
+        const currentHour = now.getHours();
+        return hours.filter(hour => parseInt(hour) > currentHour);
+    };
+
+    const getAvailableMinutes = (selectedHour) => {
+        if (!selectedDate || !selectedHour) return minutes;
+        
+        const today = new Date().toISOString().split('T')[0];
+        if (selectedDate !== today) return minutes;
+        
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        
+        if (parseInt(selectedHour) > currentHour) return minutes;
+        if (parseInt(selectedHour) === currentHour) {
+            return minutes.filter(minute => parseInt(minute) > currentMinute);
+        }
+        return minutes;
+    };
+
     // Common languages list
     const languages = [
         "Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "Bengali", "Marathi", 
@@ -131,6 +160,15 @@ const AddShows = () => {
         
         const timeString = `${selectedHour}:${selectedMinute}`;
         const dateTimeString = `${selectedDate}T${timeString}`;
+        
+        // Check if the selected date and time is in the past
+        const selectedDateTime = new Date(dateTimeString);
+        const now = new Date();
+        
+        if (selectedDateTime <= now) {
+            alert('Cannot select a date and time in the past. Please choose a future date and time.');
+            return;
+        }
         
         setDateTimeSelection((prev) => {
             const times = prev[selectedDate] || [];
@@ -425,7 +463,14 @@ const AddShows = () => {
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <label className="block text-sm font-semibold mb-3 text-white">Select Date and Time</label>
           <div className="flex gap-3 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="outline-none rounded-md w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
+            <input 
+              type="date" 
+              value={selectedDate} 
+              onChange={(e) => setSelectedDate(e.target.value)} 
+              min={new Date().toISOString().split('T')[0]}
+              className="outline-none rounded-md w-full bg-transparent text-white text-base font-medium" 
+              style={{'::placeholder': {color: 'white'}}} 
+            />
             <button onClick={() => setShowTimePicker(true)} className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg shadow hover:bg-primary/80 transition-all cursor-pointer font-semibold" >
               Select Time
             </button>
@@ -450,7 +495,7 @@ const AddShows = () => {
                   onChange={(e) => setSelectedHour(e.target.value)}
                   className="border border-primary/40 p-3 rounded text-lg bg-primary/5 text-black"
                 >
-                  {hours.map(hour => (
+                  {getAvailableHours().map(hour => (
                     <option key={hour} value={hour}>{hour}</option>
                   ))}
                 </select>
@@ -463,7 +508,7 @@ const AddShows = () => {
                   onChange={(e) => setSelectedMinute(e.target.value)}
                   className="border border-primary/40 p-3 rounded text-lg bg-primary/5 text-black"
                 >
-                  {minutes.map(minute => (
+                  {getAvailableMinutes(selectedHour).map(minute => (
                     <option key={minute} value={minute}>{minute}</option>
                   ))}
                 </select>

@@ -3,7 +3,7 @@ import ReviewAnalytics from '../../components/ReviewAnalytics';
 
 const ReviewAnalyticsPage = () => {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
       <ReviewAnalytics />
     </div>
   );

@@ -66,7 +66,7 @@ const TheatreAnalytics = () => {
   }
 
   return (
-    <div className="theatre-analytics bg-black text-white p-6">
+    <div className="theatre-analytics text-white p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <BarChart3 size={24} className="text-yellow-400" />

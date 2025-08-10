@@ -38,6 +38,15 @@ const Navbar = () => {
 // User dropdown state
 const [showUserDropdown, setShowUserDropdown] = useState(false);
 
+// Handle authenticated navigation
+const handleAuthenticatedNavigation = (path) => {
+  if (!isAuthenticated) {
+    login();
+    return;
+  }
+  navigate(path);
+};
+
 // Fetch user's city from backend or localStorage
  useEffect(() => {
   const savedCity = localStorage.getItem('userCity');
@@ -659,13 +668,13 @@ const handleSaveCity = async () => {
       <Dock
         items={[
           {
-            icon: <img src={ticket} alt="My Bookings" style={{ width: 32, height: 32 }} />, label: 'My Bookings', onClick: () => navigate('/my-bookings'),
+            icon: <img src={ticket} alt="My Bookings" style={{ width: 32, height: 32 }} />, label: 'My Bookings', onClick: () => handleAuthenticatedNavigation('/my-bookings'),
           },
           {
-            icon: <img src={heart} alt="Favourites" style={{ width: 32, height: 32 }} />, label: 'Favourites', onClick: () => navigate('/favorite'),
+            icon: <img src={heart} alt="Favourites" style={{ width: 32, height: 32 }} />, label: 'Favourites', onClick: () => handleAuthenticatedNavigation('/favorite'),
           },
           {
-            icon: <img src={notification} alt="Notifications" style={{ width: 32, height: 32 }} />, label: 'Notifications', onClick: () => navigate('/notifications'),
+            icon: <img src={notification} alt="Notifications" style={{ width: 32, height: 32 }} />, label: 'Notifications', onClick: () => handleAuthenticatedNavigation('/notifications'),
           },
           {
             icon: <img src={robot} alt="Ask AI" style={{ width: 32, height: 32 }} />, label: 'Ask AI', onClick: () => navigate('/ask-ai'),

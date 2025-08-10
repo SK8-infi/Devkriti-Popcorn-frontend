@@ -283,7 +283,9 @@ const Movies = () => {
   ) : movies.length > 0 ? (
     <div className='movies-container'>
       <div className="movies-header">
-        <h1 className='movies-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px', fontWeight: 'bold' }}>NOW SHOWING</h1>
+        <h1 className='movies-title' style={{ textAlign: 'left', margin: 0, fontFamily: 'Gotham, Arial, sans-serif', fontSize: '1.6rem', color: '#ffefcb', letterSpacing: '1px', fontWeight: 'bold' }}>
+          NOW SHOWING{currentUserCity ? ` IN ${currentUserCity.toUpperCase()}` : ''}
+        </h1>
                     <GlareHover
               width="auto"
               height="auto"

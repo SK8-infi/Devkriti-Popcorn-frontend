@@ -542,9 +542,11 @@ const MovieDetails = () => {
 
           {/* All Reviews Section */}
           {movie && (movie._id || movie.id) && (
-            <div className="rounded-2xl p-6 border border-gray-800/50" style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            <div className="rounded-2xl p-6 border border-gray-800/50 backdrop-blur-md" style={{
+              background: 'rgba(26, 26, 26, 0.3)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)'
             }}>
               <MovieReviews movieId={movie._id || movie.id} />
             </div>

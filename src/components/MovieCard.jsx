@@ -37,7 +37,8 @@ const MovieCard = ({ movie }) => {
     <div
       className='movie-card movie-card-tmdb'
       style={{
-        background: '#fff',
+        background: 'rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(10px)',
         borderRadius: 12,
         boxShadow: '0 2px 8px 0 rgba(16,30,54,.08)',
         overflow: 'hidden',
@@ -47,7 +48,7 @@ const MovieCard = ({ movie }) => {
         flexDirection: 'column',
         position: 'relative',
         transition: 'box-shadow 0.2s, transform 0.2s',
-        borderBottom: '1px dashed #FFD6A0',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         minHeight: isMobile ? 320 : 'auto',
       }}
     >
@@ -95,7 +96,7 @@ const MovieCard = ({ movie }) => {
           flex: 1,
           position: 'relative',
           overflow: 'hidden',
-          background: '#fff',
+          background: 'transparent',
         }}
       >
         <div className='movie-card-text-content'>
@@ -104,7 +105,7 @@ const MovieCard = ({ movie }) => {
             style={{
               fontWeight: 700,
               fontSize: titleSize,
-              color: '#222',
+              color: '#ffefcb',
               marginBottom: 4,
               marginTop: isMobile ? 8 : 12,
               overflow: 'hidden',
@@ -123,7 +124,7 @@ const MovieCard = ({ movie }) => {
           <div
             className='movie-card-details-animated'
             style={{
-              color: '#888',
+              color: 'rgba(255, 239, 203, 0.7)',
               fontWeight: 500,
               fontSize: detailsSize,
               overflow: 'hidden',
@@ -148,9 +149,9 @@ const MovieCard = ({ movie }) => {
         <GlareHover
           width='auto'
           height='auto'
-          background='#111'
+          background='rgba(0, 0, 0, 0.3)'
           borderRadius='12px'
-          borderColor='transparent'
+          borderColor='rgba(255, 255, 255, 0.1)'
           glareColor='#ffffff'
           glareOpacity={0.3}
           glareAngle={-30}

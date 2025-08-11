@@ -26,11 +26,17 @@ The system features real-time seat availability, secure payment processing with 
 
 <img width="1919" height="921" alt="image" src="https://github.com/user-attachments/assets/a7472c5a-8592-438b-8974-4ac83c772717" />
 
-<img width="1919" height="921" alt="image" src="https://github.com/user-attachments/assets/b6adcb33-0f87-420c-b23b-32cf0931610b" />
-
 <img width="1118" height="850" alt="image" src="https://github.com/user-attachments/assets/ecfb9a08-b71a-4e48-bf2e-0c0be2206dee" />
 
 <img width="1154" height="902" alt="image" src="https://github.com/user-attachments/assets/ecb30960-71e0-4a71-a18b-e437ccf86e39" />
+
+<img width="1919" height="926" alt="image" src="https://github.com/user-attachments/assets/63725167-3504-4857-a7a7-32cea44e282e" />
+
+<img width="1919" height="928" alt="image" src="https://github.com/user-attachments/assets/7b64b11d-0f10-4fc6-bcae-096750226da2" />
+
+<img width="1919" height="918" alt="image" src="https://github.com/user-attachments/assets/2a2cd0ef-f443-46e4-871f-1f95943693c9" />
+
+<img width="1919" height="927" alt="image" src="https://github.com/user-attachments/assets/39a7960f-1249-4db0-acf3-a7cbf870314c" />
 
 
 

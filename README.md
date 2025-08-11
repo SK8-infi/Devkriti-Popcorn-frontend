@@ -1,57 +1,657 @@
-# Devkriti Popcorn - Frontend Application
+# Devkriti Popcorn - Movie Theatre Booking System
 
-A modern React.js frontend application for a movie theatre booking system with a beautiful, responsive UI and seamless user experience.
+## Project Description
 
-## Features
+Devkriti Popcorn is a comprehensive movie theatre booking system built with React.js frontend and Node.js backend. The application provides a modern, responsive interface for users to browse movies, book tickets, and manage their bookings, while offering powerful admin tools for theatre management.
 
-### User Experience
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Modern UI**: Clean, intuitive interface with smooth animations
-- **Real-time Updates**: Live seat availability and booking status
-- **Interactive Elements**: Dynamic seat selection and showtime filtering
-- **Toast Notifications**: User-friendly feedback for all actions
+The system features real-time seat availability, secure payment processing with Stripe, Google OAuth authentication, and a complete notification system. It supports multiple user roles (User, Admin, Owner) with role-based access control and provides comprehensive analytics for theatre management.
 
-### Core Functionality
-- **Movie Discovery**: Browse latest movies with trailers and details
-- **Show Selection**: Filter shows by date, time, language, and format
-- **Seat Booking**: Interactive seat layout with real-time availability
+## Screenshots
+
+----Screenshots----
+
+*[Screenshots will be added here showing the main interfaces: Home page, Movie browsing, Seat selection, Booking confirmation, Admin dashboard, etc.]*
+
+## Hosted URL
+
+*https://devkriti-popcorn-frontend.vercel.app/*
+*https://popcorn-backend.duckdns.org/*
+
+## Features Implemented
+
+### Frontend
+
+----Frontend Features----
+
+#### **User Interface & Experience**
+- **Responsive Design**: Mobile-first approach with adaptive layouts for all screen sizes
+- **Modern UI/UX**: Clean, intuitive interface with smooth animations using Framer Motion
+- **Interactive Seat Selection**: Visual seat layout with real-time availability and pricing
+- **Dynamic Show Filtering**: Filter shows by date, time, language, and format
+- **Real-time Updates**: Live booking status and seat availability
+- **Toast Notifications**: User-friendly feedback for all actions using React Hot Toast
+- **Loading States**: Visual feedback during API operations and page transitions
+
+#### **Movie Management**
+- **Movie Discovery**: Browse latest movies with TMDB integration
+- **Movie Details**: Comprehensive movie information including trailers, cast, ratings
+- **Trailer Integration**: Embedded video players for movie trailers
+- **Movie Reviews**: User-generated reviews and ratings system
+- **Favorite Movies**: Save and manage favorite movies
+- **Search & Filter**: Advanced search functionality with multiple filters
+
+#### **Booking System**
+- **Show Selection**: Choose from available showtimes with detailed information
+- **Seat Layout**: Interactive seat selection with different pricing tiers (Silver, Gold, Premium)
+- **Booking Confirmation**: Real-time booking status and confirmation
+- **QR Code Tickets**: Generate and display QR codes for tickets
+- **Booking Management**: View, cancel, and manage all user bookings
 - **Payment Integration**: Seamless Stripe payment processing
-- **Booking Management**: View and manage all bookings with status tracking
-- **User Authentication**: Google OAuth integration with role-based access
 
-### Admin Features
-- **Dashboard**: Comprehensive analytics and theatre overview
+#### **User Management**
+- **Google OAuth**: Secure authentication with Google accounts
+- **Role-based Access**: User, Admin, and Owner roles with different permissions
+- **Profile Management**: User profile and preferences
+- **Notification System**: In-app notifications for bookings, reminders, and updates
+- **Review System**: User-generated reviews for movies and theatres
+
+#### **Theatre Features**
+- **Theatre Information**: Detailed theatre profiles and locations
+- **Theatre Reviews**: User reviews and ratings for theatres
+- **Contact System**: Contact forms and support channels
+
+#### **Admin Panel**
+- **Dashboard**: Comprehensive analytics with revenue tracking and booking statistics
 - **Show Management**: Create, edit, and manage movie shows
-- **Theatre Setup**: Configure theatre details and room layouts
-- **User Management**: Admin and owner role management
+- **Theatre Setup**: Configure theatre details, rooms, and layouts
+- **User Management**: Admin and owner role management (Owner only)
 - **Booking Oversight**: Monitor and manage all theatre bookings
+- **Review Analytics**: Track and analyze user reviews and ratings
 
-## Tech Stack
+#### **AI Integration**
+- **Ask AI**: AI-powered assistance for movie recommendations and queries (To be implemented)
+- **Smart Recommendations**: AI-driven movie suggestions based on user preferences (To be implemented)
 
-- **Framework**: React 19 with Vite
-- **Styling**: Tailwind CSS v4 with custom animations
-- **State Management**: React Context API with custom hooks
-- **Routing**: React Router DOM v7
-- **HTTP Client**: Axios for API communication
-- **UI Components**: Lucide React icons
-- **Animations**: Framer Motion
-- **Notifications**: React Hot Toast
-- **Video Player**: React Player for trailers
-- **Development**: ESLint for code quality
+### Backend
 
-## Prerequisites
+----Backend Features----
 
+#### **Authentication & Authorization**
+- **JWT Token Management**: Secure token-based authentication
+- **Google OAuth Integration**: Third-party authentication
+- **Role-based Access Control**: User, Admin, Owner permissions
+- **Session Management**: Secure session handling
+
+#### **Movie Management**
+- **TMDB Integration**: Real-time movie data from The Movie Database
+- **Movie Caching**: Optimized data caching for performance
+- **Show Scheduling**: Flexible show scheduling system
+- **Movie Reviews**: User review and rating system
+
+#### **Booking System**
+- **Real-time Seat Management**: Live seat availability tracking
+- **Booking Validation**: Comprehensive booking validation and conflict resolution
+- **Payment Processing**: Stripe integration for secure payments
+- **Booking Timeouts**: Automatic booking cleanup for incomplete transactions
+- **Cancellation System**: Booking cancellation with refund processing
+
+#### **Payment Integration**
+- **Stripe Webhooks**: Real-time payment status updates
+- **Multiple Payment Methods**: Support for various payment options
+- **Currency Support**: INR with proper amount conversion
+- **Refund Processing**: Automated refund handling
+
+#### **Notification System**
+- **Email Notifications**: Automated email reminders and confirmations
+- **In-app Notifications**: Real-time notification system
+- **Show Reminders**: Automated reminders for upcoming shows
+- **Payment Confirmations**: Payment success/failure notifications
+
+#### **Theatre Management**
+- **Theatre Configuration**: Theatre setup and room management
+- **Seat Layout Management**: Dynamic seat layout configuration
+- **Theatre Analytics**: Performance tracking and reporting
+- **Review Management**: Theatre review and response system
+
+#### **Background Services**
+- **Cron Jobs**: Automated tasks for reminders and cleanup
+- **Email Service**: Nodemailer integration for email notifications
+- **Ticket Generation**: PDF ticket generation with QR codes
+- **Data Cleanup**: Automated cleanup of old data and expired bookings
+
+## Technologies/Libraries/Packages Used
+
+----List Out----
+
+### **Frontend Technologies**
+- **React 19**: Modern React with latest features
+- **Vite**: Fast build tool and development server
+- **React Router DOM v7**: Client-side routing
+- **React Context API**: State management
+- **React Hot Toast**: Toast notifications
+- **Lucide React**: Icon library
+- **Axios**: HTTP client for API calls
+- **React Player**: Video player for trailers
+- **ESLint**: Code linting and quality
+
+### **Backend Technologies**
+- **Node.js**: JavaScript runtime
+- **Express.js**: Web application framework
+- **MongoDB**: NoSQL database
+- **Mongoose**: MongoDB object modeling
+- **JWT**: JSON Web Tokens for authentication
+- **Passport.js**: Authentication middleware
+- **Stripe**: Payment processing
+- **Nodemailer**: Email service
+- **Cron**: Scheduled task management
+- **Multer**: File upload handling
+- **CORS**: Cross-origin resource sharing
+
+### **Development Tools**
+- **Git**: Version control
+- **npm**: Package manager
+- **ESLint**: Code linting
+- **Vercel**: Deployment platform
+
+### **Third-party Services**
+- **Google OAuth**: Authentication service
+- **Stripe**: Payment processing
+- **TMDB**: Movie database API
+- **Nodemailer**: Email service
+- **QR Code**: Ticket generation
+
+## Project Architecture & File Structure
+
+### **Frontend File Structure**
+
+```
+Devkriti-Popcorn-frontend/
+├── public/                          # Static assets
+│   ├── index.html                   # Main HTML file
+│   └── favicon.ico                  # Site favicon
+├── src/
+│   ├── assets/                      # Images and static files
+│   ├── components/                  # Reusable UI components
+│   │   ├── admin/                   # Admin-specific components
+│   │   │   ├── AdminNavbar.jsx      # Admin navigation bar
+│   │   │   ├── AdminSidebar.jsx     # Admin sidebar navigation
+│   │   │   ├── AdminSubNavbar.jsx   # Admin sub-navigation
+│   │   │   ├── SeatLayoutEditor.jsx # Theatre seat layout editor
+│   │   │   ├── TheatreDebug.jsx     # Theatre debugging component
+│   │   │   ├── TheatreSetupModal.jsx # Theatre setup modal
+│   │   │   ├── TheatreSettingsModal.jsx # Theatre settings modal
+│   │   │   └── Title.jsx            # Admin page title component
+│   │   ├── AboutUs.jsx              # About us component
+│   │   ├── CancellationModal.jsx    # Booking cancellation modal
+│   │   ├── CircularGallery.jsx      # Circular movie gallery
+│   │   ├── CircularRating.jsx       # Circular rating display
+│   │   ├── DateSelect.jsx           # Date selection component
+│   │   ├── DarkVeil.jsx             # Dark overlay component
+│   │   ├── Dock.jsx                 # Dock navigation component
+│   │   ├── FeaturedSection.jsx      # Featured movies section
+│   │   ├── Footer.jsx               # Site footer
+│   │   ├── GlareHover.jsx           # Glare hover effect
+│   │   ├── HeroSection.jsx          # Hero section with movie trailers
+│   │   ├── Loading.jsx              # Loading spinner component
+│   │   ├── MobileBottomDock.jsx     # Mobile bottom navigation
+│   │   ├── MobileNavigation.jsx     # Mobile navigation
+│   │   ├── MovieCard.jsx            # Movie card component
+│   │   ├── MovieReviews.jsx         # Movie reviews component
+│   │   ├── MovieReviewForm.jsx      # Movie review form
+│   │   ├── Navbar.jsx               # Main navigation bar
+│   │   ├── RecommendedSection.jsx   # Recommended movies section
+│   │   ├── ResponsiveContainer.jsx  # Responsive container wrapper
+│   │   ├── ResponsiveGrid.jsx       # Responsive grid layout
+│   │   ├── ReviewAnalytics.jsx      # Review analytics component
+│   │   ├── TheatreAnalytics.jsx     # Theatre analytics component
+│   │   ├── TheatreReviews.jsx       # Theatre reviews component
+│   │   ├── TheatreReviewForm.jsx    # Theatre review form
+│   │   ├── TheatreResponseForm.jsx  # Theatre response form
+│   │   ├── TicketQRModal.jsx        # QR code ticket modal
+│   │   ├── TrailerModal.jsx         # Movie trailer modal
+│   │   └── TrailersSection.jsx      # Trailers section component
+│   ├── context/                     # React Context providers
+│   │   └── AppContext.jsx           # Main app state management
+│   ├── hooks/                       # Custom React hooks
+│   ├── lib/                         # Utility libraries
+│   ├── pages/                       # Page components
+│   │   ├── admin/                   # Admin pages
+│   │   │   ├── AddShows.jsx         # Add new shows page
+│   │   │   ├── Dashboard.jsx        # Admin dashboard
+│   │   │   ├── DebugAccess.jsx      # Debug access page
+│   │   │   ├── Layout.jsx           # Admin layout wrapper
+│   │   │   ├── ListBookings.jsx     # List all bookings
+│   │   │   ├── ListShows.jsx        # List all shows
+│   │   │   ├── ManageRooms.jsx      # Manage theatre rooms
+│   │   │   ├── ManageUsers.jsx      # Manage users (Owner only)
+│   │   │   ├── ReviewAnalytics.jsx  # Review analytics page
+│   │   │   ├── TheatreAnalytics.jsx # Theatre analytics page
+│   │   │   ├── TestOwnerAccess.jsx  # Test owner access
+│   │   │   └── UpdateLayout.jsx     # Update theatre layout
+│   │   ├── AskAI.jsx                # AI assistance page
+│   │   ├── ContactUs.jsx            # Contact us page
+│   │   ├── Favorite.jsx             # Favorite movies page
+│   │   ├── Home.jsx                 # Home page
+│   │   ├── Loading.jsx              # Loading page
+│   │   ├── MovieDetails.jsx         # Movie details page
+│   │   ├── Movies.jsx               # Movies listing page
+│   │   ├── MyBookings.jsx           # User bookings page
+│   │   ├── Notifications.jsx        # Notifications page
+│   │   ├── SeatLayout.jsx           # Seat selection page
+│   │   ├── SelectShowtime.jsx       # Showtime selection page
+│   │   ├── Theatre.jsx              # Theatre page
+│   │   ├── TheatreDetails.jsx       # Theatre details page
+│   │   ├── Theatres.jsx             # Theatres listing page
+│   │   └── UserReviews.jsx          # User reviews page
+│   ├── utils/                       # Utility functions
+│   ├── App.jsx                      # Main app component
+│   ├── index.css                    # Global styles
+│   └── main.jsx                     # App entry point
+├── package.json                     # Dependencies and scripts
+├── vite.config.js                   # Vite configuration
+└── eslint.config.js                 # ESLint configuration
+```
+
+### **Backend File Structure**
+
+```
+Devkriti-Popcorn-backend/
+├── configs/                         # Configuration files
+│   ├── db.js                        # Database connection configuration
+│   └── passport.js                  # Passport authentication configuration
+├── controllers/                     # Route controllers
+│   ├── adminController.js           # Admin operations controller
+│   ├── authController.js            # Authentication controller
+│   ├── bookingController.js         # Booking operations controller
+│   ├── cancellationController.js    # Cancellation operations controller
+│   ├── contactController.js         # Contact form controller
+│   ├── movieController.js           # Movie operations controller
+│   ├── movieReviewController.js     # Movie review controller
+│   ├── notificationController.js    # Notification controller
+│   ├── reviewController.js          # Theatre review controller
+│   ├── showController.js            # Show operations controller
+│   ├── stripeWebhooks.js            # Stripe webhook handler
+│   ├── ticketController.js          # Ticket operations controller
+│   └── userController.js            # User operations controller
+├── images/                          # Image storage
+├── middleware/                      # Custom middleware
+│   └── auth.js                      # Authentication middleware
+├── models/                          # MongoDB schemas
+│   ├── Booking.js                   # Booking schema
+│   ├── Movie.js                     # Movie schema
+│   ├── MovieReview.js               # Movie review schema
+│   ├── Notification.js              # Notification schema
+│   ├── Review.js                    # Theatre review schema
+│   ├── Show.js                      # Show schema
+│   ├── Theatre.js                   # Theatre schema
+│   └── User.js                      # User schema
+├── routes/                          # API routes
+│   ├── adminRoutes.js               # Admin routes
+│   ├── authRoutes.js                # Authentication routes
+│   ├── bookingRoutes.js             # Booking routes
+│   ├── cancellationRoutes.js        # Cancellation routes
+│   ├── contactRoutes.js             # Contact routes
+│   ├── cronRoutes.js                # Cron job routes
+│   ├── movieRoutes.js               # Movie routes
+│   ├── movieReviewRoutes.js         # Movie review routes
+│   ├── notificationRoutes.js        # Notification routes
+│   ├── reviewRoutes.js              # Theatre review routes
+│   ├── showRoutes.js                # Show routes
+│   ├── ticketRoutes.js              # Ticket routes
+│   └── userRoutes.js                # User routes
+├── utils/                           # Utility functions
+│   ├── bookingTimeout.js            # Booking timeout management
+│   ├── cronJobs.js                  # Scheduled tasks
+│   ├── emailService.js              # Email service
+│   ├── notificationService.js       # Notification service
+│   ├── simpleTicketGenerator.js     # Simple ticket generation
+│   └── ticketGenerator.js           # Advanced ticket generation
+├── movies_latest.json               # Cached movie data
+├── package.json                     # Dependencies and scripts
+├── server.js                        # Main server file
+└── vercel.json                      # Vercel deployment configuration
+```
+
+## Database Schema & Relationships
+
+### **MongoDB Collections & Schemas**
+
+#### **1. User Collection (`users`)**
+```javascript
+{
+  _id: ObjectId,
+  googleId: String,                    // Google OAuth ID
+  name: String,                        // User's full name
+  email: String,                       // User's email address
+  picture: String,                     // Profile picture URL
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'owner'],  // User role
+    default: 'user'
+  },
+  createdAt: Date,                     // Account creation date
+  updatedAt: Date                      // Last update date
+}
+```
+
+#### **2. Theatre Collection (`theatres`)**
+```javascript
+{
+  _id: ObjectId,
+  name: String,                        // Theatre name
+  location: String,                    // Theatre location
+  address: String,                     // Full address
+  contactNumber: String,               // Contact phone
+  email: String,                       // Contact email
+  description: String,                 // Theatre description
+  amenities: [String],                 // Available amenities
+  images: [String],                    // Theatre images
+  layout: {
+    rows: Number,                      // Number of rows
+    seatsPerRow: Number,               // Seats per row
+    seatTypes: {
+      silver: { price: Number, seats: [String] },
+      gold: { price: Number, seats: [String] },
+      premium: { price: Number, seats: [String] }
+    }
+  },
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **3. Movie Collection (`movies`)**
+```javascript
+{
+  _id: ObjectId,
+  tmdbId: Number,                      // TMDB movie ID
+  title: String,                       // Movie title
+  overview: String,                    // Movie description
+  posterPath: String,                  // Poster image path
+  backdropPath: String,                // Backdrop image path
+  releaseDate: Date,                   // Release date
+  runtime: Number,                     // Movie duration
+  genres: [String],                    // Movie genres
+  rating: Number,                      // Average rating
+  voteCount: Number,                   // Number of votes
+  trailerKey: String,                  // YouTube trailer key
+  cast: [String],                      // Cast members
+  director: String,                    // Director name
+  language: String,                    // Movie language
+  isActive: Boolean,                   // Active status
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **4. Show Collection (`shows`)**
+```javascript
+{
+  _id: ObjectId,
+  movie: {
+    type: ObjectId,
+    ref: 'Movie'                       // Reference to Movie collection
+  },
+  theatre: {
+    type: ObjectId,
+    ref: 'Theatre'                     // Reference to Theatre collection
+  },
+  date: Date,                          // Show date
+  time: String,                        // Show time (HH:MM)
+  language: String,                    // Show language
+  format: String,                      // Show format (2D, 3D, IMAX)
+  price: {
+    silver: Number,                    // Silver seat price
+    gold: Number,                      // Gold seat price
+    premium: Number                    // Premium seat price
+  },
+  availableSeats: [String],            // Available seat numbers
+  bookedSeats: [String],               // Booked seat numbers
+  isActive: Boolean,                   // Show status
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **5. Booking Collection (`bookings`)**
+```javascript
+{
+  _id: ObjectId,
+  user: {
+    type: ObjectId,
+    ref: 'User'                        // Reference to User collection
+  },
+  show: {
+    type: ObjectId,
+    ref: 'Show'                        // Reference to Show collection
+  },
+  seats: [String],                     // Booked seat numbers
+  totalAmount: Number,                 // Total booking amount
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'completed', 'failed', 'cancelled'],
+    default: 'pending'
+  },
+  stripeSessionId: String,             // Stripe session ID
+  stripePaymentIntentId: String,       // Stripe payment intent ID
+  bookingStatus: {
+    type: String,
+    enum: ['confirmed', 'cancelled', 'expired'],
+    default: 'confirmed'
+  },
+  qrCode: String,                      // QR code data
+  ticketNumber: String,                // Unique ticket number
+  bookingDate: Date,                   // Booking creation date
+  showDate: Date,                      // Show date
+  showTime: String,                    // Show time
+  movieTitle: String,                  // Movie title
+  theatreName: String,                 // Theatre name
+  seatTypes: [{
+    seatNumber: String,
+    type: String,                      // silver, gold, premium
+    price: Number
+  }],
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **6. Review Collection (`reviews`)**
+```javascript
+{
+  _id: ObjectId,
+  user: {
+    type: ObjectId,
+    ref: 'User'                        // Reference to User collection
+  },
+  theatre: {
+    type: ObjectId,
+    ref: 'Theatre'                     // Reference to Theatre collection
+  },
+  title: String,                       // Review title
+  content: String,                     // Review content
+  rating: {
+    type: Number,
+    min: 1,
+    max: 5
+  },
+  categories: {
+    cleanliness: Number,               // Cleanliness rating
+    service: Number,                   // Service rating
+    comfort: Number,                   // Comfort rating
+    value: Number                      // Value for money rating
+  },
+  images: [String],                    // Review images
+  isVerified: Boolean,                 // Verified booking status
+  theatreResponse: {
+    content: String,                   // Theatre response
+    respondedBy: {
+      type: ObjectId,
+      ref: 'User'                      // Admin/Owner who responded
+    },
+    respondedAt: Date
+  },
+  helpfulCount: Number,                // Number of helpful votes
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **7. MovieReview Collection (`moviereviews`)**
+```javascript
+{
+  _id: ObjectId,
+  user: {
+    type: ObjectId,
+    ref: 'User'                        // Reference to User collection
+  },
+  movie: {
+    type: ObjectId,
+    ref: 'Movie'                       // Reference to Movie collection
+  },
+  title: String,                       // Review title
+  content: String,                     // Review content
+  rating: {
+    type: Number,
+    min: 1,
+    max: 5
+  },
+  isVerified: Boolean,                 // Verified booking status
+  helpfulCount: Number,                // Number of helpful votes
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **8. Notification Collection (`notifications`)**
+```javascript
+{
+  _id: ObjectId,
+  user: {
+    type: ObjectId,
+    ref: 'User'                        // Reference to User collection
+  },
+  title: String,                       // Notification title
+  message: String,                     // Notification message
+  type: {
+    type: String,
+    enum: ['booking', 'show', 'reminder', 'system', 'cancellation'],
+    default: 'system'
+  },
+  isRead: {
+    type: Boolean,
+    default: false
+  },
+  relatedId: ObjectId,                 // Related entity ID
+  relatedModel: String,                // Related model name
+  createdAt: Date
+}
+```
+
+### **Database Relationships**
+
+#### **One-to-Many Relationships:**
+1. **User → Bookings**: One user can have multiple bookings
+2. **User → Reviews**: One user can write multiple reviews
+3. **User → MovieReviews**: One user can write multiple movie reviews
+4. **User → Notifications**: One user can have multiple notifications
+5. **Theatre → Shows**: One theatre can have multiple shows
+6. **Theatre → Reviews**: One theatre can have multiple reviews
+7. **Movie → Shows**: One movie can have multiple shows
+8. **Movie → MovieReviews**: One movie can have multiple reviews
+9. **Show → Bookings**: One show can have multiple bookings
+
+#### **Many-to-One Relationships:**
+1. **Bookings → User**: Multiple bookings belong to one user
+2. **Bookings → Show**: Multiple bookings belong to one show
+3. **Reviews → User**: Multiple reviews belong to one user
+4. **Reviews → Theatre**: Multiple reviews belong to one theatre
+5. **MovieReviews → User**: Multiple movie reviews belong to one user
+6. **MovieReviews → Movie**: Multiple movie reviews belong to one movie
+7. **Shows → Theatre**: Multiple shows belong to one theatre
+8. **Shows → Movie**: Multiple shows belong to one movie
+9. **Notifications → User**: Multiple notifications belong to one user
+
+#### **Indexes for Performance:**
+```javascript
+// User Collection
+{ email: 1 }                           // Unique email index
+{ googleId: 1 }                        // Google OAuth lookup
+
+// Booking Collection
+{ user: 1 }                           // User bookings lookup
+{ show: 1 }                           // Show bookings lookup
+{ paymentStatus: 1 }                  // Payment status filtering
+{ bookingStatus: 1 }                  // Booking status filtering
+{ bookingDate: -1 }                   // Recent bookings
+
+// Show Collection
+{ movie: 1 }                          // Movie shows lookup
+{ theatre: 1 }                        // Theatre shows lookup
+{ date: 1, time: 1 }                  // Date/time filtering
+{ isActive: 1 }                       // Active shows filtering
+
+// Review Collection
+{ theatre: 1 }                        // Theatre reviews lookup
+{ user: 1 }                           // User reviews lookup
+{ rating: -1 }                        // Rating sorting
+
+// Notification Collection
+{ user: 1 }                           // User notifications lookup
+{ isRead: 1 }                         // Unread notifications
+{ createdAt: -1 }                     // Recent notifications
+```
+
+## Local Setup
+
+----Steps to setup the project locally----
+
+### **Prerequisites**
 - Node.js (v16 or higher)
 - npm or yarn package manager
-- Backend API running (see backend README)
+- MongoDB database
 - Google OAuth credentials
-- Stripe account for payments
+- Stripe account
 
-## Installation
-
+### **Backend Setup**
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
+   cd Devkriti-Popcorn-backend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Configuration**
+   Create a `.env` file:
+   ```env
+   PORT=3000
+   MONGODB_URI=your_mongodb_connection_string
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+   STRIPE_PUBLISHABLE_KEY=
+   EMAIL_USER=your_email
+   EMAIL_PASS=your_email_password
+   TMDB_API_KEY=your_tmdb_api_key
+   FRONTEND_URL=....for stripe and oauth
+   BACKEND_URL=....for stipe and oauth
+   ```
+
+4. **Start the server**
+   ```bash
+   npm start
+   ```
+
+### **Frontend Setup**
+1. **Navigate to frontend directory**
+   ```bash
    cd Devkriti-Popcorn-frontend
    ```
 
@@ -60,24 +660,14 @@ A modern React.js frontend application for a movie theatre booking system with a
    npm install
    ```
 
-3. **Environment Setup**
-   Create a `.env` file in the root directory:
+3. **Environment Configuration**
+   Create a `.env` file:
    ```env
-   # API Configuration
-   VITE_API_URL=http://localhost:3000/api
-   VITE_FRONTEND_URL=http://localhost:5173
-   
-   # Google OAuth
-   VITE_GOOGLE_CLIENT_ID=your_google_client_id
-   
-   # Stripe Configuration
+   VITE_API_URL=http://localhost:3000
+   VITE_BASE_URL=http://localhost:3000
    VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-   
-   # Currency
-   VITE_CURRENCY=inr
-   
-   # Environment
-   VITE_NODE_ENV=development
+   VITE_CURRENCY=₹
+   VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/original
    ```
 
 4. **Start the development server**
@@ -85,248 +675,34 @@ A modern React.js frontend application for a movie theatre booking system with a
    npm run dev
    ```
 
-5. **Build for production**
-   ```bash
-   npm run build
-   npm run preview
-   ```
+### **Database Setup**
+1. **MongoDB Connection**: Ensure MongoDB is running and accessible
+2. **Initial Data**: The system will automatically create necessary collections
+3. **Admin User**: Create an admin user through the application interface
 
-## Project Structure
+### **Payment Setup**
+1. **Stripe Account**: Set up a Stripe account for payment processing
+2. **Webhook Configuration**: Configure Stripe webhooks for payment status updates
+3. **Test Mode**: Use Stripe test keys for development
 
-```
-Devkriti-Popcorn-frontend/
-├── public/                  # Static assets
-│   ├── index.html          # Main HTML file
-│   └── favicon.ico         # Site favicon
-├── src/
-│   ├── assets/             # Images and static files
-│   ├── components/         # Reusable UI components
-│   │   ├── admin/         # Admin-specific components
-│   │   │   ├── AddShows.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Layout.jsx
-│   │   │   ├── ListBookings.jsx
-│   │   │   ├── ListShows.jsx
-│   │   │   ├── ManageRooms.jsx
-│   │   │   ├── ManageUsers.jsx
-│   │   │   ├── SignIn.jsx
-│   │   │   ├── TestOwnerAccess.jsx
-│   │   │   ├── TheatreSetupModal.jsx
-│   │   │   ├── TheatreSettingsModal.jsx
-│   │   │   └── UpdateLayout.jsx
-│   │   ├── TrailersSection.jsx
-│   │   └── ...            # Other shared components
-│   ├── context/            # React Context providers
-│   │   └── AppContext.jsx # Main app state management
-│   ├── hooks/              # Custom React hooks
-│   ├── lib/                # Utility libraries
-│   ├── pages/              # Page components
-│   │   ├── admin/         # Admin pages
-│   │   ├── ContactUs.jsx
-│   │   ├── Favorite.jsx
-│   │   ├── Home.jsx
-│   │   ├── Loading.jsx
-│   │   ├── MovieDetails.jsx
-│   │   ├── Movies.jsx
-│   │   ├── MyBookings.jsx
-│   │   ├── Notifications.jsx
-│   │   ├── SeatLayout.jsx
-│   │   ├── SelectShowtime.jsx
-│   │   ├── Theatre.jsx
-│   │   └── Theatres.jsx
-│   ├── utils/              # Utility functions
-│   ├── App.jsx             # Main app component
-│   ├── index.css           # Global styles
-│   └── main.jsx            # App entry point
-├── package.json            # Dependencies and scripts
-├── vite.config.js          # Vite configuration
-└── eslint.config.js        # ESLint configuration
-```
+### **Email Setup**
+1. **Email Service**: Configure Nodemailer with your email service
+2. **SMTP Settings**: Set up SMTP configuration for automated emails
 
-## Key Components
+## Team Members
 
-### User Pages
-- **Home**: Landing page with movie trailers and featured content
-- **Movies**: Browse all available movies with filtering
-- **MovieDetails**: Detailed movie information with showtimes
-- **SelectShowtime**: Choose show date, time, language, and format
-- **SeatLayout**: Interactive seat selection with pricing
-- **MyBookings**: View and manage all user bookings
-- **Theatres**: Theatre information and location details
-- **ContactUs**: Contact form and support information
+----Name----
 
-### Admin Pages
-- **Dashboard**: Analytics, revenue, and theatre overview
-- **AddShows**: Create new movie shows with scheduling
-- **ListShows**: Manage existing shows and schedules
-- **ListBookings**: Monitor all theatre bookings
-- **ManageUsers**: User role management (Owner only)
-- **Layout**: Theatre room layout configuration
-- **ManageRooms**: Room setup and management
+*Shivansh Katiyar: @SK8-infi*
+*Prabal Poddar: @princexpoddar*
+*Veditha Keerti Rani: @Veditha08*
 
-### Shared Components
-- **TrailersSection**: Movie trailer carousel
-- **TheatreSetupModal**: Initial theatre configuration
-- **TheatreSettingsModal**: Theatre settings updates
+## Demo Video
 
-## Authentication & Authorization
+----Demo Video Link----
 
-### User Roles
-- **User**: Basic booking and profile access
-- **Admin**: Theatre management and show creation
-- **Owner**: Full system access including user management
-
-### Authentication Flow
-1. User clicks "Sign In with Google"
-2. Google OAuth redirects to backend
-3. Backend validates and returns JWT token
-4. Frontend stores token and updates user state
-5. Role-based navigation and access control
-
-## Payment Integration
-
-### Stripe Integration
-- **Checkout Sessions**: Secure payment processing
-- **Currency Support**: INR with proper amount conversion
-- **Success/Failure Handling**: Automatic booking status updates
-- **Webhook Processing**: Real-time payment status updates
-
-### Payment Flow
-1. User selects seats and clicks "Book Now"
-2. Frontend sends booking request to backend
-3. Backend creates Stripe Checkout Session
-4. User completes payment on Stripe
-5. Webhook updates booking status
-6. User receives confirmation email
-
-## UI/UX Features
-
-### Responsive Design
-- **Mobile-First**: Optimized for mobile devices
-- **Tablet Support**: Responsive layouts for tablets
-- **Desktop Experience**: Full-featured desktop interface
-
-### Interactive Elements
-- **Seat Selection**: Visual seat layout with availability
-- **Show Filtering**: Date, time, language, and format filters
-- **Real-time Updates**: Live booking status and availability
-- **Smooth Animations**: Framer Motion for transitions
-
-### User Feedback
-- **Toast Notifications**: Success, error, and info messages
-- **Loading States**: Visual feedback during operations
-- **Error Handling**: Graceful error display and recovery
-- **Progress Indicators**: Booking and payment progress
-
-## Responsive Design
-
-### Breakpoints
-- **Mobile**: 320px - 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: 1024px+
-
-### Key Responsive Features
-- **Flexible Grid**: CSS Grid and Flexbox layouts
-- **Adaptive Typography**: Responsive font sizes
-- **Touch-Friendly**: Mobile-optimized touch targets
-- **Progressive Enhancement**: Core functionality on all devices
-
-## Performance Optimization
-
-### Code Splitting
-- **Route-based**: Lazy loading of page components
-- **Component-based**: Dynamic imports for heavy components
-- **Bundle Optimization**: Vite for fast builds and HMR
-
-### Asset Optimization
-- **Image Optimization**: Compressed and optimized images
-- **Font Loading**: Optimized web font loading
-- **CSS Optimization**: Purged unused styles
-
-## Development
-
-### Available Scripts
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
-```
-
-### Development Features
-- **Hot Module Replacement**: Instant code updates
-- **ESLint Integration**: Code quality enforcement
-- **Error Overlay**: In-browser error display
-- **Source Maps**: Debug-friendly builds
-
-## Deployment
-
-### Build Process
-1. **Install Dependencies**: `npm install`
-2. **Environment Setup**: Configure production environment variables
-3. **Build Application**: `npm run build`
-4. **Deploy**: Upload `dist/` folder to hosting service
-
-### Environment Variables
-Ensure all production environment variables are set:
-- API URL
-- Google OAuth credentials
-- Stripe publishable key
-- Frontend URL
-
-### Hosting Options
-- **Vercel**: Recommended for React applications
-- **Netlify**: Static site hosting
-- **AWS S3**: Static website hosting
-- **Firebase Hosting**: Google's hosting solution
-
-## Troubleshooting
-
-### Common Issues
-1. **API Connection**: Verify backend is running and accessible
-2. **OAuth Errors**: Check Google OAuth credentials
-3. **Payment Issues**: Verify Stripe configuration
-4. **Build Errors**: Check Node.js version and dependencies
-
-### Debug Mode
-Enable debug logging by setting:
-```env
-VITE_NODE_ENV=development
-VITE_DEBUG=true
-```
-
-## Code Quality
-
-### ESLint Configuration
-- **React Hooks**: Enforces hooks rules
-- **React Refresh**: Fast refresh support
-- **Code Style**: Consistent code formatting
-
-### Best Practices
-- **Component Structure**: Functional components with hooks
-- **State Management**: Context API for global state
-- **Error Boundaries**: Graceful error handling
-- **Accessibility**: ARIA labels and keyboard navigation
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-This project is licensed under the ISC License.
-
-## Support
-
-For support and questions:
-- Check the existing documentation
-- Review the component structure
-- Contact the development team
+*[Demo video link will be added here once created]*
 
 ---
 
-**Note**: This frontend is designed to work with the Devkriti Popcorn backend API. Ensure both applications are properly configured and running for full functionality.
+**Note**: This is a comprehensive movie theatre booking system with full-stack functionality. Ensure all prerequisites are met and services are properly configured for optimal performance.

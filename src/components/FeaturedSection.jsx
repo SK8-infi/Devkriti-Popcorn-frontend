@@ -171,10 +171,7 @@ const FeaturedSection = () => {
               letterSpacing: '1px', 
               fontWeight: 'bold' 
             }}>NOW SHOWING</p>
-            <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
-                View All 
-                <ArrowRight style={{transition: 'transform 0.2s'}}/>
-            </button>
+
           </div>
           {uniqueShows.length > 0 ? (
             <ResponsiveGrid
@@ -188,7 +185,7 @@ const FeaturedSection = () => {
               }}
               gap={responsiveGap}
             >
-              {uniqueShows.slice(0, window.innerWidth <= 768 ? 2 : uniqueShows.length).map((show) => (
+              {uniqueShows.map((show) => (
                 <MovieCard 
                   key={show.movie._id || show.movie.id} 
                   movie={{ ...show.movie, id: show.movie.id || show.movie._id }}

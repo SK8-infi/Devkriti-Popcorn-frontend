@@ -134,11 +134,7 @@
     grid-template-columns: repeat(2, 1fr) !important;
   }
   
-  /* Movie card grid improvements */
-  .responsive-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
-  }
+
   
   /* Movie card mobile optimizations */
   .movie-card {
@@ -277,11 +273,7 @@
     gap: 0.5rem !important;
   }
   
-  /* Movie card optimizations for very small screens */
-  .responsive-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.5rem !important;
-  }
+
   
   .movies-list {
     grid-template-columns: repeat(2, 1fr) !important;

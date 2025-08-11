@@ -163,10 +163,7 @@ const RecommendedSection = () => {
                             letterSpacing: '1px', 
                             fontWeight: 'bold' 
                         }}>RECOMMENDED MOVIES</p>
-                        <button onClick={()=> navigate('/movies')} className='featured-viewall-btn'>
-                            View All 
-                            <ArrowRight style={{transition: 'transform 0.2s'}}/>
-                        </button>
+
                     </div>
                     {movies.length > 0 ? (
                         <ResponsiveGrid
@@ -180,7 +177,7 @@ const RecommendedSection = () => {
                             }}
                             gap={responsiveGap}
                         >
-                            {movies.slice(0, window.innerWidth <= 768 ? 2 : movies.length).map((movie) => (
+                            {movies.map((movie) => (
                                 <MovieCard 
                                   key={movie.id || movie._id} 
                                   movie={movie}

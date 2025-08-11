@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import './components/MobileResponsive.css'
+import './components/ResponsiveGrid.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AppProvider } from './context/AppContext.jsx'

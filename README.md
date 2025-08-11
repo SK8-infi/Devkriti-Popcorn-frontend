@@ -58,7 +58,6 @@ The system features real-time seat availability, secure payment processing with 
 #### **Theatre Features**
 - **Theatre Information**: Detailed theatre profiles and locations
 - **Theatre Reviews**: User reviews and ratings for theatres
-- **Theatre Analytics**: Performance metrics and analytics for theatre owners
 - **Contact System**: Contact forms and support channels
 
 #### **Admin Panel**
@@ -68,11 +67,10 @@ The system features real-time seat availability, secure payment processing with 
 - **User Management**: Admin and owner role management (Owner only)
 - **Booking Oversight**: Monitor and manage all theatre bookings
 - **Review Analytics**: Track and analyze user reviews and ratings
-- **Theatre Analytics**: Performance metrics and insights
 
 #### **AI Integration**
-- **Ask AI**: AI-powered assistance for movie recommendations and queries
-- **Smart Recommendations**: AI-driven movie suggestions based on user preferences
+- **Ask AI**: AI-powered assistance for movie recommendations and queries (To be implemented)
+- **Smart Recommendations**: AI-driven movie suggestions based on user preferences (To be implemented)
 
 ### Backend
 
@@ -130,8 +128,6 @@ The system features real-time seat availability, secure payment processing with 
 - **Vite**: Fast build tool and development server
 - **React Router DOM v7**: Client-side routing
 - **React Context API**: State management
-- **Tailwind CSS v4**: Utility-first CSS framework
-- **Framer Motion**: Animation library
 - **React Hot Toast**: Toast notifications
 - **Lucide React**: Icon library
 - **Axios**: HTTP client for API calls
@@ -156,7 +152,6 @@ The system features real-time seat availability, secure payment processing with 
 - **npm**: Package manager
 - **ESLint**: Code linting
 - **Vercel**: Deployment platform
-- **Postman**: API testing
 
 ### **Third-party Services**
 - **Google OAuth**: Authentication service
@@ -635,14 +630,18 @@ Devkriti-Popcorn-backend/
    ```env
    PORT=3000
    MONGODB_URI=your_mongodb_connection_string
+   MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    STRIPE_SECRET_KEY=your_stripe_secret_key
    STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+   STRIPE_PUBLISHABLE_KEY=
    EMAIL_USER=your_email
    EMAIL_PASS=your_email_password
    TMDB_API_KEY=your_tmdb_api_key
+   FRONTEND_URL=....for stripe and oauth
+   BACKEND_URL=....for stipe and oauth
    ```
 
 4. **Start the server**
@@ -664,12 +663,11 @@ Devkriti-Popcorn-backend/
 3. **Environment Configuration**
    Create a `.env` file:
    ```env
-   VITE_API_URL=http://localhost:3000/api
-   VITE_FRONTEND_URL=http://localhost:5173
-   VITE_GOOGLE_CLIENT_ID=your_google_client_id
+   VITE_API_URL=http://localhost:3000
+   VITE_BASE_URL=http://localhost:3000
    VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-   VITE_CURRENCY=inr
-   VITE_NODE_ENV=development
+   VITE_CURRENCY=₹
+   VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/original
    ```
 
 4. **Start the development server**
@@ -696,8 +694,8 @@ Devkriti-Popcorn-backend/
 ----Name----
 
 *Shivansh Katiyar: @SK8-infi*
-*Prabal Poddar:*
-*Veditha Keerti Rani:*
+*Prabal Poddar: @princexpoddar*
+*Veditha Keerti Rani: @Veditha08*
 
 ## Demo Video
 

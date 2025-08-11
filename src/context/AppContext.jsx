@@ -91,6 +91,9 @@ export const AppProvider = ({ children }) => {
                 setUser(fetchedUser);
                 setIsAuthenticated(true);
                 setUserCity(fetchedUser.city); // Set user's personal city preference
+                if (fetchedUser.city) {
+                    localStorage.setItem('userCity', fetchedUser.city);
+                }
                 
                 // Fetch theatre data if user is admin or owner
                 if (fetchedUser.role === 'admin' || fetchedUser.role === 'owner') {
@@ -266,6 +269,13 @@ export const AppProvider = ({ children }) => {
     // Load on app start
     useEffect(() => {
         const token = getToken();
+        
+        // Initialize userCity from localStorage
+        const savedCity = localStorage.getItem('userCity');
+        if (savedCity) {
+            setUserCity(savedCity);
+        }
+        
         if (token) {
             fetchUser();
         } else {
@@ -330,6 +340,9 @@ export const AppProvider = ({ children }) => {
         userCity,
         setUserCity: (newCity) => {
             setUserCity(newCity);
+            if (newCity) {
+                localStorage.setItem('userCity', newCity);
+            }
             setCityChangeCounter(prev => prev + 1); // Trigger re-fetch
         },
         cityChangeCounter,

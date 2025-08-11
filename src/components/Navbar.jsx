@@ -19,7 +19,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const Navbar = () => {
 
  const [isOpen, setIsOpen] = useState(false)
- const { user, isAuthenticated, login, logout, setUserCity: setContextUserCity } = useAppContext()
+ const { user, isAuthenticated, login, logout, userCity, setUserCity: setContextUserCity } = useAppContext()
 
  const navigate = useNavigate()
  const location = useLocation()
@@ -29,7 +29,6 @@ const Navbar = () => {
 
  // Location modal state
  const [showLocationModal, setShowLocationModal] = useState(false);
- const [userCity, setUserCity] = useState("");
  const [selectedCity, setSelectedCity] = useState("");
  const [loadingCity, setLoadingCity] = useState(false);
  const [savingCity, setSavingCity] = useState(false);
@@ -48,45 +47,15 @@ const handleAuthenticatedNavigation = (path) => {
 };
 
 
-// Fetch user's city from backend or localStorage
+// Initialize selectedCity from context or localStorage
  useEffect(() => {
   const savedCity = localStorage.getItem('userCity');
   if (savedCity) {
-    setUserCity(savedCity);
     setSelectedCity(savedCity);
+  } else if (userCity) {
+    setSelectedCity(userCity);
   }
-
-  // If user is authenticated, fetch from backend
-  if (user && user._id) {
-    setLoadingCity(true);
-
-    fetch(`${API_URL}/api/user/by-id/${user._id}`)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        if (data.success && data.user && data.user.city) {
-          setUserCity(data.user.city);
-          setSelectedCity(data.user.city);
-          localStorage.setItem('userCity', data.user.city);
-        } else if (!savedCity) {
-          setUserCity("");
-          setSelectedCity("");
-        }
-        setLoadingCity(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching user city:', error);
-        setLoadingCity(false);
-        // Don't show error to user for this background fetch
-      });
-  } else {
-    setLoadingCity(false);
-  }
- }, [user]);
+ }, [userCity]);
 
  // Handle city save
 const handleSaveCity = async () => {
@@ -100,7 +69,6 @@ const handleSaveCity = async () => {
   if (!user) {
     // Non-authenticated user: store in localStorage and send to public API
     localStorage.setItem('userCity', selectedCity);
-    setUserCity(selectedCity);
     setContextUserCity(selectedCity); // Update context
 
     try {
@@ -118,9 +86,6 @@ const handleSaveCity = async () => {
     setShowLocationModal(false);
     setCityError("");
     setSavingCity(false);
-    
-    // Refresh page to update content
-    window.location.reload();
     return;
   }
 
@@ -138,14 +103,10 @@ const handleSaveCity = async () => {
     const data = await response.json();
 
        if (data.success) {
-         setUserCity(selectedCity);
          setContextUserCity(selectedCity); // Update context
          localStorage.setItem('userCity', selectedCity);
          setShowLocationModal(false);
          setCityError("");
-         
-         // Refresh page to update content
-         window.location.reload();
        } else {
          setCityError(data.message || "Failed to update city.");
        }

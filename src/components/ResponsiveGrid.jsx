@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import './ResponsiveGrid.css';
+import React from 'react';
 
 const ResponsiveGrid = ({ 
   children, 
@@ -14,78 +13,41 @@ const ResponsiveGrid = ({
     tiny: 2
   }
 }) => {
-  const [gridConfig, setGridConfig] = useState({
-    columns: 4,
-    gap: '1.5rem',
-    containerPadding: '0 1.5rem'
-  });
-
-  useEffect(() => {
-    const updateGridConfig = () => {
-      const width = window.innerWidth;
-      
-      if (width >= 300 && width < 500) {
-        // Exactly 2 cards with proper spacing
-        setGridConfig({
-          columns: 2,
-          gap: '0.75rem',
-          containerPadding: '0 0.75rem'
-        });
-        console.log(`2 cards layout at ${width}px`);
-      } else if (width >= 500 && width < 768) {
-        // Exactly 3 cards with proper spacing
-        setGridConfig({
-          columns: 3,
-          gap: '1rem',
-          containerPadding: '0 1rem'
-        });
-        console.log(`3 cards layout at ${width}px - FORCING 3 COLUMNS`);
-      } else if (width >= 768) {
-        // 4 cards by default
-        setGridConfig({
-          columns: 4,
-          gap: '1.5rem',
-          containerPadding: '0 1.5rem'
-        });
-        console.log(`4 cards layout at ${width}px`);
-      } else {
-        // Very small screens - 2 cards
-        setGridConfig({
-          columns: 2,
-          gap: '0.5rem',
-          containerPadding: '0 0.5rem'
-        });
-        console.log(`2 cards layout (small) at ${width}px`);
-      }
-    };
-
-    // Set initial value
-    updateGridConfig();
-
-    // Add event listener
-    window.addEventListener('resize', updateGridConfig);
-
-    // Cleanup
-    return () => window.removeEventListener('resize', updateGridConfig);
-  }, []);
-
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: `repeat(${gridConfig.columns}, 1fr)`,
-    gap: gridConfig.gap,
-    width: '100%',
-    padding: gridConfig.containerPadding,
-    boxSizing: 'border-box'
+  const getGridTemplateColumns = () => {
+    return `
+      repeat(${columns.default}, 1fr)
+    `;
   };
-
-  console.log(`Rendering ResponsiveGrid with ${gridConfig.columns} columns at ${window.innerWidth}px`);
 
   return (
     <div
       className={`responsive-grid ${className}`}
-      style={gridStyle}
-      data-columns={gridConfig.columns}
-      data-width={window.innerWidth}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: getGridTemplateColumns(),
+        gap,
+        width: '100%',
+        '@media (max-width: 1024px)': {
+          gridTemplateColumns: `repeat(${columns.lg}, 1fr)`,
+          gap: gap,
+        },
+        '@media (max-width: 768px)': {
+          gridTemplateColumns: `repeat(${columns.md}, 1fr)`,
+          gap: gap,
+        },
+        '@media (max-width: 640px)': {
+          gridTemplateColumns: `repeat(${columns.sm}, 1fr)`,
+          gap: gap,
+        },
+        '@media (max-width: 480px)': {
+          gridTemplateColumns: `repeat(${columns.xs}, 1fr)`,
+          gap: gap,
+        },
+        '@media (max-width: 300px)': {
+          gridTemplateColumns: `repeat(${columns.tiny}, 1fr)`,
+          gap: gap,
+        },
+      }}
     >
       {children}
     </div>

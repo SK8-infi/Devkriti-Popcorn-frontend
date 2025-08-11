@@ -36,17 +36,7 @@
   margin-bottom: 1rem;
 }
 
-.movies-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2.5rem;
-  justify-content: flex-start;
-}
-@media (max-width: 640px) {
-  .movies-list {
-    justify-content: center;
-  }
-}
+/* ResponsiveGrid is now used instead of .movies-list */
 
 .movies-empty {
   display: flex;

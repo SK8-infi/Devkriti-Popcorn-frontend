@@ -180,8 +180,12 @@ const RecommendedSection = () => {
                             }}
                             gap={responsiveGap}
                         >
-                            {movies.map((movie) => (
-                                <MovieCard key={movie.id || movie._id} movie={movie}/>
+                            {movies.slice(0, window.innerWidth <= 768 ? 2 : movies.length).map((movie) => (
+                                <MovieCard 
+                                  key={movie.id || movie._id} 
+                                  movie={movie}
+                                  variant="home"
+                                />
                             ))}
                         </ResponsiveGrid>
                     ) : (

@@ -109,6 +109,19 @@
   padding-right: 0.25rem;
 }
 
+/* Mobile rating positioning - only for mobile devices */
+@media (max-width: 768px) {
+  .movie-card-rating {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-card-rating {
+    margin-top: 0.75rem;
+  }
+}
+
 .movie-card-rating .star-icon {
   width: 1rem;
   height: 1rem;
@@ -186,7 +199,43 @@
 .movie-card-tmdb:hover {
   transform: translateY(-8px) scale(1.05);
   box-shadow: 0 8px 25px rgba(16,30,54,.15);
-} 
+}
+
+/* Disable hover effects on mobile devices */
+@media (max-width: 768px) {
+  .movie-card-tmdb {
+    transition: none !important;
+  }
+  
+  .movie-card-tmdb:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  .movie-card:hover {
+    transform: none !important;
+  }
+  
+  .movie-card-tmdb:hover .movie-card-text-content {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .movie-card-tmdb:hover .movie-card-book-btn-container {
+    transform: none !important;
+    opacity: 0 !important;
+  }
+  
+  .movie-card-text-content {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .movie-card-book-btn-container {
+    transform: none !important;
+    opacity: 0 !important;
+  }
+}
 
 .movie-card-show-trailer-btn {
   padding: 12px 24px;
@@ -230,7 +279,7 @@
 }
 
 /* Tiny mobile optimizations (around 300px width) */
-@media (max-width: 350px) {
+@media (max-width: 300px) {
   .movie-card {
     width: 180px !important;
     height: 380px !important;
@@ -266,44 +315,5 @@
   .movie-card-show-trailer-btn {
     font-size: 13px !important;
     padding: 6px 10px !important;
-  }
-}
-
-@media (max-width: 300px) {
-  .movie-card {
-    width: 160px !important;
-    height: 360px !important;
-  }
-  
-  .movie-card-img {
-    width: 100% !important;
-    height: 260px !important;
-  }
-  
-  .movie-card-content {
-    padding: 6px 6px 4px 6px !important;
-    min-height: 45px !important;
-  }
-  
-  .movie-card-title-animated {
-    font-size: 13px !important;
-    margin-top: 6px !important;
-    margin-bottom: 1px !important;
-    line-height: 1.1 !important;
-  }
-  
-  .movie-card-details-animated {
-    font-size: 11px !important;
-    line-height: 1.2 !important;
-  }
-  
-  .movie-card-book-btn-container {
-    top: 260px !important;
-    height: 45px !important;
-  }
-  
-  .movie-card-show-trailer-btn {
-    font-size: 12px !important;
-    padding: 5px 8px !important;
   }
 } 

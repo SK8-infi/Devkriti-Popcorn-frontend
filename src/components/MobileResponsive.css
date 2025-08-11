@@ -144,15 +144,18 @@
   .movie-card {
     width: 100% !important;
     height: auto !important;
-    min-height: 320px !important;
+    min-height: 280px !important;
   }
   
   .movie-card-img {
-    height: 200px !important;
+    height: 160px !important;
   }
   
   .movie-card-content {
-    padding: 10px 8px 8px 8px !important;
+    padding: 12px 8px 8px 8px !important;
+    margin-top: 16px !important;
+    background: transparent !important;
+    border-radius: 0 0 12px 12px !important;
   }
   
   .movie-card-title-animated {
@@ -160,11 +163,14 @@
     line-height: 1.2 !important;
     -webkit-line-clamp: 2 !important;
     margin-top: 8px !important;
+    color: #ffefcb !important;
   }
   
   .movie-card-details-animated {
     font-size: 12px !important;
     margin-top: 4px !important;
+    line-height: 1.3 !important;
+    color: rgba(255, 239, 203, 0.7) !important;
   }
   
   .movie-card-book-btn-container {
@@ -283,20 +289,22 @@
   }
   
   .movie-card {
-    min-height: 280px !important;
+    min-height: 240px !important;
   }
   
   .movie-card-img {
-    height: 160px !important;
+    height: 120px !important;
   }
   
   .movie-card-title-animated {
     font-size: 12px !important;
     -webkit-line-clamp: 2 !important;
+    color: #ffefcb !important;
   }
   
   .movie-card-details-animated {
     font-size: 10px !important;
+    color: rgba(255, 239, 203, 0.7) !important;
   }
   
   .movie-card-show-trailer-btn {
@@ -396,17 +404,30 @@
     transition-duration: 0.1s !important;
   }
   
-  /* Optimize hover effects for touch devices */
+  /* Disable hover effects for touch devices */
   .hover\:scale-105:hover {
-    transform: scale(1.02) !important;
+    transform: none !important;
   }
   
   .hover\:scale-110:hover {
-    transform: scale(1.05) !important;
+    transform: none !important;
   }
   
   .hover\:scale-125:hover {
-    transform: scale(1.1) !important;
+    transform: none !important;
+  }
+  
+  /* Disable all hover effects on mobile */
+  *:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Ensure movie cards don't have hover effects on mobile */
+  .movie-card:hover,
+  .movie-card-tmdb:hover {
+    transform: none !important;
+    box-shadow: none !important;
   }
 }
 

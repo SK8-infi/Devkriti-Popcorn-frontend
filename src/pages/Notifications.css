@@ -2,16 +2,13 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  min-height: 80vh;
+  min-height: 60vh;
+  background: transparent;
+  border-radius: 16px;
 }
 
 .notifications-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e5e7eb;
+  display: none; /* Hide duplicate header since we have the new styled header above */
 }
 
 .notifications-title {

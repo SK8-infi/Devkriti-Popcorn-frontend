@@ -161,25 +161,68 @@ const Notifications = () => {
   }
 
   return (
-    <div className="notifications-container">
-      <div className="notifications-header">
-        <div className="notifications-title">
-          <Bell size={24} />
-          <h1>Notifications</h1>
-          {unreadCount > 0 && (
-            <span className="notifications-badge">{unreadCount}</span>
-          )}
-        </div>
-        {unreadCount > 0 && (
-          <button 
-            onClick={markAllAsRead}
-            className="mark-all-read-btn"
-          >
-            <CheckCheck size={16} />
-            Mark all as read
-          </button>
-        )}
-      </div>
+    <div className="relative">
+      {/* Fixed Background SVG */}
+      <div 
+        className="fixed inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: 'url("/bg-4.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen pt-20 py-10 px-4" style={{ backgroundColor: 'transparent' }}>
+        <div className="max-w-7xl mx-auto" style={{ backgroundColor: 'transparent' }}>
+          {/* Header Section */}
+          <div className="text-center mb-12" style={{ backgroundColor: 'transparent' }}>
+            <h1 
+              className="text-5xl font-bold mb-6" 
+              style={{ 
+                background: 'linear-gradient(135deg, #FFD6A0 0%, #FFA500 50%, #FF8C00 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                letterSpacing: '2px'
+              }}
+            >
+              Notifications
+            </h1>
+            <div className="flex justify-center items-center gap-4">
+              <Bell size={32} className="text-primary" />
+              {unreadCount > 0 && (
+                <span className="bg-red-500 text-white rounded-full px-3 py-1 text-sm font-bold">
+                  {unreadCount} new
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Notifications Content */}
+          <div className="notifications-container">
+            <div className="notifications-header">
+              <div className="notifications-title">
+                <Bell size={24} />
+                <h1>Notifications</h1>
+                {unreadCount > 0 && (
+                  <span className="notifications-badge">{unreadCount}</span>
+                )}
+              </div>
+              {unreadCount > 0 && (
+                <button 
+                  onClick={markAllAsRead}
+                  className="mark-all-read-btn"
+                >
+                  <CheckCheck size={16} />
+                  Mark all as read
+                </button>
+              )}
+            </div>
 
       {loading && notifications.length === 0 ? (
         <div className="notifications-loading">
@@ -245,6 +288,9 @@ const Notifications = () => {
           )}
         </div>
       )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -10,6 +10,30 @@ The system features real-time seat availability, secure payment processing with 
 
 ----Screenshots----
 
+<img width="1919" height="928" alt="image" src="https://github.com/user-attachments/assets/5a6567fb-64b2-4716-ab2e-a3b934892a1c" />
+
+<img width="1919" height="932" alt="image" src="https://github.com/user-attachments/assets/a70336a4-f48c-4f6c-aee3-7d8adcc951ef" />
+
+<img width="1919" height="926" alt="image" src="https://github.com/user-attachments/assets/255c5e3a-7e95-4373-af9e-b3b5078342ed" />
+
+<img width="1917" height="927" alt="image" src="https://github.com/user-attachments/assets/ef0a0e96-09bd-4325-bbfc-bc1962f6acbe" />
+
+<img width="1919" height="923" alt="image" src="https://github.com/user-attachments/assets/eb72e7c3-4f2d-4347-a21f-d97963967458" />
+
+<img width="1919" height="922" alt="image" src="https://github.com/user-attachments/assets/ca533062-7b3c-4d76-afaa-6f3e649d1409" />
+
+<img width="1914" height="926" alt="image" src="https://github.com/user-attachments/assets/db5d3e0d-9dab-4818-ac70-8ceebe9be8c6" />
+
+<img width="1919" height="921" alt="image" src="https://github.com/user-attachments/assets/a7472c5a-8592-438b-8974-4ac83c772717" />
+
+<img width="1919" height="921" alt="image" src="https://github.com/user-attachments/assets/b6adcb33-0f87-420c-b23b-32cf0931610b" />
+
+<img width="1118" height="850" alt="image" src="https://github.com/user-attachments/assets/ecfb9a08-b71a-4e48-bf2e-0c0be2206dee" />
+
+<img width="1154" height="902" alt="image" src="https://github.com/user-attachments/assets/ecb30960-71e0-4a71-a18b-e437ccf86e39" />
+
+
+
 *[Screenshots will be added here showing the main interfaces: Home page, Movie browsing, Seat selection, Booking confirmation, Admin dashboard, etc.]*
 
 ## Hosted URL

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import logo from '../assets/logo.png'
@@ -11,6 +11,19 @@ import { Linkedin, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Star } fro
 const Footer = () => {
   const navigate = useNavigate();
   const { isTinyMobile, getResponsiveValue } = useResponsive();
+  
+  // State to track if screen width is less than 600px
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 600);
+
+  // Effect to update isSmallScreen on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const responsiveLogoSize = getResponsiveValue({
     xl: '120px',
@@ -26,7 +39,7 @@ const Footer = () => {
       background: 'radial-gradient(circle at center, #1A0000 0%, #000000 100%)',
       borderTop: '1px dashed #FFD6A0',
       color: '#fff',
-      padding: isTinyMobile ? '15px 0 0 0' : '60px 0 85px 0',
+      padding: (isTinyMobile || isSmallScreen) ? '15px 0 0 0' : '60px 0 85px 0',
       position: 'relative',
       zIndex: 60
     }}>
@@ -40,10 +53,10 @@ const Footer = () => {
           {/* Main Footer Content */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: isTinyMobile ? '1fr' : '2fr 1fr 1fr 1fr 1.5fr',
-            gap: isTinyMobile ? '30px' : '30px',
+            gridTemplateColumns: (isTinyMobile || isSmallScreen) ? '1fr' : '2fr 1fr 1fr 1fr 1.5fr',
+            gap: (isTinyMobile || isSmallScreen) ? '30px' : '30px',
             alignItems: 'start',
-            marginBottom: isTinyMobile ? '0' : '40px'
+            marginBottom: (isTinyMobile || isSmallScreen) ? '0' : '40px'
           }}>
             
             {/* Left Side - Logo and Tagline */}
@@ -51,14 +64,14 @@ const Footer = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '10px',
-              paddingTop: isTinyMobile ? '0' : '15px'
+              paddingTop: (isTinyMobile || isSmallScreen) ? '0' : '15px'
             }}>
               
               {/* Logo Section */}
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: isTinyMobile ? 'center' : 'flex-start',
+                alignItems: (isTinyMobile || isSmallScreen) ? 'center' : 'flex-start',
                 gap: '8px'
               }}>
                 <div style={{
@@ -80,7 +93,7 @@ const Footer = () => {
                 {/* Tagline */}
                 <p style={{
                   color: '#ccc',
-                  fontSize: isTinyMobile ? '14px' : '16px',
+                  fontSize: (isTinyMobile || isSmallScreen) ? '14px' : '16px',
                   margin: '0',
                   lineHeight: '1.5',
                   maxWidth: '300px'
@@ -331,7 +344,7 @@ const Footer = () => {
           }}></div>
 
           {/* Large POPCORN Text - Only for Large Screens */}
-          {!isTinyMobile && (
+          {!(isTinyMobile || isSmallScreen) && (
             <div style={{
               display: 'flex',
               justifyContent: 'center',

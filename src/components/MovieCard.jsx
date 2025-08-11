@@ -13,6 +13,17 @@ const MovieCard = ({ movie, variant = 'default' }) => {
   const navigate = useNavigate()
   const { image_base_url } = useAppContext()
   const [showTrailer, setShowTrailer] = React.useState(false)
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768)
+
+  // Handle window resize to update mobile state
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const handleBookTicket = () => {
     // Navigate to movie details page first, let the details page handle show availability
@@ -23,7 +34,6 @@ const MovieCard = ({ movie, variant = 'default' }) => {
   }
 
   // Responsive values
-  const isMobile = window.innerWidth <= 768
   const cardWidth = isMobile ? '100%' : 220
   const cardHeight = isMobile ? 'auto' : 440
   const imageHeight = isMobile ? 140 : 330 // Further reduced for mobile
@@ -31,6 +41,18 @@ const MovieCard = ({ movie, variant = 'default' }) => {
   const detailsSize = isMobile ? '12px' : '14px'
   const buttonSize = isMobile ? '13px' : '15px'
   const ratingSize = isMobile ? 28 : 40
+  
+  // Use backdrop image for mobile devices (when lower navbar appears)
+  const getImageSource = () => {
+    if (isMobile) {
+      // Use backdrop image for mobile, fallback to poster
+      return movie.backdrop_url || (movie.backdrop_path ? image_base_url + movie.backdrop_path : null) || 
+             movie.poster_url || (movie.poster_path ? image_base_url + movie.poster_path : '/placeholder-movie.jpg')
+    } else {
+      // Use poster image for desktop
+      return movie.poster_url || (movie.poster_path ? image_base_url + movie.poster_path : '/placeholder-movie.jpg')
+    }
+  }
 
   // Home variant layout (rating over poster, text below)
   if (variant === 'home') {
@@ -61,7 +83,7 @@ const MovieCard = ({ movie, variant = 'default' }) => {
                 scrollTo(0, 0)
               }
             }}
-            src={movie.poster_path ? image_base_url + movie.poster_path : '/placeholder-movie.jpg'}
+            src={getImageSource()}
             alt={movie.title || 'Movie'}
             className='movie-card-img'
             style={{
@@ -215,7 +237,7 @@ const MovieCard = ({ movie, variant = 'default' }) => {
               scrollTo(0, 0)
             }
           }}
-          src={movie.poster_path ? image_base_url + movie.poster_path : '/placeholder-movie.jpg'}
+          src={getImageSource()}
           alt={movie.title || 'Movie'}
           className='movie-card-img'
           style={{

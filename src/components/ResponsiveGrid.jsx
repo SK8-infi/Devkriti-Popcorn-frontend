@@ -1,4 +1,5 @@
 import React from 'react';
+import './ResponsiveGrid.css';
 
 const ResponsiveGrid = ({ 
   children, 
@@ -13,40 +14,22 @@ const ResponsiveGrid = ({
     tiny: 2
   }
 }) => {
-  const getGridTemplateColumns = () => {
-    return `
-      repeat(${columns.default}, 1fr)
-    `;
-  };
-
   return (
     <div
       className={`responsive-grid ${className}`}
       style={{
         display: 'grid',
-        gridTemplateColumns: getGridTemplateColumns(),
+        gridTemplateColumns: `repeat(${columns.default}, 1fr)`,
         gap,
         width: '100%',
-        '@media (max-width: 1024px)': {
-          gridTemplateColumns: `repeat(${columns.lg}, 1fr)`,
-          gap: gap,
-        },
-        '@media (max-width: 768px)': {
-          gridTemplateColumns: `repeat(${columns.md}, 1fr)`,
-          gap: gap,
-        },
-        '@media (max-width: 640px)': {
-          gridTemplateColumns: `repeat(${columns.sm}, 1fr)`,
-          gap: gap,
-        },
-        '@media (max-width: 480px)': {
-          gridTemplateColumns: `repeat(${columns.xs}, 1fr)`,
-          gap: gap,
-        },
-        '@media (max-width: 300px)': {
-          gridTemplateColumns: `repeat(${columns.tiny}, 1fr)`,
-          gap: gap,
-        },
+        // Custom CSS properties for responsive breakpoints
+        '--grid-columns-default': columns.default,
+        '--grid-columns-lg': columns.lg,
+        '--grid-columns-md': columns.md,
+        '--grid-columns-sm': columns.sm,
+        '--grid-columns-xs': columns.xs,
+        '--grid-columns-tiny': columns.tiny,
+        '--grid-gap': gap,
       }}
     >
       {children}

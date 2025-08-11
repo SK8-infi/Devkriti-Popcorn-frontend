@@ -182,13 +182,13 @@ const FeaturedSection = () => {
                 default: 4,
                 lg: 4,
                 md: 3,
-                sm: 2,
+                sm: 3,
                 xs: 2,
                 tiny: 2
               }}
               gap={responsiveGap}
             >
-              {uniqueShows.slice(0, window.innerWidth <= 768 ? 2 : uniqueShows.length).map((show) => (
+              {uniqueShows.map((show) => (
                 <MovieCard 
                   key={show.movie._id || show.movie.id} 
                   movie={{ ...show.movie, id: show.movie.id || show.movie._id }}

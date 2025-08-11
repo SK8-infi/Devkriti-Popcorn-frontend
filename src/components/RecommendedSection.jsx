@@ -174,13 +174,13 @@ const RecommendedSection = () => {
                                 default: 4,
                                 lg: 4,
                                 md: 3,
-                                sm: 2,
+                                sm: 3,
                                 xs: 2,
                                 tiny: 2
                             }}
                             gap={responsiveGap}
                         >
-                            {movies.slice(0, window.innerWidth <= 768 ? 2 : movies.length).map((movie) => (
+                            {movies.map((movie) => (
                                 <MovieCard 
                                   key={movie.id || movie._id} 
                                   movie={movie}

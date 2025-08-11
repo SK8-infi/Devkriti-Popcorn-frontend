@@ -1,0 +1,44 @@
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns-default, 4), 1fr);
+  gap: var(--grid-gap, 1.5rem);
+  width: 100%;
+}
+
+/* Large screens (1024px and above) */
+@media (max-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(var(--grid-columns-lg, 4), 1fr);
+  }
+}
+
+/* Medium screens (768px and below) */
+@media (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(var(--grid-columns-md, 3), 1fr);
+  }
+}
+
+/* 500px and above - 3 cards per row */
+@media (min-width: 500px) and (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+/* 300px-500px range - 2 cards per row */
+@media (min-width: 300px) and (max-width: 499px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+/* Tiny screens (300px and below) */
+@media (max-width: 299px) {
+  .responsive-grid {
+    grid-template-columns: repeat(var(--grid-columns-tiny, 2), 1fr);
+    gap: 0.5rem;
+  }
+}

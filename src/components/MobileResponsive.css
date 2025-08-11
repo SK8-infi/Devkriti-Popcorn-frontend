@@ -136,8 +136,16 @@
   
   /* Movie card grid improvements */
   .responsive-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 0.75rem !important;
+  }
+  
+  /* 300px-500px range - 2 cards per row */
+  @media (min-width: 300px) and (max-width: 499px) {
+    .responsive-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 0.5rem !important;
+    }
   }
   
   /* Movie card mobile optimizations */

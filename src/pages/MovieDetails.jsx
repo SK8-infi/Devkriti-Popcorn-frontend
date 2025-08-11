@@ -277,6 +277,18 @@ const MovieDetails = () => {
     };
   }, [showReviewForm]);
 
+  // Add movie-details-page class to body and html when component mounts
+  useEffect(() => {
+    document.body.classList.add('movie-details-page');
+    document.documentElement.classList.add('movie-details-page');
+    
+    // Cleanup function to remove classes when component unmounts
+    return () => {
+      document.body.classList.remove('movie-details-page');
+      document.documentElement.classList.remove('movie-details-page');
+    };
+  }, []);
+
 
 
 
@@ -291,19 +303,20 @@ const MovieDetails = () => {
   }
 
   return show && movie ? (
-    <div className='relative'>
-      {/* Backdrop Background */}
+    <div className='relative min-h-screen movie-details-page'>
+      {/* Sticky Backdrop Background */}
       <div 
-        className='fixed left-0 right-0 bg-cover bg-center bg-no-repeat'
+        className='fixed inset-0 bg-cover bg-center bg-no-repeat bg-fixed'
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url(${movie.backdrop_url || image_base_url + movie.backdrop_path})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(${movie.backdrop_url || image_base_url + movie.backdrop_path})`,
           top: '54px',
           height: 'calc(100vh - 54px)',
           backgroundPosition: 'center center',
+          backgroundAttachment: 'fixed',
           zIndex: -1
         }}
       />
-      <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
+      <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-50' style={{ zIndex: 1 }}>
         <div className='flex flex-col md:flex-row gap-8 max-w-6xl mx-auto'>
           <img src={movie.poster_url || image_base_url + movie.poster_path} alt="" className='max-md:mx-auto rounded-xl h-104 max-w-70 object-cover'/>
           <div className='relative flex flex-col gap-3'>
@@ -418,7 +431,7 @@ const MovieDetails = () => {
         </div>
       </div>
       {/* Rest of the content outside backdrop */}
-      <div className='px-6 md:px-16 lg:px-40'>
+      <div className='px-6 md:px-16 lg:px-40' style={{ zIndex: 1, position: 'relative' }}>
         {/* Your Favorite Cast Section */}
         <div className='mt-12'>
           <p className='text-lg font-medium mb-8'>Your Favorite Cast</p>
@@ -495,7 +508,7 @@ const MovieDetails = () => {
 
           {/* User's Review Section */}
           {userReview && (
-            <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300 mb-8">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:border-white/30 transition-all duration-300 mb-8">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
@@ -583,11 +596,11 @@ const MovieDetails = () => {
 
           {/* All Reviews Section */}
           {movie && (movie._id || movie.id) && (
-            <div className="rounded-2xl p-6 border border-gray-800/50 backdrop-blur-md" style={{
-              background: 'rgba(26, 26, 26, 0.3)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)'
+            <div className="rounded-2xl p-6 border border-white/20 backdrop-blur-md" style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)'
             }}>
               <MovieReviews movieId={movie._id || movie.id} />
             </div>
@@ -629,7 +642,7 @@ const MovieDetails = () => {
 
       {/* Movie Review Form Modal */}
       {showReviewForm && movie && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-4xl">
             <div className="absolute top-4 right-4 z-10">
               <button
@@ -648,7 +661,7 @@ const MovieDetails = () => {
                   initialData={userReview}
                 />
               ) : (
-                <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50 text-white text-center">
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 max-w-2xl mx-auto border border-white/20 text-white text-center">
                   <p>Loading form...</p>
                   <p className="text-sm text-gray-400 mt-2">Movie ID: {movie ? (movie._id || movie.id || 'undefined') : 'null'}</p>
                 </div>

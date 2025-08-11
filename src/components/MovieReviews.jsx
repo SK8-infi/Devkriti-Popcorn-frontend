@@ -97,7 +97,7 @@ const MovieReviews = ({ movieId }) => {
       {/* Reviews List */}
       <div className="space-y-6">
         {reviews.map(review => (
-          <div key={review._id} className="bg-black/95 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
+          <div key={review._id} className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:border-white/30 transition-all duration-300">
             {/* Review Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-4">

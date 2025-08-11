@@ -65,7 +65,7 @@ const MovieReviewForm = ({ movieId, onSubmit, onCancel, initialData }) => {
   };
 
   return (
-    <div className="bg-black/95 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-gray-800/50" style={{ 
+    <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 max-w-2xl mx-auto border border-white/20" style={{ 
       backgroundImage: 'url("/bg-4.svg")',
       backgroundSize: 'cover',
       backgroundPosition: 'center',

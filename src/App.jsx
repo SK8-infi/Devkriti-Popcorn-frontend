@@ -34,7 +34,7 @@ import DebugAccess from './pages/admin/DebugAccess'
 import UserImageDebug from './components/UserImageDebug'
 import TestOwnerAccess from './pages/admin/TestOwnerAccess'
 import ReviewAnalyticsPage from './pages/admin/ReviewAnalytics'
-import TheatreAnalyticsPage from './pages/admin/TheatreAnalytics'
+
 
 const ProtectedRoute = ({ children, requireAuth = true, requireAdmin = false, requireOwnerAccess = false }) => {
   const { user, isAuthenticated, isAdmin, hasOwnerAccess, loading } = useAppContext();
@@ -121,7 +121,7 @@ const App = () => {
           <Route path="list-shows" element={<ListShows />} />
           <Route path="list-bookings" element={<ListBookings />} />
           <Route path="manage-rooms" element={<ManageRooms />} />
-          <Route path="theatre-analytics" element={<TheatreAnalyticsPage />} />
+
           <Route path="review-analytics" element={<ReviewAnalyticsPage />} />
           {/* Add more nested admin routes here as needed */}
         </Route>

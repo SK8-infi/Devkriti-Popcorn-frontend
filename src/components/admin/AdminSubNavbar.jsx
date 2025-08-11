@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, BarChart3, TrendingUp } from 'lucide-react'
+import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, BarChart3 } from 'lucide-react'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAppContext } from '../../context/AppContext'
@@ -21,7 +21,7 @@ const AdminSubNavbar = () => {
         { name: 'Listed Shows', path: '/admin/list-shows', icon: ListIcon },
         { name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon },
         { name: 'Manage Rooms', path: '/admin/manage-rooms', icon: ListCollapseIcon },
-        { name: 'Theatre Analytics', path: '/admin/theatre-analytics', icon: TrendingUp },
+
         { name: 'Review Analytics', path: '/admin/review-analytics', icon: BarChart3 },
     ]
 
@@ -36,7 +36,7 @@ const AdminSubNavbar = () => {
                 key={index} 
                 to={link.path} 
                 end 
-                className={({ isActive }) => `group relative flex items-center gap-2 py-2 px-3 text-white transition-all duration-200 ease-in-out transform bg-transparent hover:bg-white/80 hover:text-black rounded-lg ${isActive && 'bg-primary/15 text-primary'}`}
+                className={({ isActive }) => `group relative flex items-center gap-2 py-2 px-3 text-white transition-all duration-200 ease-in-out transform bg-transparent hover:bg-white hover:text-black rounded-lg ${isActive && 'bg-primary/15 text-primary'}`}
               >
                 {({ isActive }) => (
                   <>

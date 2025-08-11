@@ -159,7 +159,9 @@ const ReviewAnalytics = () => {
   }
 
   return (
-    <div className="review-analytics text-white p-6">
+    <div className="review-analytics text-white p-6" style={{
+      background: 'transparent'
+    }}>
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
         <BarChart3 size={24} className="text-yellow-400" />
         Review Analytics
@@ -167,12 +169,20 @@ const ReviewAnalytics = () => {
 
       <div className="space-y-8">
         {analytics.map((theatreAnalytics) => (
-          <div key={theatreAnalytics.theatre._id} className="theatre-analytics bg-gray-900 p-6 rounded-lg border border-gray-700">
+          <div key={theatreAnalytics.theatre._id} className="theatre-analytics p-6 rounded-lg border border-gray-600/20" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(8px)',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          }}>
             <h3 className="text-xl font-semibold mb-4">{theatreAnalytics.theatre.name}</h3>
             
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <div className="stat-card bg-gray-800 p-4 rounded-md">
+              <div className="stat-card p-4 rounded-md" style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
                 <div className="flex items-center gap-2 mb-2">
                   <Star size={16} className="text-yellow-400" />
                   <span className="text-sm text-gray-400">Average Rating</span>
@@ -182,7 +192,11 @@ const ReviewAnalytics = () => {
                 </div>
               </div>
 
-              <div className="stat-card bg-gray-800 p-4 rounded-md">
+              <div className="stat-card p-4 rounded-md" style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
                 <div className="flex items-center gap-2 mb-2">
                   <Users size={16} className="text-blue-400" />
                   <span className="text-sm text-gray-400">Total Reviews</span>
@@ -192,7 +206,11 @@ const ReviewAnalytics = () => {
                 </div>
               </div>
 
-              <div className="stat-card bg-gray-800 p-4 rounded-md">
+              <div className="stat-card p-4 rounded-md" style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp size={16} className="text-green-400" />
                   <span className="text-sm text-gray-400">5-Star Reviews</span>
@@ -202,7 +220,11 @@ const ReviewAnalytics = () => {
                 </div>
               </div>
 
-              <div className="stat-card bg-gray-800 p-4 rounded-md">
+              <div className="stat-card p-4 rounded-md" style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
                 <div className="flex items-center gap-2 mb-2">
                   <Award size={16} className="text-purple-400" />
                   <span className="text-sm text-gray-400">Expert Reviews</span>
@@ -280,7 +302,20 @@ const ReviewAnalytics = () => {
                   {theatreAnalytics.recentReviews.map(review => (
                     <div 
                       key={review._id} 
-                      className="bg-gray-800 p-3 rounded-md cursor-pointer hover:bg-red-950 transition-colors"
+                      className="p-3 rounded-md cursor-pointer transition-colors"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        backdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = 'rgba(127, 29, 29, 0.3)';
+                        e.target.style.borderColor = 'rgba(127, 29, 29, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = 'rgba(255, 255, 255, 0.08)';
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                      }}
                       onClick={() => handleViewReview(theatreAnalytics.theatre._id, review)}
                     >
                       <div className="flex items-center justify-between mb-2">
@@ -320,8 +355,13 @@ const ReviewAnalytics = () => {
 
       {/* Review Detail Modal */}
       {selectedReview && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto" style={{
+            background: 'rgba(17, 24, 39, 0.9)',
+            backdropFilter: 'blur(15px)',
+            border: '1px solid rgba(75, 85, 99, 0.3)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          }}>
             <div className="p-6">
               {/* Modal Header */}
               <div className="flex items-center justify-between mb-6">

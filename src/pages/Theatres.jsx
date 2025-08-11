@@ -428,7 +428,7 @@ const Theatres = () => {
                           <div className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-3 py-1">
                             <StarIcon className="w-4 h-4 text-yellow-400 fill-current" />
                             <span className="text-sm text-yellow-300 font-semibold">
-                              {theatre.averageRating}/5
+                              {theatre.averageRating.toFixed(1)}/5
                             </span>
                             {theatre.reviewCount > 0 && (
                               <span className="text-xs text-yellow-400/70">

@@ -111,11 +111,116 @@ const SeatLayoutEditor = ({ layout, setLayout, disabled }) => {
         <span className="seat-cell unavailable"></span> No Seat
       </div>
 
-      <div className="controls-container flex justify-center">
-        <button type="button" onClick={addRow} className="control-btn add" disabled={disabled}>+ Row</button>
-        <button type="button" onClick={removeRow} className="control-btn remove" disabled={disabled}>- Row</button>
-        <button type="button" onClick={addCol} className="control-btn add" disabled={disabled}>+ Col</button>
-        <button type="button" onClick={removeCol} className="control-btn remove" disabled={disabled}>- Col</button>
+      <div className="controls-container flex justify-center gap-6 mb-4">
+        {/* Row Controls */}
+        <div className="flex items-center gap-2" style={{
+          background: 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '8px',
+          padding: '8px 12px'
+        }}>
+          <span className="text-white font-medium text-sm">Row</span>
+          <div className="flex gap-1">
+            <button 
+              type="button" 
+              onClick={addRow} 
+              disabled={disabled}
+              className="w-8 h-8 flex items-center justify-center rounded-md text-white font-bold text-lg transition-all duration-200 hover:scale-105"
+              style={{
+                background: 'rgba(34, 197, 94, 0.8)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(34, 197, 94, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                if (!disabled) {
+                  e.target.style.background = 'rgba(34, 197, 94, 1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(34, 197, 94, 0.8)';
+              }}
+            >
+              +
+            </button>
+            <button 
+              type="button" 
+              onClick={removeRow} 
+              disabled={disabled}
+              className="w-8 h-8 flex items-center justify-center rounded-md text-white font-bold text-lg transition-all duration-200 hover:scale-105"
+              style={{
+                background: 'rgba(239, 68, 68, 0.8)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(239, 68, 68, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                if (!disabled) {
+                  e.target.style.background = 'rgba(239, 68, 68, 1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(239, 68, 68, 0.8)';
+              }}
+            >
+              -
+            </button>
+          </div>
+        </div>
+
+        {/* Column Controls */}
+        <div className="flex items-center gap-2" style={{
+          background: 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '8px',
+          padding: '8px 12px'
+        }}>
+          <span className="text-white font-medium text-sm">Column</span>
+          <div className="flex gap-1">
+            <button 
+              type="button" 
+              onClick={addCol} 
+              disabled={disabled}
+              className="w-8 h-8 flex items-center justify-center rounded-md text-white font-bold text-lg transition-all duration-200 hover:scale-105"
+              style={{
+                background: 'rgba(34, 197, 94, 0.8)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(34, 197, 94, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                if (!disabled) {
+                  e.target.style.background = 'rgba(34, 197, 94, 1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(34, 197, 94, 0.8)';
+              }}
+            >
+              +
+            </button>
+            <button 
+              type="button" 
+              onClick={removeCol} 
+              disabled={disabled}
+              className="w-8 h-8 flex items-center justify-center rounded-md text-white font-bold text-lg transition-all duration-200 hover:scale-105"
+              style={{
+                background: 'rgba(239, 68, 68, 0.8)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(239, 68, 68, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                if (!disabled) {
+                  e.target.style.background = 'rgba(239, 68, 68, 1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(239, 68, 68, 0.8)';
+              }}
+            >
+              -
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="table-wrapper">

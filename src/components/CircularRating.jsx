@@ -20,7 +20,7 @@ const CircularRating = ({ value, size = 48, strokeWidth = 4 }) => {
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        fill="#192133"
+        fill="#000000"
         stroke="#222"
         strokeWidth={strokeWidth}
       />

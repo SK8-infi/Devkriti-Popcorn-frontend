@@ -265,17 +265,18 @@ const AddShows = () => {
 
     const handleSubmit = async ()=>{
         try {
-            setAddingShow(true)
-
+            // Validate before setting loading state
             if (!theatreId) {
                 toast.error('Theatre ID not found! Please set your theatre first.');
-                setAddingShow(false);
                 return;
             }
 
             if(!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !silverPrice || !goldPrice || !premiumPrice || !selectedRoomId || !selectedLanguage){
-                return toast('Missing required fields');
+                toast.error('Please fill in all required fields');
+                return;
             }
+
+            setAddingShow(true)
 
             const showsInput = Object.entries(dateTimeSelection).map(([date, times]) => ({ date, time: times }));
 
@@ -344,195 +345,412 @@ const AddShows = () => {
 
   return nowPlayingMovies.length > 0 ? (
     <>
+      <Title title="Add New Show" />
 
-
-      <p className="mt-4 text-lg font-medium">Now Playing Movies</p>
-      <div className="overflow-x-auto pb-4">
-        <div className="group flex flex-wrap gap-4 mt-4 w-max">
-            {nowPlayingMovies.map((movie) =>(
-                <div key={movie.id} className={`relative max-w-40 cursor-pointer group-hover:not-hover:opacity-40 hover:-translate-y-1 transition duration-300 `} onClick={()=> setSelectedMovie(movie.id)}>
-                    <div className="relative rounded-lg overflow-hidden">
-                        <img src={image_base_url + movie.poster_path} alt="" className="w-full object-cover brightness-90" />
-                        <div className="text-sm flex items-center justify-between p-2 bg-black/70 w-full absolute bottom-0 left-0">
-                                    <p className="flex items-center gap-1 text-gray-400">
-                                        <StarIcon className="w-4 h-4 text-primary fill-primary" />
-                                        {movie.vote_average.toFixed(1)}
-                                    </p>
-                                    <p className="text-gray-300">{kConverter(movie.vote_count)} Votes</p>
-                                </div>
-                    </div>
-                    {selectedMovie === movie.id && (
-                        <div className="absolute top-2 right-2 flex items-center justify-center bg-primary h-6 w-6 rounded">
-                            <CheckIcon className="w-4 h-4 text-white" strokeWidth={2.5} />
-                        </div>
-                    )}
-                    <p className="font-medium truncate alta-font">{movie.title}</p>
-                    <p className="text-gray-400 text-sm">{movie.release_date}</p>
-                </div>
-            ))}
+      {/* Movie Selection Section */}
+      <div className="rounded-xl p-6 mb-8 border border-gray-600/20" style={{
+        background: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(8px)'
+      }}>
+        <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
+          <StarIcon className="w-5 h-5 text-amber-400" />
+          Select Movie
+        </h2>
+        <p className="text-gray-300 mb-4">Choose from currently playing movies</p>
+        <div className="overflow-x-auto pb-4">
+          <div className="group flex flex-wrap gap-4 mt-4 w-max">
+              {nowPlayingMovies.map((movie) =>(
+                  <div key={movie.id} className={`relative max-w-40 cursor-pointer group-hover:not-hover:opacity-40 hover:-translate-y-1 transition duration-300 `} onClick={()=> setSelectedMovie(movie.id)}>
+                      <div className="relative rounded-lg overflow-hidden">
+                          <img src={image_base_url + movie.poster_path} alt="" className="w-full object-cover brightness-90" />
+                          <div className="text-sm flex items-center justify-between p-2 bg-black/70 w-full absolute bottom-0 left-0">
+                                      <p className="flex items-center gap-1 text-gray-400">
+                                          <StarIcon className="w-4 h-4 text-primary fill-primary" />
+                                          {movie.vote_average.toFixed(1)}
+                                      </p>
+                                      <p className="text-gray-300">{kConverter(movie.vote_count)} Votes</p>
+                                  </div>
+                      </div>
+                      {selectedMovie === movie.id && (
+                          <div className="absolute top-2 right-2 flex items-center justify-center bg-amber-500 h-6 w-6 rounded">
+                              <CheckIcon className="w-4 h-4 text-white" strokeWidth={2.5} />
+                          </div>
+                      )}
+                      <p className="font-medium truncate alta-font">{movie.title}</p>
+                      <p className="text-gray-400 text-sm">{movie.release_date}</p>
+                  </div>
+              ))}
+          </div>
         </div>
       </div>
 
-      {/* Show Price, Language & Date/Time Selection */}
-      <div className="flex flex-col md:flex-row gap-8 mt-8 w-full">
-        {/* Silver Price Input */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Silver Seat Price</label>
-          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <p className="text-white font-bold text-base">{currency}</p>
-            <input min={0} type="number" value={silverPrice} onChange={(e) => setSilverPrice(e.target.value)} placeholder="Enter silver price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
-          </div>
-        </div>
+      {/* Main Form Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        {/* Gold Price Input */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Gold Seat Price</label>
-          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <p className="text-white font-bold text-base">{currency}</p>
-            <input min={0} type="number" value={goldPrice} onChange={(e) => setGoldPrice(e.target.value)} placeholder="Enter gold price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
-          </div>
-        </div>
-        
-        {/* Premium Price Input */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Premium Seat Price</label>
-          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <p className="text-white font-bold text-base">{currency}</p>
-            <input min={0} type="number" value={premiumPrice} onChange={(e) => setPremiumPrice(e.target.value)} placeholder="Enter premium price" className="outline-none w-full bg-transparent text-white text-base font-medium" style={{'::placeholder': {color: 'white'}}} />
-          </div>
-        </div>
-        
-        {/* Language Input */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center relative">
-          <label className="block text-sm font-semibold mb-3 text-white">
-            Language
-            {selectedMovie && (
-              <span className="text-xs text-gray-400 ml-2">(Filtered by selected movie)</span>
-            )}
-          </label>
-          <div className="flex items-center gap-2 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <Globe className="w-5 h-5 text-primary" />
-            <input 
-              type="text" 
-              value={languageInput} 
-              onChange={handleLanguageInputChange}
-              onFocus={handleLanguageFocus}
-              onBlur={handleLanguageBlur}
-              onClick={() => {
-                setShowLanguageDropdown(true);
-                filterLanguages(languageInput);
-              }}
-              placeholder={selectedMovie ? "Select from available languages" : "Select a movie first"} 
-              className="outline-none w-full bg-transparent text-white text-base font-medium" 
-              style={{'::placeholder': {color: 'white'}}} 
-              disabled={!selectedMovie}
-            />
-          </div>
+        {/* Left Column */}
+        <div className="space-y-6">
           
-          {/* Language Dropdown */}
-          {showLanguageDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-[9999] max-h-60 overflow-y-auto">
-              {!selectedMovie ? (
-                <div className="px-4 py-2 text-gray-500 text-sm">
-                  Please select a movie first
+          {/* Seat Pricing Section */}
+          <div className="rounded-xl p-6 border border-gray-600/20" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(8px)'
+          }}>
+            <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-amber-400" />
+              Seat Pricing
+            </h2>
+            <div className="space-y-4">
+              {/* Silver Price */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-semibold mb-2 text-gray-300">Silver Seats</label>
+                <div className="flex items-center gap-2 border border-gray-500/30 px-4 py-3 rounded-lg" style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  backdropFilter: 'blur(8px)'
+                }}>
+                  <p className="text-white font-bold text-base">{currency}</p>
+                  <input 
+                    min={0} 
+                    type="number" 
+                    value={silverPrice} 
+                    onChange={(e) => setSilverPrice(e.target.value)} 
+                    placeholder="Enter price" 
+                    className="outline-none w-full bg-transparent text-white text-base font-medium" 
+                  />
                 </div>
-              ) : filteredLanguages.length > 0 ? (
-                filteredLanguages.map((language, index) => (
-                  <div
-                    key={index}
-                    className="px-4 py-2 hover:bg-red-50 cursor-pointer text-black"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleLanguageSelect(language);
-                    }}
-                  >
-                    {language}
-                  </div>
-                ))
-              ) : (
-                <div className="px-4 py-2 text-gray-500 text-sm">
-                  No languages available for this movie
+              </div>
+              
+              {/* Gold Price */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-semibold mb-2 text-gray-300">Gold Seats</label>
+                <div className="flex items-center gap-2 border border-gray-500/30 px-4 py-3 rounded-lg" style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  backdropFilter: 'blur(8px)'
+                }}>
+                  <p className="text-white font-bold text-base">{currency}</p>
+                  <input 
+                    min={0} 
+                    type="number" 
+                    value={goldPrice} 
+                    onChange={(e) => setGoldPrice(e.target.value)} 
+                    placeholder="Enter price" 
+                    className="outline-none w-full bg-transparent text-white text-base font-medium" 
+                  />
+                </div>
+              </div>
+              
+              {/* Premium Price */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-semibold mb-2 text-gray-300">Premium Seats</label>
+                <div className="flex items-center gap-2 border border-gray-500/30 px-4 py-3 rounded-lg" style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  backdropFilter: 'blur(8px)'
+                }}>
+                  <p className="text-white font-bold text-base">{currency}</p>
+                  <input 
+                    min={0} 
+                    type="number" 
+                    value={premiumPrice} 
+                    onChange={(e) => setPremiumPrice(e.target.value)} 
+                    placeholder="Enter price" 
+                    className="outline-none w-full bg-transparent text-white text-base font-medium" 
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Language Selection */}
+          <div className="rounded-xl p-6 border border-gray-600/20" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(8px)'
+          }}>
+            <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
+              <Globe className="w-5 h-5 text-amber-400" />
+              Language
+            </h2>
+            <div className="relative">
+              <div className="flex items-center gap-2 border border-gray-500/30 px-4 py-3 rounded-lg" style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)'
+              }}>
+                <Globe className="w-5 h-5 text-amber-400" />
+                <input 
+                  type="text" 
+                  value={languageInput} 
+                  onChange={handleLanguageInputChange}
+                  onFocus={handleLanguageFocus}
+                  onBlur={handleLanguageBlur}
+                  onClick={() => {
+                    setShowLanguageDropdown(true);
+                    filterLanguages(languageInput);
+                  }}
+                  placeholder={selectedMovie ? "Select from available languages" : "Select a movie first"} 
+                  className="outline-none w-full bg-transparent text-white text-base font-medium" 
+                  disabled={!selectedMovie}
+                />
+              </div>
+              
+              {/* Language Dropdown */}
+              {showLanguageDropdown && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-[9999] max-h-60 overflow-y-auto">
+                  {!selectedMovie ? (
+                    <div className="px-4 py-2 text-gray-500 text-sm">
+                      Please select a movie first
+                    </div>
+                  ) : filteredLanguages.length > 0 ? (
+                    filteredLanguages.map((language, index) => (
+                      <div
+                        key={index}
+                        className="px-4 py-2 hover:bg-red-50 cursor-pointer text-black"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleLanguageSelect(language);
+                        }}
+                      >
+                        {language}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="px-4 py-2 text-gray-500 text-sm">
+                      No languages available for this movie
+                    </div>
+                  )}
                 </div>
               )}
+              
+              {selectedMovie && (
+                <p className="text-xs text-gray-400 mt-2">
+                  Languages filtered by selected movie
+                </p>
+              )}
             </div>
-          )}
-        </div>
-        
-        {/* Date & Time Selection */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Select Date and Time</label>
-          <div className="flex gap-3 border border-primary/30 px-4 py-3 rounded-lg w-full">
-            <input 
-              type="date" 
-              value={selectedDate} 
-              onChange={(e) => setSelectedDate(e.target.value)} 
-              min={new Date().toISOString().split('T')[0]}
-              className="outline-none rounded-md w-full bg-transparent text-white text-base font-medium" 
-              style={{'::placeholder': {color: 'white'}}} 
-            />
-            <button onClick={() => setShowTimePicker(true)} className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg shadow hover:bg-primary/80 transition-all cursor-pointer font-semibold" >
-              Select Time
-            </button>
-            <button onClick={handleDateTimeAdd} disabled={!selectedDate || !selectedHour || !selectedMinute} className="bg-amber-200/90 text-amber-900 px-4 py-2 text-sm rounded-lg shadow hover:bg-amber-300/80 transition-all cursor-pointer font-semibold disabled:opacity-50 disabled:cursor-not-allowed" >
-              Add Time
-            </button>
           </div>
         </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          
+          {/* Date & Time Selection */}
+          <div className="rounded-xl p-6 border border-gray-600/20" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(8px)'
+          }}>
+            <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-amber-400" />
+              Schedule
+            </h2>
+            
+            {/* Date Selection */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold mb-2 text-gray-300">Select Date</label>
+                              <input 
+                  type="date" 
+                  value={selectedDate} 
+                  onChange={(e) => setSelectedDate(e.target.value)} 
+                  min={new Date().toISOString().split('T')[0]}
+                  className="outline-none border border-gray-500/30 px-4 py-3 rounded-lg w-full text-white text-base font-medium"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(8px)'
+                  }} 
+                />
+            </div>
+            
+            {/* Time Selection */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold mb-2 text-gray-300">Select Time</label>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => setShowTimePicker(true)} 
+                  className="flex-1 bg-black text-white px-4 py-3 text-sm rounded-lg shadow hover:bg-gray-800 transition-all cursor-pointer font-semibold" 
+                >
+                  Choose Time
+                </button>
+                <button 
+                  onClick={handleDateTimeAdd} 
+                  disabled={!selectedDate || !selectedHour || !selectedMinute} 
+                  className="flex-1 bg-red-900 text-white px-4 py-3 text-sm rounded-lg shadow hover:bg-red-800 transition-all cursor-pointer font-semibold disabled:opacity-50 disabled:cursor-not-allowed" 
+                >
+                  Add Time
+                </button>
+              </div>
+            </div>
+
+            {/* Display Selected Times */}
+            {Object.keys(dateTimeSelection).length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-sm font-semibold mb-2 text-gray-300">Selected Times</h3>
+                <div className="space-y-2">
+                  {Object.entries(dateTimeSelection).map(([date, times]) => (
+                    <div key={date} className="rounded-lg p-3" style={{
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      backdropFilter: 'blur(8px)'
+                    }}>
+                      <div className="font-medium text-white mb-2">{date}</div>
+                      <div className="flex flex-wrap gap-2">
+                        {times.map((time) => (
+                          <div key={time} className="border border-gray-500/50 px-3 py-1 flex items-center rounded-lg bg-gray-700/20" >
+                            <span className="text-white">{time}</span>
+                            <DeleteIcon 
+                              onClick={() => handleRemoveTime(date, time)} 
+                              width={15} 
+                              className="ml-2 text-red-500 hover:text-red-700 cursor-pointer" 
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Room Selection */}
+          <div className="rounded-xl p-6 border border-gray-600/20" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(8px)'
+          }}>
+            <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-amber-400" />
+              Room Configuration
+            </h2>
+            <div className="grid grid-cols-2 gap-4">
+              {/* Room Type */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-semibold mb-2 text-gray-300">Room Type</label>
+                <select 
+                  value={selectedRoomType} 
+                  onChange={e => { setSelectedRoomType(e.target.value); setSelectedRoomId(''); }} 
+                  className="border border-gray-500/30 px-4 py-3 rounded-lg text-white"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(8px)'
+                  }}
+                >
+                  <option value="Normal">Normal</option>
+                  <option value="3D">3D</option>
+                  <option value="IMAX">IMAX</option>
+                </select>
+              </div>
+              
+              {/* Room Select */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-semibold mb-2 text-gray-300">Select Room</label>
+                <select 
+                  value={selectedRoomId} 
+                  onChange={e => setSelectedRoomId(e.target.value)} 
+                  className="border border-gray-500/30 px-4 py-3 rounded-lg text-white"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(8px)'
+                  }}
+                >
+                  <option value="">Choose room</option>
+                  {rooms.filter(room => room.type === selectedRoomType).map(room => {
+                    const { available, conflict } = isRoomAvailable(room._id);
+                    return (
+                      <option 
+                        key={room._id} 
+                        value={available ? room._id : ""} 
+                        disabled={!available}
+                        style={{ 
+                          color: available ? 'white' : '#888',
+                          backgroundColor: available ? 'inherit' : '#333'
+                        }}
+                      >
+                        {room.name} {!available ? `- CONFLICT` : ''}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+            
+            {Object.keys(dateTimeSelection).length > 0 ? (
+              <p className="text-xs text-gray-400 mt-3">
+                * Unavailable rooms have conflicting shows (3-hour duration assumed)
+              </p>
+            ) : (
+              <p className="text-xs text-gray-400 mt-3">
+                Select date and time first to check room availability
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={handleSubmit}
+          disabled={addingShow}
+          className="px-12 py-4 bg-red-600 text-white rounded-xl font-bold shadow-lg transition-all duration-200 hover:bg-red-700 hover:scale-105 focus:outline-none border-none text-lg"
+        >
+          {addingShow ? 'Adding Show...' : 'Add Show'}
+        </button>
       </div>
 
       {/* Custom Time Picker Modal */}
       {showTimePicker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center relative border-2 border-primary">
-            <h2 className="text-2xl font-bold mb-4 text-black">Select Time</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+          <div className="rounded-xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center relative border border-gray-600/30" style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(15px)'
+          }}>
+            <h2 className="text-2xl font-bold mb-4 text-white">Select Time</h2>
             <div className="flex gap-4 mb-6">
               {/* Hour Selection */}
               <div className="flex flex-col items-center">
-                <label className="text-sm font-semibold text-black mb-2">Hour</label>
+                <label className="text-sm font-semibold text-gray-300 mb-2">Hour</label>
                 <select 
                   value={selectedHour} 
                   onChange={(e) => setSelectedHour(e.target.value)}
-                  className="border border-primary/40 p-3 rounded text-lg bg-primary/5 text-black"
+                  className="border border-gray-500/50 p-3 rounded text-lg backdrop-blur-sm"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(8px)',
+                    color: 'white'
+                  }}
                 >
                   {getAvailableHours().map(hour => (
-                    <option key={hour} value={hour}>{hour}</option>
+                    <option key={hour} value={hour} style={{ color: 'black', backgroundColor: 'white' }}>{hour}</option>
                   ))}
                 </select>
               </div>
               {/* Minute Selection */}
               <div className="flex flex-col items-center">
-                <label className="text-sm font-semibold text-black mb-2">Minute</label>
+                <label className="text-sm font-semibold text-gray-300 mb-2">Minute</label>
                 <select 
                   value={selectedMinute} 
                   onChange={(e) => setSelectedMinute(e.target.value)}
-                  className="border border-primary/40 p-3 rounded text-lg bg-primary/5 text-black"
+                  className="border border-gray-500/50 p-3 rounded text-lg backdrop-blur-sm"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(8px)',
+                    color: 'white'
+                  }}
                 >
                   {getAvailableMinutes(selectedHour).map(minute => (
-                    <option key={minute} value={minute}>{minute}</option>
+                    <option key={minute} value={minute} style={{ color: 'black', backgroundColor: 'white' }}>{minute}</option>
                   ))}
                 </select>
               </div>
             </div>
-            <div className="text-lg font-semibold text-black mb-6">
+            <div className="text-lg font-semibold text-white mb-6">
               Selected Time: {selectedHour}:{selectedMinute}
             </div>
             <div className="flex gap-3 justify-center items-center">
               <button
                 onClick={() => setShowTimePicker(false)}
-                className="bg-gray-300 text-black px-6 py-2 rounded-lg font-semibold text-lg hover:bg-red-200 transition"
+                className="bg-gray-600/80 text-white px-6 py-2 rounded-lg font-semibold text-lg hover:bg-gray-700/80 transition backdrop-blur-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={() => setShowTimePicker(false)}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold text-lg hover:bg-green-700 transition"
-              >
-                OK
-              </button>
-              <button
-                onClick={() => setShowTimePicker(false)}
-                className="bg-primary text-white px-6 py-2 rounded-lg font-semibold text-lg hover:bg-primary/90 transition"
+                className="bg-amber-500/80 text-white px-6 py-2 rounded-lg font-semibold text-lg hover:bg-amber-600/80 transition backdrop-blur-sm"
               >
                 Confirm
               </button>
@@ -540,82 +758,6 @@ const AddShows = () => {
           </div>
         </div>
       )}
-
-       {/* Display Selected Times */}
-        {Object.keys(dateTimeSelection).length > 0 && (
-        <div className="mt-6">
-            <h2 className=" mb-2">Selected Date-Time</h2>
-            <ul className="space-y-3">
-                {Object.entries(dateTimeSelection).map(([date, times]) => (
-                    <li key={date}>
-                        <div className="font-medium">{date}</div>
-                        <div className="flex flex-wrap gap-2 mt-1 text-sm">
-                            {times.map((time) => (
-                                <div key={time} className="border border-primary px-2 py-1 flex items-center rounded" >
-                                    <span>{time}</span>
-                                    <DeleteIcon onClick={() => handleRemoveTime(date, time)} width={15} className="ml-2 text-red-500 hover:text-red-700 cursor-pointer" />
-                                </div>
-                            ))}
-                        </div>
-                    </li>
-                ))}
-            </ul>
-            </div>
-       )}
-      {/* Room Type and Room Selection */}
-      <div className="flex flex-col md:flex-row gap-8 mt-8 w-full">
-        {/* Room Type Select */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Room Type</label>
-          <select value={selectedRoomType} onChange={e => { setSelectedRoomType(e.target.value); setSelectedRoomId(''); }} className="border border-primary/30 px-4 py-3 rounded-lg w-full bg-black/40 text-white">
-            <option value="Normal">Normal</option>
-            <option value="3D">3D</option>
-            <option value="IMAX">IMAX</option>
-          </select>
-        </div>
-        {/* Room Select */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <label className="block text-sm font-semibold mb-3 text-white">Select Room</label>
-          <select value={selectedRoomId} onChange={e => setSelectedRoomId(e.target.value)} className="border border-primary/30 px-4 py-3 rounded-lg w-full bg-black/40 text-white">
-            <option value="">Select a room</option>
-            {rooms.filter(room => room.type === selectedRoomType).map(room => {
-              const { available, conflict } = isRoomAvailable(room._id);
-              return (
-                <option 
-                  key={room._id} 
-                  value={available ? room._id : ""} 
-                  disabled={!available}
-                  style={{ 
-                    color: available ? 'white' : '#888',
-                    backgroundColor: available ? 'inherit' : '#333'
-                  }}
-                >
-                  {room.name} ({room.type}) {!available ? `- CONFLICT: ${conflict?.movie || 'Unknown Movie'}` : ''}
-                </option>
-              );
-            })}
-          </select>
-          {Object.keys(dateTimeSelection).length > 0 ? (
-            <p className="text-xs text-gray-400 mt-2">
-              * Unavailable rooms have conflicting shows (3-hour duration assumed)
-            </p>
-          ) : (
-            <p className="text-xs text-gray-400 mt-2">
-              Select date and time first to check room availability
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="flex justify-start mt-4">
-        <button
-          onClick={handleSubmit}
-          disabled={addingShow}
-          className="px-8 py-3 bg-white/20 text-white rounded-xl font-semibold shadow-md transition-all duration-200 hover:bg-white/40 hover:text-primary hover:scale-105 focus:outline-none border-none"
-          style={{ border: 'none' }}
-        >
-          {addingShow ? 'Adding...' : 'Add Show'}
-        </button>
-      </div>
     </>
   ) : <Loading />
 }

@@ -114,7 +114,7 @@ const ManageRooms = () => {
               <div className="w-full my-4">
                 <SeatLayoutEditor layout={Array.isArray(addForm.layout) && Array.isArray(addForm.layout[0]) ? addForm.layout : defaultLayout} setLayout={layout => setAddForm(f => ({ ...f, layout }))} />
               </div>
-              <button type="submit" className="bg-primary text-white px-4 py-2 rounded self-start">Add Room</button>
+              <button type="submit" className="bg-red-900 text-white px-4 py-2 rounded self-start hover:bg-red-800 transition-colors">Add Room</button>
             </form>
           </div>
           <div>

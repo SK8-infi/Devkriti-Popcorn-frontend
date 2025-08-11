@@ -126,7 +126,7 @@ const TheatreSettingsModal = ({ isOpen, onClose }) => {
             Cancel
           </button>
           <button
-            className="bg-primary text-white px-6 py-2 rounded-lg flex-1 font-semibold text-lg hover:bg-primary/90 transition disabled:opacity-60 shadow"
+            className="bg-red-900 text-white px-6 py-2 rounded-lg flex-1 font-semibold text-lg hover:bg-red-800 transition disabled:opacity-60 shadow"
             onClick={handleSave}
             disabled={!isFormValid() || submitting}
           >

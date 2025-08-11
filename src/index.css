@@ -54,7 +54,6 @@ input::-webkit-inner-spin-button {
 }
 
 .landing-bg {
-  /* background-image: url('/backgroundImage.jpg'); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

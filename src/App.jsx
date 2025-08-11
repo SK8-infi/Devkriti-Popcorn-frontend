@@ -29,11 +29,12 @@ import SelectShowtime from './pages/SelectShowtime'
 import TheatreDetails from './pages/TheatreDetails'
 import UserReviews from './pages/UserReviews'
 import AskAI from './pages/AskAI'
-// SignIn component removed - redirecting non-admin users to home instead
+
 import DebugAccess from './pages/admin/DebugAccess'
 import UserImageDebug from './components/UserImageDebug'
 import TestOwnerAccess from './pages/admin/TestOwnerAccess'
 import ReviewAnalyticsPage from './pages/admin/ReviewAnalytics'
+import CitySelectionModal from './components/CitySelectionModal'
 
 
 const ProtectedRoute = ({ children, requireAuth = true, requireAdmin = false, requireOwnerAccess = false }) => {
@@ -53,13 +54,38 @@ const App = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isHome = location.pathname === '/';
 
-  const { user } = useAppContext();
+  const { user, userCity, loading } = useAppContext();
+  const [showCityModal, setShowCityModal] = React.useState(false);
+
+  // Check if user needs to select city
+  React.useEffect(() => {
+    if (!loading && !isAdminRoute) {
+      const savedCity = localStorage.getItem('userCity');
+      // Check both context userCity and localStorage
+      const hasCity = userCity || savedCity;
+      if (!hasCity) {
+        setShowCityModal(true);
+      } else {
+        setShowCityModal(false);
+      }
+    }
+  }, [loading, userCity, isAdminRoute, location.pathname]);
+
+  const handleCityModalClose = () => {
+    setShowCityModal(false);
+  };
 
   return (
     <>
       <Toaster />
       {!isAdminRoute && <Navbar />}
       {!isAdminRoute && <MobileNavigation />}
+      
+      {/* City Selection Modal */}
+      <CitySelectionModal 
+        isOpen={showCityModal} 
+        onClose={handleCityModalClose} 
+      />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/movies' element={<Movies />} />

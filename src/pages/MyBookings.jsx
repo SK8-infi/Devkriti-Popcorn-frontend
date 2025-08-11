@@ -422,11 +422,7 @@ const MyBookings = () => {
                   </div>
 
                 {/* Payment Status */}
-                {booking.isPaid ? (
-                  <div className='text-green-400 text-sm mb-4'>
-                    Payment completed on {booking.paymentDate ? formatDate(booking.paymentDate) : 'N/A'}
-                  </div>
-                ) : (
+                {!booking.isPaid && (
                   <div className='mb-4'>
                     {booking.status === 'pending' && !isPendingExpired(booking.createdAt) && (
                       <div className='text-yellow-400 text-sm mb-2'>

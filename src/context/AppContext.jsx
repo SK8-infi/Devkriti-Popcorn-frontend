@@ -197,9 +197,13 @@ export const AppProvider = ({ children }) => {
 
     const fetchAllMovies = async () => {
         try {
-            const { data } = await api.get('/api/movies/latest');
+            const { data } = await api.get('/api/movies');
+            console.log('🎬 AppContext: Fetched movies data:', data);
             if (data.movies) {
+                console.log('🎬 AppContext: Setting allMovies with', data.movies.length, 'movies');
                 setAllMovies(data.movies);
+            } else {
+                console.log('⚠️ AppContext: No movies found in response');
             }
         } catch (error) {
             console.error('Error fetching all movies:', error);

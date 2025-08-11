@@ -81,6 +81,10 @@
   color: #FFD6A0;
   font-weight: 600;
   font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 8px;
 }
 
 .show-date-info {
@@ -258,6 +262,8 @@
 /* Seat Layout Container */
 .seat-layout-container {
   margin: 20px 0;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .seat-grid {
@@ -265,12 +271,17 @@
   flex-direction: column;
   gap: 8px;
   align-items: center;
+  min-width: max-content;
+  transform-origin: center center;
 }
+
+
 
 .seat-row {
   display: flex;
   gap: 6px;
   justify-content: center;
+  min-width: max-content;
 }
 
 .seat-group {
@@ -278,6 +289,221 @@
   gap: 6px;
   flex-wrap: wrap;
   justify-content: center;
+  min-width: max-content;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .seat-layout-page {
+    padding: 80px 15px 20px;
+    gap: 15px;
+  }
+  
+  .show-info-card {
+    padding: 12px;
+    max-width: 350px;
+  }
+  
+  .seat-layout-card {
+    padding: 20px;
+  }
+  
+  .seat-layout-title {
+    font-size: 1.25rem;
+  }
+  
+  .show-info-details {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .seat-legend {
+    gap: 15px;
+  }
+  
+  .seat-button {
+    width: 28px;
+    height: 28px;
+    font-size: 0.625rem;
+    min-width: 28px;
+    min-height: 28px;
+  }
+  
+  .seat-row {
+    gap: 4px;
+  }
+  
+  .seat-group {
+    gap: 4px;
+  }
+
+  .seat-empty-space {
+    width: 28px;
+    height: 28px;
+    margin: 1px;
+    min-width: 28px;
+    min-height: 28px;
+  }
+
+  /* Mobile separator improvements */
+  .show-info-details {
+    gap: 8px;
+    padding: 6px 10px;
+  }
+
+  .show-info-divider {
+    font-size: 0.7rem;
+    min-width: 6px;
+  }
+
+
+}
+
+
+
+@media (max-width: 480px) {
+  .seat-layout-page {
+    padding: 70px 10px 15px;
+  }
+  
+  .show-info-card {
+    padding: 10px;
+    max-width: 300px;
+  }
+  
+  .seat-layout-card {
+    padding: 15px;
+  }
+  
+  .seat-layout-title {
+    font-size: 1.125rem;
+  }
+  
+  .seat-button {
+    width: 24px;
+    height: 24px;
+    font-size: 0.5rem;
+    min-width: 24px;
+    min-height: 24px;
+  }
+  
+  .seat-legend {
+    gap: 10px;
+  }
+  
+  .legend-seat {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .legend-text {
+    font-size: 0.625rem;
+  }
+
+  .seat-row {
+    gap: 3px;
+  }
+  
+  .seat-group {
+    gap: 3px;
+  }
+
+  .seat-empty-space {
+    width: 24px;
+    height: 24px;
+    margin: 1px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  /* Small mobile separator improvements */
+  .show-info-details {
+    gap: 6px;
+    padding: 5px 8px;
+  }
+
+  .show-info-divider {
+    font-size: 0.65rem;
+    min-width: 5px;
+  }
+
+
+}
+
+/* Ultra-small screens (300px and below) */
+@media (max-width: 300px) {
+  .seat-layout-page {
+    padding: 60px 5px 10px;
+  }
+  
+  .show-info-card {
+    padding: 8px;
+    max-width: 280px;
+  }
+  
+  .seat-layout-card {
+    padding: 12px;
+  }
+  
+  .seat-layout-title {
+    font-size: 1rem;
+  }
+  
+  .seat-button {
+    width: 20px;
+    height: 20px;
+    font-size: 0.4rem;
+    padding: 2px;
+    min-width: 20px;
+    min-height: 20px;
+  }
+  
+  .seat-legend {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .legend-seat {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .legend-text {
+    font-size: 0.5rem;
+  }
+
+  .seat-row {
+    gap: 2px;
+  }
+  
+  .seat-group {
+    gap: 2px;
+  }
+
+  .seat-empty-space {
+    width: 20px;
+    height: 20px;
+    margin: 1px;
+    min-width: 20px;
+    min-height: 20px;
+  }
+
+  .seat-layout-container {
+    margin: 8px 0;
+    padding: 0 2px;
+  }
+
+  /* Ultra-small mobile separator improvements */
+  .show-info-details {
+    gap: 4px;
+    padding: 4px 6px;
+  }
+
+  .show-info-divider {
+    font-size: 0.6rem;
+    min-width: 4px;
+  }
 }
 
 /* Seat Buttons */
@@ -295,6 +521,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Empty Space for Custom Theatre Shapes */
+.seat-empty-space {
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  display: inline-block;
 }
 
 .seat-button:hover:not(.seat-unavailable):not(.seat-occupied) {
@@ -385,86 +619,4 @@
 .arrow-icon {
   width: 16px;
   height: 16px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .seat-layout-page {
-    padding: 80px 15px 20px;
-    gap: 15px;
-  }
-  
-  .show-info-card {
-    padding: 12px;
-    max-width: 350px;
-  }
-  
-  .seat-layout-card {
-    padding: 20px;
-  }
-  
-  .seat-layout-title {
-    font-size: 1.25rem;
-  }
-  
-  .show-info-details {
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .seat-legend {
-    gap: 15px;
-  }
-  
-  .seat-button {
-    width: 28px;
-    height: 28px;
-    font-size: 0.625rem;
-  }
-  
-  .seat-row {
-    gap: 4px;
-  }
-  
-  .seat-group {
-    gap: 4px;
-  }
-}
-
-@media (max-width: 480px) {
-  .seat-layout-page {
-    padding: 70px 10px 15px;
-  }
-  
-  .show-info-card {
-    padding: 10px;
-    max-width: 300px;
-  }
-  
-  .seat-layout-card {
-    padding: 15px;
-  }
-  
-  .seat-layout-title {
-    font-size: 1.125rem;
-  }
-  
-  .seat-button {
-    width: 24px;
-    height: 24px;
-    font-size: 0.5rem;
-  }
-  
-  .seat-legend {
-    gap: 10px;
-  }
-  
-  .legend-seat {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .legend-text {
-    font-size: 0.625rem;
-  }
 } 

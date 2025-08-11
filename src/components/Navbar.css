@@ -201,31 +201,31 @@
 /* Responsive breakpoints */
 @media (max-width: 1024px) {
   .navbar-content {
-    padding: 0 1rem;
+    max-width: 92%;
   }
   .navbar-logo-link {
     margin-right: 1rem;
   }
   .navbar-menu {
-    gap: 1.2rem;
+    gap: 1.5rem;
   }
   .navbar-logo {
-    width: 6rem;
+    width: clamp(6rem, 15vw, 7rem);
   }
 }
 
 @media (max-width: 900px) {
   .navbar-content {
-    padding: 0 0.8rem;
+    max-width: 90%;
   }
   .navbar-logo-link {
     margin-right: 0.8rem;
   }
   .navbar-menu {
-    gap: 1rem;
+    gap: 1.2rem;
   }
   .navbar-logo {
-    width: 5.5rem;
+    width: clamp(5.5rem, 14vw, 6.5rem);
   }
   .navbar-icons {
     gap: 1rem;
@@ -237,7 +237,7 @@
     padding: 0 0.5rem;
   }
   .navbar-logo {
-    width: 5rem;
+    width: clamp(5rem, 14vw, 6rem);
   }
   .navbar-icons {
     gap: 0.8rem;
@@ -278,7 +278,7 @@
     display: block;
   }
   .navbar-logo {
-    width: 4.5rem;
+    width: clamp(4.5rem, 12vw, 5rem);
   }
   .navbar-icons {
     gap: 0.6rem;
@@ -294,7 +294,7 @@
     padding: 0 0.3rem;
   }
   .navbar-logo {
-    width: 4rem;
+    width: clamp(4.5rem, 14vw, 5rem);
   }
   .navbar-icons {
     gap: 0.5rem;
@@ -471,7 +471,7 @@
   
   /* Keep logo visible but smaller */
   .navbar-logo {
-    width: clamp(3rem, 6vw, 3.5rem) !important;
+    width: clamp(4.5rem, 12vw, 5rem) !important;
   }
   
   /* Keep icons visible but compact */
@@ -526,7 +526,7 @@
   }
   
   .navbar-logo {
-    width: clamp(3.5rem, 8vw, 4rem) !important;
+    width: clamp(4rem, 12vw, 4.5rem) !important;
   }
   
   .navbar-icons {
@@ -568,7 +568,7 @@
   }
   
   .navbar-logo {
-    width: 3.5rem !important;
+    width: clamp(3.5rem, 10vw, 4rem) !important;
   }
   
   .navbar-icons {

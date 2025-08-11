@@ -340,3 +340,127 @@
   background: #fff;
   border-color: #fff;
 } 
+
+/* Responsive Design for Admin Seat Layout */
+@media (max-width: 768px) {
+  .layout-container {
+    padding: 1rem;
+  }
+
+  .seat-type-selector {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .seat-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .controls-container {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .control-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  .layout-table {
+    border-spacing: 4px;
+    min-width: 300px;
+  }
+
+  .layout-table th,
+  .layout-table td {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .legend .seat-cell {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-container {
+    padding: 0.75rem;
+  }
+
+  .seat-type-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .seat-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .controls-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .control-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .layout-table th,
+  .layout-table td {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+
+  .legend {
+    gap: 0.5rem;
+  }
+
+  .legend .seat-cell {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 300px) {
+  .layout-container {
+    padding: 0.5rem;
+  }
+
+  .seat-btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .control-btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .layout-table th,
+  .layout-table td {
+    width: 24px;
+    height: 24px;
+    font-size: 9px;
+  }
+
+  .legend .seat-cell {
+    width: 14px;
+    height: 14px;
+  }
+} 

@@ -341,7 +341,7 @@ html {
 /* Mobile logo sizing */
 @media (max-width: 768px) {
   .navbar-logo {
-    font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
+    width: clamp(4rem, 10vw, 4.5rem) !important;
   }
 }
 

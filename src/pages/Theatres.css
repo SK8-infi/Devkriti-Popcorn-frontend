@@ -159,7 +159,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .theatre-detail-title {
-    font-size: 1.8rem;
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
   }
   
   .theatre-detail-container {
@@ -176,7 +176,7 @@
 
 @media (max-width: 480px) {
   .theatre-detail-title {
-    font-size: 1.6rem;
+    font-size: clamp(1.6rem, 5vw, 2rem);
   }
   
   .theatre-detail-container {
@@ -187,6 +187,87 @@
   .theatre-detail-image {
     width: 70px;
     height: 70px;
+  }
+}
+
+/* Mobile-specific responsive adjustments for the main heading */
+@media (max-width: 640px) {
+  /* Target the main "THEATRES IN INDORE" heading */
+  .text-5xl {
+    font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* Adjust the description text below the heading */
+  .text-lg {
+    font-size: clamp(0.875rem, 4vw, 1.125rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Adjust the city filter info badge */
+  .px-6.py-3 {
+    padding: 0.75rem 1.5rem !important;
+    font-size: clamp(0.75rem, 3.5vw, 0.875rem) !important;
+  }
+  
+  /* Adjust the theatre count info */
+  .px-6.py-2 {
+    padding: 0.5rem 1.25rem !important;
+    font-size: clamp(0.75rem, 3.5vw, 0.875rem) !important;
+  }
+  
+  /* Adjust the refresh button */
+  .px-6.py-3 {
+    padding: 0.75rem 1.5rem !important;
+    font-size: clamp(0.75rem, 3.5vw, 0.875rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further adjustments for very small screens */
+  .text-5xl {
+    font-size: clamp(1.6rem, 5.5vw, 2.2rem) !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .text-lg {
+    font-size: clamp(0.8rem, 3.5vw, 1rem) !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .px-6.py-3 {
+    padding: 0.5rem 1.25rem !important;
+    font-size: clamp(0.7rem, 3vw, 0.8rem) !important;
+  }
+  
+  .px-6.py-2 {
+    padding: 0.4rem 1rem !important;
+    font-size: clamp(0.7rem, 3vw, 0.8rem) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Ultra-small screen optimizations */
+  .text-5xl {
+    font-size: clamp(1.4rem, 5vw, 1.8rem) !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .text-lg {
+    font-size: clamp(0.75rem, 3vw, 0.875rem) !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .px-6.py-3 {
+    padding: 0.4rem 1rem !important;
+    font-size: clamp(0.65rem, 2.5vw, 0.75rem) !important;
+  }
+  
+  .px-6.py-2 {
+    padding: 0.3rem 0.875rem !important;
+    font-size: clamp(0.65rem, 2.5vw, 0.75rem) !important;
   }
 }
 

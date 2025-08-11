@@ -166,6 +166,8 @@ const SeatLayout = () => {
       setSelectedSeats(prev => prev.includes(seatId) ? prev.filter(seat => seat !== seatId) : [...prev, seatId])
   }
 
+
+
   const renderSeats = (row, count = 9)=>(
     <div key={row} className="seat-row">
             <div className="seat-group">
@@ -319,12 +321,6 @@ const SeatLayout = () => {
                   <div 
                     key={seatId} 
                     className='seat-empty-space'
-                    style={{ 
-                      width: '40px', 
-                      height: '40px', 
-                      margin: '2px',
-                      display: 'inline-block' 
-                    }}
                   />
                 );
               }
@@ -481,6 +477,8 @@ const SeatLayout = () => {
             </div>
           </div>
         )}
+
+
 
         {/* Show seat layout or prompt to select time */}
         {!selectedTime ? (
